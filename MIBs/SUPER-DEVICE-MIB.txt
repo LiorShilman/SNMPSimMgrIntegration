@@ -1,0 +1,1210 @@
+SUPER-DEVICE-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, Counter32, Counter64,
+    Gauge32, TimeTicks, IpAddress, Unsigned32, NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+    DisplayString, TruthValue, MacAddress, RowStatus
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF;
+
+superDevice MODULE-IDENTITY
+    LAST-UPDATED "202602260000Z"
+    ORGANIZATION "SNMPSimMgr Test Lab"
+    CONTACT-INFO "support@superdevice.test"
+    DESCRIPTION
+        "Comprehensive test MIB for SNMPSimMgr.
+         Covers all field types, access modes, tables,
+         enums, constraints, traps, and DIO controls."
+    REVISION "202602260000Z"
+    DESCRIPTION "Initial version — Super Device MIB."
+    ::= { enterprises 99999 }
+
+enterprises OBJECT IDENTIFIER ::= { private 1 }
+private     OBJECT IDENTIFIER ::= { internet 4 }
+internet    OBJECT IDENTIFIER ::= { dod 1 }
+dod         OBJECT IDENTIFIER ::= { org 6 }
+org         OBJECT IDENTIFIER ::= { iso 3 }
+
+-- =====================================================================
+--  Branch layout
+--    superDevice          .1.3.6.1.4.1.99999
+--      sdInfo             .1   (device info scalars)
+--      sdStatus           .2   (status & counters scalars)
+--      sdConfig           .3   (writable config scalars)
+--      sdIfTable          .4   (interface table — 20 columns)
+--      sdSensorTable      .5   (sensor table — mixed types)
+--      sdUserTable        .6   (user table — read-create + RowStatus)
+--      sdVlanTable        .7   (VLAN table)
+--      sdDioTable         .8   (Digital I/O table — multi-enum)
+--      sdNotifications    .10  (traps / notifications)
+--      sdConformance      .11  (compliance)
+-- =====================================================================
+
+-- ===========================================
+--  1. Device Info  (read-only + read-write scalars)
+-- ===========================================
+sdInfo OBJECT IDENTIFIER ::= { superDevice 1 }
+
+sdDeviceName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..64))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Configurable device name."
+    DEFVAL      { "SuperDevice-01" }
+    ::= { sdInfo 1 }
+
+sdModel OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Hardware model identifier."
+    ::= { sdInfo 2 }
+
+sdFirmwareVersion OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current firmware version string."
+    ::= { sdInfo 3 }
+
+sdSerialNumber OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Factory serial number."
+    ::= { sdInfo 4 }
+
+sdMacAddress OBJECT-TYPE
+    SYNTAX      MacAddress
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Base chassis MAC address."
+    DISPLAY-HINT "1x:1x:1x:1x:1x:1x"
+    ::= { sdInfo 5 }
+
+sdUptime OBJECT-TYPE
+    SYNTAX      TimeTicks
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Time since last reboot in hundredths of a second."
+    ::= { sdInfo 6 }
+
+sdContact OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..255))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Administrative contact information."
+    ::= { sdInfo 7 }
+
+sdLocation OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..255))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Physical location of the device."
+    ::= { sdInfo 8 }
+
+sdManagementIp OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Management interface IP address."
+    ::= { sdInfo 9 }
+
+sdDescription OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..512))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Free-form device description or notes."
+    ::= { sdInfo 10 }
+
+-- ===========================================
+--  2. Device Status  (read-only, counters, gauges)
+-- ===========================================
+sdStatus OBJECT IDENTIFIER ::= { superDevice 2 }
+
+sdOperState OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    running(1),
+                    standby(2),
+                    maintenance(3),
+                    fault(4),
+                    shutdown(5)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current operational state of the device."
+    ::= { sdStatus 1 }
+
+sdCpuUsage OBJECT-TYPE
+    SYNTAX      Gauge32 (0..100)
+    UNITS       "percent"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current CPU utilization percentage."
+    ::= { sdStatus 2 }
+
+sdMemoryTotal OBJECT-TYPE
+    SYNTAX      Unsigned32
+    UNITS       "megabytes"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total installed memory."
+    ::= { sdStatus 3 }
+
+sdMemoryUsed OBJECT-TYPE
+    SYNTAX      Unsigned32
+    UNITS       "megabytes"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Currently used memory."
+    ::= { sdStatus 4 }
+
+sdMemoryUsagePercent OBJECT-TYPE
+    SYNTAX      Gauge32 (0..100)
+    UNITS       "percent"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Memory utilization percentage."
+    ::= { sdStatus 5 }
+
+sdDiskTotal OBJECT-TYPE
+    SYNTAX      Unsigned32
+    UNITS       "megabytes"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total disk space."
+    ::= { sdStatus 6 }
+
+sdDiskUsed OBJECT-TYPE
+    SYNTAX      Unsigned32
+    UNITS       "megabytes"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Used disk space."
+    ::= { sdStatus 7 }
+
+sdTemperature OBJECT-TYPE
+    SYNTAX      Integer32 (-40..125)
+    UNITS       "degrees Celsius"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Internal chassis temperature."
+    ::= { sdStatus 8 }
+
+sdPowerSupplyStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    ok(1),
+                    degraded(2),
+                    failed(3),
+                    notPresent(4)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power supply health status."
+    ::= { sdStatus 9 }
+
+sdFanStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    ok(1),
+                    slow(2),
+                    failed(3),
+                    notPresent(4)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Cooling fan health status."
+    ::= { sdStatus 10 }
+
+sdAlarmActive OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Indicates whether any alarm is currently active."
+    ::= { sdStatus 11 }
+
+sdTotalBytesIn OBJECT-TYPE
+    SYNTAX      Counter64
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total bytes received across all interfaces."
+    ::= { sdStatus 12 }
+
+sdTotalBytesOut OBJECT-TYPE
+    SYNTAX      Counter64
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total bytes transmitted across all interfaces."
+    ::= { sdStatus 13 }
+
+sdTotalPacketsIn OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total packets received across all interfaces."
+    ::= { sdStatus 14 }
+
+sdTotalPacketsOut OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total packets transmitted across all interfaces."
+    ::= { sdStatus 15 }
+
+sdActiveConnections OBJECT-TYPE
+    SYNTAX      Gauge32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of currently active connections."
+    ::= { sdStatus 16 }
+
+sdLastRebootReason OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    powerCycle(1),
+                    softwareUpgrade(2),
+                    userRequest(3),
+                    watchdog(4),
+                    crash(5),
+                    unknown(6)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Reason for the last device reboot."
+    ::= { sdStatus 17 }
+
+-- ===========================================
+--  3. Configuration  (read-write scalars)
+-- ===========================================
+sdConfig OBJECT IDENTIFIER ::= { superDevice 3 }
+
+sdHostname OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..64))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Device hostname."
+    DEFVAL      { "super-device" }
+    ::= { sdConfig 1 }
+
+sdDomainName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..128))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "DNS domain name."
+    ::= { sdConfig 2 }
+
+sdDnsServerPrimary OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Primary DNS server."
+    ::= { sdConfig 3 }
+
+sdDnsServerSecondary OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Secondary DNS server."
+    ::= { sdConfig 4 }
+
+sdNtpServer OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "NTP server address."
+    ::= { sdConfig 5 }
+
+sdTimezone OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Timezone string (e.g. UTC+2, America/New_York)."
+    DEFVAL      { "UTC" }
+    ::= { sdConfig 6 }
+
+sdLogLevel OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    emergency(0),
+                    alert(1),
+                    critical(2),
+                    error(3),
+                    warning(4),
+                    notice(5),
+                    info(6),
+                    debug(7)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Syslog severity level."
+    DEFVAL      { info }
+    ::= { sdConfig 7 }
+
+sdLogDestination OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    console(1),
+                    file(2),
+                    syslog(3),
+                    snmpTrap(4),
+                    all(5)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Where log messages are sent."
+    DEFVAL      { syslog }
+    ::= { sdConfig 8 }
+
+sdSyslogServer OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Remote syslog server IP."
+    ::= { sdConfig 9 }
+
+sdMaxConnections OBJECT-TYPE
+    SYNTAX      Integer32 (1..10000)
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Maximum concurrent connections allowed."
+    DEFVAL      { 1000 }
+    ::= { sdConfig 10 }
+
+sdSessionTimeout OBJECT-TYPE
+    SYNTAX      Integer32 (30..86400)
+    UNITS       "seconds"
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Idle session timeout."
+    DEFVAL      { 300 }
+    ::= { sdConfig 11 }
+
+sdSnmpEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Enable or disable the SNMP agent."
+    DEFVAL      { true }
+    ::= { sdConfig 12 }
+
+sdSshEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Enable or disable SSH access."
+    DEFVAL      { true }
+    ::= { sdConfig 13 }
+
+sdHttpsEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Enable or disable HTTPS web interface."
+    DEFVAL      { true }
+    ::= { sdConfig 14 }
+
+sdTelnetEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Enable or disable Telnet access (deprecated, insecure)."
+    DEFVAL      { false }
+    ::= { sdConfig 15 }
+
+sdBannerMotd OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..512))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Message of the day banner shown at login."
+    ::= { sdConfig 16 }
+
+-- ===========================================
+--  4. Interface Table  (20 columns, mixed access)
+-- ===========================================
+sdIfTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SdIfEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Network interface table with full detail."
+    ::= { superDevice 4 }
+
+sdIfEntry OBJECT-TYPE
+    SYNTAX      SdIfEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A single network interface entry."
+    INDEX       { sdIfIndex }
+    ::= { sdIfTable 1 }
+
+SdIfEntry ::= SEQUENCE {
+    sdIfIndex           Integer32,
+    sdIfName            DisplayString,
+    sdIfDescr           DisplayString,
+    sdIfType            INTEGER,
+    sdIfSpeed           Gauge32,
+    sdIfMtu             Integer32,
+    sdIfAdminStatus     INTEGER,
+    sdIfOperStatus      INTEGER,
+    sdIfMacAddress      MacAddress,
+    sdIfIpAddress       IpAddress,
+    sdIfSubnetMask      IpAddress,
+    sdIfInOctets        Counter32,
+    sdIfOutOctets       Counter32,
+    sdIfInErrors        Counter32,
+    sdIfOutErrors       Counter32,
+    sdIfInPackets       Counter32,
+    sdIfOutPackets      Counter32,
+    sdIfDuplex          INTEGER,
+    sdIfAutoNeg         TruthValue,
+    sdIfVlanId          Integer32
+}
+
+sdIfIndex OBJECT-TYPE
+    SYNTAX      Integer32 (1..2147483647)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Unique interface index."
+    ::= { sdIfEntry 1 }
+
+sdIfName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..64))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Short interface name (e.g. eth0, ge0/1)."
+    ::= { sdIfEntry 2 }
+
+sdIfDescr OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..255))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "User-configurable interface description."
+    ::= { sdIfEntry 3 }
+
+sdIfType OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    ethernet(1),
+                    fastEthernet(2),
+                    gigabitEthernet(3),
+                    tenGigabitEthernet(4),
+                    wifi(5),
+                    loopback(6),
+                    vlan(7),
+                    tunnel(8)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Physical or logical interface type."
+    ::= { sdIfEntry 4 }
+
+sdIfSpeed OBJECT-TYPE
+    SYNTAX      Gauge32
+    UNITS       "Mbps"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current interface speed."
+    ::= { sdIfEntry 5 }
+
+sdIfMtu OBJECT-TYPE
+    SYNTAX      Integer32 (68..9216)
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Maximum Transmission Unit."
+    DEFVAL      { 1500 }
+    ::= { sdIfEntry 6 }
+
+sdIfAdminStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    up(1),
+                    down(2),
+                    testing(3)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Desired administrative state."
+    ::= { sdIfEntry 7 }
+
+sdIfOperStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    up(1),
+                    down(2),
+                    testing(3),
+                    unknown(4),
+                    dormant(5),
+                    notPresent(6),
+                    lowerLayerDown(7)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current operational state."
+    ::= { sdIfEntry 8 }
+
+sdIfMacAddress OBJECT-TYPE
+    SYNTAX      MacAddress
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Interface hardware MAC address."
+    DISPLAY-HINT "1x:1x:1x:1x:1x:1x"
+    ::= { sdIfEntry 9 }
+
+sdIfIpAddress OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Interface IPv4 address."
+    ::= { sdIfEntry 10 }
+
+sdIfSubnetMask OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Interface subnet mask."
+    ::= { sdIfEntry 11 }
+
+sdIfInOctets OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total bytes received on this interface."
+    ::= { sdIfEntry 12 }
+
+sdIfOutOctets OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total bytes transmitted on this interface."
+    ::= { sdIfEntry 13 }
+
+sdIfInErrors OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of inbound errors."
+    ::= { sdIfEntry 14 }
+
+sdIfOutErrors OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of outbound errors."
+    ::= { sdIfEntry 15 }
+
+sdIfInPackets OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total packets received on this interface."
+    ::= { sdIfEntry 16 }
+
+sdIfOutPackets OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total packets transmitted on this interface."
+    ::= { sdIfEntry 17 }
+
+sdIfDuplex OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    half(1),
+                    full(2),
+                    auto(3)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Duplex mode setting."
+    DEFVAL      { auto }
+    ::= { sdIfEntry 18 }
+
+sdIfAutoNeg OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Whether auto-negotiation is enabled."
+    DEFVAL      { true }
+    ::= { sdIfEntry 19 }
+
+sdIfVlanId OBJECT-TYPE
+    SYNTAX      Integer32 (1..4094)
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "VLAN membership for this interface."
+    DEFVAL      { 1 }
+    ::= { sdIfEntry 20 }
+
+-- ===========================================
+--  5. Sensor Table  (environmental monitoring)
+-- ===========================================
+sdSensorTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SdSensorEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Environmental sensor readings."
+    ::= { superDevice 5 }
+
+sdSensorEntry OBJECT-TYPE
+    SYNTAX      SdSensorEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A single sensor."
+    INDEX       { sdSensorIndex }
+    ::= { sdSensorTable 1 }
+
+SdSensorEntry ::= SEQUENCE {
+    sdSensorIndex           Integer32,
+    sdSensorName            DisplayString,
+    sdSensorType            INTEGER,
+    sdSensorValue           Integer32,
+    sdSensorUnits           DisplayString,
+    sdSensorStatus          INTEGER,
+    sdSensorThresholdLow    Integer32,
+    sdSensorThresholdHigh   Integer32
+}
+
+sdSensorIndex OBJECT-TYPE
+    SYNTAX      Integer32 (1..100)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Sensor index."
+    ::= { sdSensorEntry 1 }
+
+sdSensorName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..64))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Human-readable sensor name."
+    ::= { sdSensorEntry 2 }
+
+sdSensorType OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    temperature(1),
+                    humidity(2),
+                    voltage(3),
+                    fanSpeed(4),
+                    power(5),
+                    current(6)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Type of sensor."
+    ::= { sdSensorEntry 3 }
+
+sdSensorValue OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current sensor reading (units depend on sensor type)."
+    ::= { sdSensorEntry 4 }
+
+sdSensorUnits OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..16))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Display units for this sensor (C, %, V, RPM, W, A)."
+    ::= { sdSensorEntry 5 }
+
+sdSensorStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    normal(1),
+                    warning(2),
+                    critical(3),
+                    unknown(4)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Sensor health status."
+    ::= { sdSensorEntry 6 }
+
+sdSensorThresholdLow OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Lower threshold. Alarm triggers if value goes below."
+    ::= { sdSensorEntry 7 }
+
+sdSensorThresholdHigh OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Upper threshold. Alarm triggers if value goes above."
+    ::= { sdSensorEntry 8 }
+
+-- ===========================================
+--  6. User Table  (read-create with RowStatus)
+-- ===========================================
+sdUserTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SdUserEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "User account management table."
+    ::= { superDevice 6 }
+
+sdUserEntry OBJECT-TYPE
+    SYNTAX      SdUserEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A single user account."
+    INDEX       { sdUserIndex }
+    ::= { sdUserTable 1 }
+
+SdUserEntry ::= SEQUENCE {
+    sdUserIndex         Integer32,
+    sdUserName          DisplayString,
+    sdUserRole          INTEGER,
+    sdUserEnabled       TruthValue,
+    sdUserLoginCount    Counter32,
+    sdUserLastLoginIp   IpAddress,
+    sdUserRowStatus     RowStatus
+}
+
+sdUserIndex OBJECT-TYPE
+    SYNTAX      Integer32 (1..100)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "User account index."
+    ::= { sdUserEntry 1 }
+
+sdUserName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Username for authentication."
+    ::= { sdUserEntry 2 }
+
+sdUserRole OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    admin(1),
+                    operator(2),
+                    viewer(3),
+                    guest(4),
+                    auditor(5)
+                }
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "User role / privilege level."
+    DEFVAL      { viewer }
+    ::= { sdUserEntry 3 }
+
+sdUserEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Whether this user account is active."
+    DEFVAL      { true }
+    ::= { sdUserEntry 4 }
+
+sdUserLoginCount OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total number of successful logins."
+    ::= { sdUserEntry 5 }
+
+sdUserLastLoginIp OBJECT-TYPE
+    SYNTAX      IpAddress
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "IP address of the last successful login."
+    ::= { sdUserEntry 6 }
+
+sdUserRowStatus OBJECT-TYPE
+    SYNTAX      RowStatus
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Row status for creating/deleting user entries."
+    ::= { sdUserEntry 7 }
+
+-- ===========================================
+--  7. VLAN Table
+-- ===========================================
+sdVlanTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SdVlanEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "VLAN configuration table."
+    ::= { superDevice 7 }
+
+sdVlanEntry OBJECT-TYPE
+    SYNTAX      SdVlanEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A single VLAN entry."
+    INDEX       { sdVlanId }
+    ::= { sdVlanTable 1 }
+
+SdVlanEntry ::= SEQUENCE {
+    sdVlanId            Integer32,
+    sdVlanName          DisplayString,
+    sdVlanStatus        INTEGER,
+    sdVlanMemberPorts   DisplayString,
+    sdVlanTaggedPorts   DisplayString,
+    sdVlanRowStatus     RowStatus
+}
+
+sdVlanId OBJECT-TYPE
+    SYNTAX      Integer32 (1..4094)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "VLAN identifier."
+    ::= { sdVlanEntry 1 }
+
+sdVlanName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "VLAN name."
+    ::= { sdVlanEntry 2 }
+
+sdVlanStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    active(1),
+                    suspended(2),
+                    shutdown(3)
+                }
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "VLAN operational status."
+    DEFVAL      { active }
+    ::= { sdVlanEntry 3 }
+
+sdVlanMemberPorts OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..255))
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Comma-separated list of untagged member port indices."
+    ::= { sdVlanEntry 4 }
+
+sdVlanTaggedPorts OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..255))
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Comma-separated list of tagged (trunk) port indices."
+    ::= { sdVlanEntry 5 }
+
+sdVlanRowStatus OBJECT-TYPE
+    SYNTAX      RowStatus
+    MAX-ACCESS  read-create
+    STATUS      current
+    DESCRIPTION "Row status for creating/deleting VLANs."
+    ::= { sdVlanEntry 6 }
+
+-- ===========================================
+--  8. DIO Table  (Digital I/O — multi-enum controls)
+-- ===========================================
+sdDioTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SdDioEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Digital Input/Output control table.
+                 Each DIO channel can be configured as input or output
+                 with various modes and trigger options."
+    ::= { superDevice 8 }
+
+sdDioEntry OBJECT-TYPE
+    SYNTAX      SdDioEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A single DIO channel."
+    INDEX       { sdDioIndex }
+    ::= { sdDioTable 1 }
+
+SdDioEntry ::= SEQUENCE {
+    sdDioIndex          Integer32,
+    sdDioName           DisplayString,
+    sdDioDirection      INTEGER,
+    sdDioState          INTEGER,
+    sdDioMode           INTEGER,
+    sdDioTrigger        INTEGER,
+    sdDioPulseWidth     Integer32,
+    sdDioPullResistor   INTEGER,
+    sdDioInverted       TruthValue,
+    sdDioAlarmEnabled   TruthValue,
+    sdDioCounter        Counter32,
+    sdDioLastChange     TimeTicks
+}
+
+sdDioIndex OBJECT-TYPE
+    SYNTAX      Integer32 (1..32)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "DIO channel number."
+    ::= { sdDioEntry 1 }
+
+sdDioName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (1..32))
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "User-assigned channel name."
+    ::= { sdDioEntry 2 }
+
+sdDioDirection OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    input(1),
+                    output(2),
+                    bidirectional(3),
+                    disabled(4)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Channel direction / mode."
+    DEFVAL      { input }
+    ::= { sdDioEntry 3 }
+
+sdDioState OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    low(0),
+                    high(1)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Current logical state (read for input, write for output)."
+    ::= { sdDioEntry 4 }
+
+sdDioMode OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    normal(1),
+                    pwm(2),
+                    oneShot(3),
+                    toggle(4),
+                    counter(5),
+                    frequency(6)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Operating mode of the channel."
+    DEFVAL      { normal }
+    ::= { sdDioEntry 5 }
+
+sdDioTrigger OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    none(0),
+                    risingEdge(1),
+                    fallingEdge(2),
+                    bothEdges(3),
+                    levelHigh(4),
+                    levelLow(5)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Event trigger configuration."
+    DEFVAL      { none }
+    ::= { sdDioEntry 6 }
+
+sdDioPulseWidth OBJECT-TYPE
+    SYNTAX      Integer32 (0..60000)
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Pulse width for oneShot/PWM modes."
+    DEFVAL      { 100 }
+    ::= { sdDioEntry 7 }
+
+sdDioPullResistor OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    none(0),
+                    pullUp(1),
+                    pullDown(2)
+                }
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Internal pull resistor configuration."
+    DEFVAL      { none }
+    ::= { sdDioEntry 8 }
+
+sdDioInverted OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Whether the logical state is inverted."
+    DEFVAL      { false }
+    ::= { sdDioEntry 9 }
+
+sdDioAlarmEnabled OBJECT-TYPE
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION "Whether trigger events generate an SNMP trap."
+    DEFVAL      { false }
+    ::= { sdDioEntry 10 }
+
+sdDioCounter OBJECT-TYPE
+    SYNTAX      Counter32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of trigger events counted."
+    ::= { sdDioEntry 11 }
+
+sdDioLastChange OBJECT-TYPE
+    SYNTAX      TimeTicks
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Timestamp of last state change."
+    ::= { sdDioEntry 12 }
+
+-- ===========================================
+--  10. Notifications  (Traps)
+-- ===========================================
+sdNotifications OBJECT IDENTIFIER ::= { superDevice 10 }
+
+sdDeviceReboot NOTIFICATION-TYPE
+    OBJECTS     { sdDeviceName, sdLastRebootReason }
+    STATUS      current
+    DESCRIPTION "Device is rebooting."
+    ::= { sdNotifications 1 }
+
+sdTemperatureAlarm NOTIFICATION-TYPE
+    OBJECTS     { sdSensorName, sdSensorValue, sdSensorThresholdHigh }
+    STATUS      current
+    DESCRIPTION "Temperature threshold exceeded."
+    ::= { sdNotifications 2 }
+
+sdInterfaceStateChange NOTIFICATION-TYPE
+    OBJECTS     { sdIfIndex, sdIfName, sdIfOperStatus }
+    STATUS      current
+    DESCRIPTION "Interface operational state changed."
+    ::= { sdNotifications 3 }
+
+sdAuthenticationFailure NOTIFICATION-TYPE
+    OBJECTS     { sdUserName, sdUserLastLoginIp }
+    STATUS      current
+    DESCRIPTION "Authentication attempt failed."
+    ::= { sdNotifications 4 }
+
+sdConfigChanged NOTIFICATION-TYPE
+    OBJECTS     { sdDeviceName, sdUserName }
+    STATUS      current
+    DESCRIPTION "Configuration was modified."
+    ::= { sdNotifications 5 }
+
+sdDioTriggerEvent NOTIFICATION-TYPE
+    OBJECTS     { sdDioIndex, sdDioName, sdDioState, sdDioTrigger }
+    STATUS      current
+    DESCRIPTION "DIO channel trigger event occurred."
+    ::= { sdNotifications 6 }
+
+sdPowerSupplyAlarm NOTIFICATION-TYPE
+    OBJECTS     { sdDeviceName, sdPowerSupplyStatus }
+    STATUS      current
+    DESCRIPTION "Power supply status changed."
+    ::= { sdNotifications 7 }
+
+sdFanAlarm NOTIFICATION-TYPE
+    OBJECTS     { sdDeviceName, sdFanStatus }
+    STATUS      current
+    DESCRIPTION "Cooling fan status changed."
+    ::= { sdNotifications 8 }
+
+-- ===========================================
+--  11. Conformance
+-- ===========================================
+sdConformance OBJECT IDENTIFIER ::= { superDevice 11 }
+
+sdCompliance MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION "Compliance statement for Super Device."
+    MODULE
+        MANDATORY-GROUPS {
+            sdInfoGroup,
+            sdStatusGroup,
+            sdConfigGroup,
+            sdIfGroup,
+            sdSensorGroup,
+            sdUserGroup,
+            sdVlanGroup,
+            sdDioGroup,
+            sdNotifGroup
+        }
+    ::= { sdConformance 1 }
+
+sdInfoGroup OBJECT-GROUP
+    OBJECTS {
+        sdDeviceName, sdModel, sdFirmwareVersion, sdSerialNumber,
+        sdMacAddress, sdUptime, sdContact, sdLocation,
+        sdManagementIp, sdDescription
+    }
+    STATUS      current
+    DESCRIPTION "Device information objects."
+    ::= { sdConformance 2 }
+
+sdStatusGroup OBJECT-GROUP
+    OBJECTS {
+        sdOperState, sdCpuUsage, sdMemoryTotal, sdMemoryUsed,
+        sdMemoryUsagePercent, sdDiskTotal, sdDiskUsed,
+        sdTemperature, sdPowerSupplyStatus, sdFanStatus,
+        sdAlarmActive, sdTotalBytesIn, sdTotalBytesOut,
+        sdTotalPacketsIn, sdTotalPacketsOut, sdActiveConnections,
+        sdLastRebootReason
+    }
+    STATUS      current
+    DESCRIPTION "Device status and counter objects."
+    ::= { sdConformance 3 }
+
+sdConfigGroup OBJECT-GROUP
+    OBJECTS {
+        sdHostname, sdDomainName, sdDnsServerPrimary, sdDnsServerSecondary,
+        sdNtpServer, sdTimezone, sdLogLevel, sdLogDestination,
+        sdSyslogServer, sdMaxConnections, sdSessionTimeout,
+        sdSnmpEnabled, sdSshEnabled, sdHttpsEnabled, sdTelnetEnabled,
+        sdBannerMotd
+    }
+    STATUS      current
+    DESCRIPTION "Configuration objects."
+    ::= { sdConformance 4 }
+
+sdIfGroup OBJECT-GROUP
+    OBJECTS {
+        sdIfIndex, sdIfName, sdIfDescr, sdIfType, sdIfSpeed,
+        sdIfMtu, sdIfAdminStatus, sdIfOperStatus, sdIfMacAddress,
+        sdIfIpAddress, sdIfSubnetMask, sdIfInOctets, sdIfOutOctets,
+        sdIfInErrors, sdIfOutErrors, sdIfInPackets, sdIfOutPackets,
+        sdIfDuplex, sdIfAutoNeg, sdIfVlanId
+    }
+    STATUS      current
+    DESCRIPTION "Interface table objects."
+    ::= { sdConformance 5 }
+
+sdSensorGroup OBJECT-GROUP
+    OBJECTS {
+        sdSensorIndex, sdSensorName, sdSensorType, sdSensorValue,
+        sdSensorUnits, sdSensorStatus, sdSensorThresholdLow,
+        sdSensorThresholdHigh
+    }
+    STATUS      current
+    DESCRIPTION "Sensor table objects."
+    ::= { sdConformance 6 }
+
+sdUserGroup OBJECT-GROUP
+    OBJECTS {
+        sdUserIndex, sdUserName, sdUserRole, sdUserEnabled,
+        sdUserLoginCount, sdUserLastLoginIp, sdUserRowStatus
+    }
+    STATUS      current
+    DESCRIPTION "User management objects."
+    ::= { sdConformance 7 }
+
+sdVlanGroup OBJECT-GROUP
+    OBJECTS {
+        sdVlanId, sdVlanName, sdVlanStatus, sdVlanMemberPorts,
+        sdVlanTaggedPorts, sdVlanRowStatus
+    }
+    STATUS      current
+    DESCRIPTION "VLAN management objects."
+    ::= { sdConformance 8 }
+
+sdDioGroup OBJECT-GROUP
+    OBJECTS {
+        sdDioIndex, sdDioName, sdDioDirection, sdDioState,
+        sdDioMode, sdDioTrigger, sdDioPulseWidth, sdDioPullResistor,
+        sdDioInverted, sdDioAlarmEnabled, sdDioCounter, sdDioLastChange
+    }
+    STATUS      current
+    DESCRIPTION "Digital I/O objects."
+    ::= { sdConformance 9 }
+
+sdNotifGroup NOTIFICATION-GROUP
+    NOTIFICATIONS {
+        sdDeviceReboot, sdTemperatureAlarm, sdInterfaceStateChange,
+        sdAuthenticationFailure, sdConfigChanged, sdDioTriggerEvent,
+        sdPowerSupplyAlarm, sdFanAlarm
+    }
+    STATUS      current
+    DESCRIPTION "Notification objects."
+    ::= { sdConformance 10 }
+
+END

@@ -1,0 +1,3912 @@
+{
+  "deviceName": "Super-Device-Lab",
+  "deviceIp": "10.0.0.100",
+  "devicePort": 161,
+  "community": "supertest",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-02-26T21:32:37.647463Z",
+  "totalFields": 145,
+  "modules": [
+    {
+      "moduleName": "SNMPv2-SMI",
+      "scalarCount": 15,
+      "tableCount": 0,
+      "scalars": [
+        {
+          "oid": "1.3",
+          "name": "org",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6",
+          "name": "dod",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1",
+          "name": "internet",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.1",
+          "name": "directory",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.2",
+          "name": "mgmt",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.2.1",
+          "name": "mib-2",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.2.1.10",
+          "name": "transmission",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.3",
+          "name": "experimental",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4",
+          "name": "private",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1",
+          "name": "enterprises",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.5",
+          "name": "security",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.6",
+          "name": "snmpV2",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.6.1",
+          "name": "snmpDomains",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.6.2",
+          "name": "snmpProxys",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.6.3",
+          "name": "snmpModules",
+          "description": "Text\n                  RevisionPart\n\n    VALUE NOTATION ::=\n                  value(VALUE OBJECT IDENTIFIER)\n\n    RevisionPart ::=\n                  Revisions\n                | empty\n    Revisions ::=\n                  Revision\n                | Revisions Revision\n    Revision ::=",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        }
+      ],
+      "tables": []
+    },
+    {
+      "moduleName": "SUPER-DEVICE-MIB",
+      "scalarCount": 77,
+      "tableCount": 5,
+      "scalars": [
+        {
+          "oid": "1.3.6.1.4.1.99999",
+          "name": "superDevice",
+          "description": "Comprehensive test MIB for SNMPSimMgr.\r\n         Covers all field types, access modes, tables,\r\n         enums, constraints, traps, and DIO controls.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1",
+          "name": "sdInfo",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.1",
+          "name": "sdDeviceName",
+          "description": "Configurable device name.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 64,
+          "defaultValue": "\u0022SuperDevice-01\u0022",
+          "currentValue": "SuperDevice-01",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.10",
+          "name": "sdDescription",
+          "description": "Free-form device description or notes.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 0,
+          "maxLength": 512,
+          "currentValue": "Super Device for comprehensive SNMP testing \u2014 all types, tables, and controls.",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.2",
+          "name": "sdModel",
+          "description": "Hardware model identifier.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 32,
+          "currentValue": "SD-9000X",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.3",
+          "name": "sdFirmwareVersion",
+          "description": "Current firmware version string.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 32,
+          "currentValue": "4.2.1-build.2847",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.4",
+          "name": "sdSerialNumber",
+          "description": "Factory serial number.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 32,
+          "currentValue": "SD9K-2026-A1B2C3",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.5",
+          "name": "sdMacAddress",
+          "description": "Base chassis MAC address.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "MacAddress",
+          "displayHint": "1x:1x:1x:1x:1x:1x",
+          "currentValue": "AA:BB:CC:DD:EE:01",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.6",
+          "name": "sdUptime",
+          "description": "Time since last reboot in hundredths of a second.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "timeticks",
+          "baseType": "TimeTicks",
+          "currentValue": "8765432",
+          "currentValueType": "TimeTicks",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.7",
+          "name": "sdContact",
+          "description": "Administrative contact information.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 0,
+          "maxLength": 255,
+          "currentValue": "Lab Admin \u003Clab@test.local\u003E",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.8",
+          "name": "sdLocation",
+          "description": "Physical location of the device.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 0,
+          "maxLength": 255,
+          "currentValue": "Lab Room B, Rack 5, U22",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.1.9",
+          "name": "sdManagementIp",
+          "description": "Management interface IP address.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "ip",
+          "baseType": "IpAddress",
+          "currentValue": "10.0.0.100",
+          "currentValueType": "IpAddress",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10",
+          "name": "sdNotifications",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.1",
+          "name": "sdDeviceReboot",
+          "description": "Device is rebooting.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.2",
+          "name": "sdTemperatureAlarm",
+          "description": "Temperature threshold exceeded.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.3",
+          "name": "sdInterfaceStateChange",
+          "description": "Interface operational state changed.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.4",
+          "name": "sdAuthenticationFailure",
+          "description": "Authentication attempt failed.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.5",
+          "name": "sdConfigChanged",
+          "description": "Configuration was modified.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.6",
+          "name": "sdDioTriggerEvent",
+          "description": "DIO channel trigger event occurred.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.7",
+          "name": "sdPowerSupplyAlarm",
+          "description": "Power supply status changed.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.10.8",
+          "name": "sdFanAlarm",
+          "description": "Cooling fan status changed.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11",
+          "name": "sdConformance",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.1",
+          "name": "sdCompliance",
+          "description": "Compliance statement for Super Device.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.10",
+          "name": "sdNotifGroup",
+          "description": "Notification objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.2",
+          "name": "sdInfoGroup",
+          "description": "Device information objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.3",
+          "name": "sdStatusGroup",
+          "description": "Device status and counter objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.4",
+          "name": "sdConfigGroup",
+          "description": "Configuration objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.5",
+          "name": "sdIfGroup",
+          "description": "Interface table objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.6",
+          "name": "sdSensorGroup",
+          "description": "Sensor table objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.7",
+          "name": "sdUserGroup",
+          "description": "User management objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.8",
+          "name": "sdVlanGroup",
+          "description": "VLAN management objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.11.9",
+          "name": "sdDioGroup",
+          "description": "Digital I/O objects.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2",
+          "name": "sdStatus",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.1",
+          "name": "sdOperState",
+          "description": "Current operational state of the device.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "running",
+              "value": 1
+            },
+            {
+              "label": "standby",
+              "value": 2
+            },
+            {
+              "label": "maintenance",
+              "value": 3
+            },
+            {
+              "label": "fault",
+              "value": 4
+            },
+            {
+              "label": "shutdown",
+              "value": 5
+            }
+          ],
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.10",
+          "name": "sdFanStatus",
+          "description": "Cooling fan health status.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "ok",
+              "value": 1
+            },
+            {
+              "label": "slow",
+              "value": 2
+            },
+            {
+              "label": "failed",
+              "value": 3
+            },
+            {
+              "label": "notPresent",
+              "value": 4
+            }
+          ],
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.11",
+          "name": "sdAlarmActive",
+          "description": "Indicates whether any alarm is currently active.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "TruthValue",
+          "currentValue": "2",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.12",
+          "name": "sdTotalBytesIn",
+          "description": "Total bytes received across all interfaces.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "counter",
+          "baseType": "Counter64",
+          "currentValue": "98765432100",
+          "currentValueType": "Counter64",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.13",
+          "name": "sdTotalBytesOut",
+          "description": "Total bytes transmitted across all interfaces.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "counter",
+          "baseType": "Counter64",
+          "currentValue": "54321098700",
+          "currentValueType": "Counter64",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.14",
+          "name": "sdTotalPacketsIn",
+          "description": "Total packets received across all interfaces.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "counter",
+          "baseType": "Counter32",
+          "currentValue": "45678901",
+          "currentValueType": "Counter32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.15",
+          "name": "sdTotalPacketsOut",
+          "description": "Total packets transmitted across all interfaces.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "counter",
+          "baseType": "Counter32",
+          "currentValue": "23456789",
+          "currentValueType": "Counter32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.16",
+          "name": "sdActiveConnections",
+          "description": "Number of currently active connections.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Gauge32",
+          "currentValue": "342",
+          "currentValueType": "Gauge32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.17",
+          "name": "sdLastRebootReason",
+          "description": "Reason for the last device reboot.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "powerCycle",
+              "value": 1
+            },
+            {
+              "label": "softwareUpgrade",
+              "value": 2
+            },
+            {
+              "label": "userRequest",
+              "value": 3
+            },
+            {
+              "label": "watchdog",
+              "value": 4
+            },
+            {
+              "label": "crash",
+              "value": 5
+            },
+            {
+              "label": "unknown",
+              "value": 6
+            }
+          ],
+          "currentValue": "3",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.2",
+          "name": "sdCpuUsage",
+          "description": "Current CPU utilization percentage.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Gauge32",
+          "units": "percent",
+          "minValue": 0,
+          "maxValue": 100,
+          "currentValue": "37",
+          "currentValueType": "Gauge32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.3",
+          "name": "sdMemoryTotal",
+          "description": "Total installed memory.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "units": "megabytes",
+          "currentValue": "16384",
+          "currentValueType": "Unsigned32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.4",
+          "name": "sdMemoryUsed",
+          "description": "Currently used memory.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "units": "megabytes",
+          "currentValue": "11520",
+          "currentValueType": "Unsigned32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.5",
+          "name": "sdMemoryUsagePercent",
+          "description": "Memory utilization percentage.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Gauge32",
+          "units": "percent",
+          "minValue": 0,
+          "maxValue": 100,
+          "currentValue": "70",
+          "currentValueType": "Gauge32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.6",
+          "name": "sdDiskTotal",
+          "description": "Total disk space.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "units": "megabytes",
+          "currentValue": "512000",
+          "currentValueType": "Unsigned32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.7",
+          "name": "sdDiskUsed",
+          "description": "Used disk space.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "units": "megabytes",
+          "currentValue": "204800",
+          "currentValueType": "Unsigned32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.8",
+          "name": "sdTemperature",
+          "description": "Internal chassis temperature.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "units": "degrees Celsius",
+          "minValue": -40,
+          "maxValue": 125,
+          "currentValue": "42",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.2.9",
+          "name": "sdPowerSupplyStatus",
+          "description": "Power supply health status.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "ok",
+              "value": 1
+            },
+            {
+              "label": "degraded",
+              "value": 2
+            },
+            {
+              "label": "failed",
+              "value": 3
+            },
+            {
+              "label": "notPresent",
+              "value": 4
+            }
+          ],
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3",
+          "name": "sdConfig",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.1",
+          "name": "sdHostname",
+          "description": "Device hostname.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 64,
+          "defaultValue": "\u0022super-device\u0022",
+          "currentValue": "super-device",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.10",
+          "name": "sdMaxConnections",
+          "description": "Maximum concurrent connections allowed.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "minValue": 1,
+          "maxValue": 10000,
+          "defaultValue": "1000",
+          "currentValue": "1000",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.11",
+          "name": "sdSessionTimeout",
+          "description": "Idle session timeout.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "units": "seconds",
+          "minValue": 30,
+          "maxValue": 86400,
+          "defaultValue": "300",
+          "currentValue": "300",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.12",
+          "name": "sdSnmpEnabled",
+          "description": "Enable or disable the SNMP agent.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "TruthValue",
+          "defaultValue": "true",
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.13",
+          "name": "sdSshEnabled",
+          "description": "Enable or disable SSH access.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "TruthValue",
+          "defaultValue": "true",
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.14",
+          "name": "sdHttpsEnabled",
+          "description": "Enable or disable HTTPS web interface.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "TruthValue",
+          "defaultValue": "true",
+          "currentValue": "1",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.15",
+          "name": "sdTelnetEnabled",
+          "description": "Enable or disable Telnet access (deprecated, insecure).",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "TruthValue",
+          "defaultValue": "false",
+          "currentValue": "2",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.16",
+          "name": "sdBannerMotd",
+          "description": "Message of the day banner shown at login.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 0,
+          "maxLength": 512,
+          "currentValue": "Welcome to SuperDevice Lab. Authorized access only.",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.2",
+          "name": "sdDomainName",
+          "description": "DNS domain name.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 0,
+          "maxLength": 128,
+          "currentValue": "lab.test.local",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.3",
+          "name": "sdDnsServerPrimary",
+          "description": "Primary DNS server.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "ip",
+          "baseType": "IpAddress",
+          "currentValue": "8.8.8.8",
+          "currentValueType": "IpAddress",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.4",
+          "name": "sdDnsServerSecondary",
+          "description": "Secondary DNS server.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "ip",
+          "baseType": "IpAddress",
+          "currentValue": "8.8.4.4",
+          "currentValueType": "IpAddress",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.5",
+          "name": "sdNtpServer",
+          "description": "NTP server address.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "ip",
+          "baseType": "IpAddress",
+          "currentValue": "216.239.35.0",
+          "currentValueType": "IpAddress",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.6",
+          "name": "sdTimezone",
+          "description": "Timezone string (e.g. UTC\u002B2, America/New_York).",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "minLength": 1,
+          "maxLength": 32,
+          "defaultValue": "\u0022UTC\u0022",
+          "currentValue": "Asia/Jerusalem",
+          "currentValueType": "OctetString",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.7",
+          "name": "sdLogLevel",
+          "description": "Syslog severity level.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "defaultValue": "info",
+          "options": [
+            {
+              "label": "emergency",
+              "value": 0
+            },
+            {
+              "label": "alert",
+              "value": 1
+            },
+            {
+              "label": "critical",
+              "value": 2
+            },
+            {
+              "label": "error",
+              "value": 3
+            },
+            {
+              "label": "warning",
+              "value": 4
+            },
+            {
+              "label": "notice",
+              "value": 5
+            },
+            {
+              "label": "info",
+              "value": 6
+            },
+            {
+              "label": "debug",
+              "value": 7
+            }
+          ],
+          "currentValue": "6",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.8",
+          "name": "sdLogDestination",
+          "description": "Where log messages are sent.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "defaultValue": "syslog",
+          "options": [
+            {
+              "label": "console",
+              "value": 1
+            },
+            {
+              "label": "file",
+              "value": 2
+            },
+            {
+              "label": "syslog",
+              "value": 3
+            },
+            {
+              "label": "snmpTrap",
+              "value": 4
+            },
+            {
+              "label": "all",
+              "value": 5
+            }
+          ],
+          "currentValue": "3",
+          "currentValueType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.3.9",
+          "name": "sdSyslogServer",
+          "description": "Remote syslog server IP.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "ip",
+          "baseType": "IpAddress",
+          "currentValue": "10.0.0.50",
+          "currentValueType": "IpAddress",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.4",
+          "name": "sdIfTable",
+          "description": "Network interface table with full detail.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SEQUENCE",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.4.1",
+          "name": "sdIfEntry",
+          "description": "A single network interface entry.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SdIfEntry",
+          "status": "current",
+          "tableIndex": "sdIfIndex"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.5",
+          "name": "sdSensorTable",
+          "description": "Environmental sensor readings.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SEQUENCE",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.5.1",
+          "name": "sdSensorEntry",
+          "description": "A single sensor.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SdSensorEntry",
+          "status": "current",
+          "tableIndex": "sdSensorIndex"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.6",
+          "name": "sdUserTable",
+          "description": "User account management table.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SEQUENCE",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.6.1",
+          "name": "sdUserEntry",
+          "description": "A single user account.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SdUserEntry",
+          "status": "current",
+          "tableIndex": "sdUserIndex"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.7",
+          "name": "sdVlanTable",
+          "description": "VLAN configuration table.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SEQUENCE",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.7.1",
+          "name": "sdVlanEntry",
+          "description": "A single VLAN entry.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SdVlanEntry",
+          "status": "current",
+          "tableIndex": "sdVlanId"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.8",
+          "name": "sdDioTable",
+          "description": "Digital Input/Output control table.\r\n                 Each DIO channel can be configured as input or output\r\n                 with various modes and trigger options.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SEQUENCE",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.99999.8.1",
+          "name": "sdDioEntry",
+          "description": "A single DIO channel.",
+          "access": "not-accessible",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "SdDioEntry",
+          "status": "current",
+          "tableIndex": "sdDioIndex"
+        }
+      ],
+      "tables": [
+        {
+          "name": "sdIfEntry",
+          "oid": "1.3.6.1.4.1.99999.4.1",
+          "description": "A single network interface entry.",
+          "labelColumn": "sdIfName",
+          "rowCount": 8,
+          "columnCount": 20,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.1",
+              "name": "sdIfIndex",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.10",
+              "name": "sdIfIpAddress",
+              "description": "Interface IPv4 address.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.11",
+              "name": "sdIfSubnetMask",
+              "description": "Interface subnet mask.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.12",
+              "name": "sdIfInOctets",
+              "description": "Total bytes received on this interface.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "counter",
+              "baseType": "Counter32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.13",
+              "name": "sdIfOutOctets",
+              "description": "Total bytes transmitted on this interface.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "counter",
+              "baseType": "Counter32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.14",
+              "name": "sdIfInErrors",
+              "description": "Number of inbound errors.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "counter",
+              "baseType": "Counter32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.15",
+              "name": "sdIfOutErrors",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.16",
+              "name": "sdIfInPackets",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.17",
+              "name": "sdIfOutPackets",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.18",
+              "name": "sdIfDuplex",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.19",
+              "name": "sdIfAutoNeg",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.2",
+              "name": "sdIfName",
+              "description": "Short interface name (e.g. eth0, ge0/1).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 64,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.20",
+              "name": "sdIfVlanId",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.3",
+              "name": "sdIfDescr",
+              "description": "User-configurable interface description.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 255,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.4",
+              "name": "sdIfType",
+              "description": "Physical or logical interface type.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ethernet",
+                  "value": 1
+                },
+                {
+                  "label": "fastEthernet",
+                  "value": 2
+                },
+                {
+                  "label": "gigabitEthernet",
+                  "value": 3
+                },
+                {
+                  "label": "tenGigabitEthernet",
+                  "value": 4
+                },
+                {
+                  "label": "wifi",
+                  "value": 5
+                },
+                {
+                  "label": "loopback",
+                  "value": 6
+                },
+                {
+                  "label": "vlan",
+                  "value": 7
+                },
+                {
+                  "label": "tunnel",
+                  "value": 8
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.5",
+              "name": "sdIfSpeed",
+              "description": "Current interface speed.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "gauge",
+              "baseType": "Gauge32",
+              "units": "Mbps",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.6",
+              "name": "sdIfMtu",
+              "description": "Maximum Transmission Unit.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "minValue": 68,
+              "maxValue": 9216,
+              "defaultValue": "1500",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.7",
+              "name": "sdIfAdminStatus",
+              "description": "Desired administrative state.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "up",
+                  "value": 1
+                },
+                {
+                  "label": "down",
+                  "value": 2
+                },
+                {
+                  "label": "testing",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.8",
+              "name": "sdIfOperStatus",
+              "description": "Current operational state.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "up",
+                  "value": 1
+                },
+                {
+                  "label": "down",
+                  "value": 2
+                },
+                {
+                  "label": "testing",
+                  "value": 3
+                },
+                {
+                  "label": "unknown",
+                  "value": 4
+                },
+                {
+                  "label": "dormant",
+                  "value": 5
+                },
+                {
+                  "label": "notPresent",
+                  "value": 6
+                },
+                {
+                  "label": "lowerLayerDown",
+                  "value": 7
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.4.1.9",
+              "name": "sdIfMacAddress",
+              "description": "Interface hardware MAC address.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "MacAddress",
+              "displayHint": "1x:1x:1x:1x:1x:1x",
+              "status": "current"
+            }
+          ],
+          "rows": [
+            {
+              "index": "1",
+              "label": "ge0/0",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "10.0.0.100",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "23618632",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "393924078",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "17",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "11",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "295232",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "4924050",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "ge0/0",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "WAN Uplink",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "gigabitEthernet"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "1000",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "1500",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:01:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "2",
+              "label": "ge0/1",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "192.168.1.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "233602808",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "254973922",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "48",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "9",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "2920035",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "3187174",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "ge0/1",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "10",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "LAN Core",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "gigabitEthernet"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "1000",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "9000",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:02:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "3",
+              "label": "ge0/2",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "3",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "192.168.10.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "283501040",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "382364590",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "40",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "8",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "3543763",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "4779557",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "ge0/2",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "20",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "Server Farm",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "gigabitEthernet"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "1000",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "9000",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:03:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "4",
+              "label": "fe0/0",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "4",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "172.16.0.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "261862372",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "73021320",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "2",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "5",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "3273279",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "912766",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "fe0/0",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "99",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "Management",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "fastEthernet"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "100",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "1500",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:04:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "5",
+              "label": "te0/0",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "10.10.10.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.252",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "58583110",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "338380164",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "44",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "732288",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "4229752",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "te0/0",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "30",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "10G Storage Link",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "4",
+                  "type": "Integer32",
+                  "enumLabel": "tenGigabitEthernet"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "10000",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "9216",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:05:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "6",
+              "label": "wlan0",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "6",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "0.0.0.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "0.0.0.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "304252422",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "324786406",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "42",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "8",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "3803155",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "4059830",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "3",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "wlan0",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "WiFi 2.4GHz",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "5",
+                  "type": "Integer32",
+                  "enumLabel": "wifi"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "300",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "1500",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:06:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "7",
+              "label": "lo0",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "7",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "127.0.0.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.0.0.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "217654482",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "208883806",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "24",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "1",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "2720681",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "2611047",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "lo0",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "Loopback",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "6",
+                  "type": "Integer32",
+                  "enumLabel": "loopback"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "0",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "65535",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "up"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:07:01",
+                  "type": "OctetString"
+                }
+              }
+            },
+            {
+              "index": "8",
+              "label": "vlan100",
+              "values": {
+                "1.3.6.1.4.1.99999.4.1.1": {
+                  "value": "8",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.10": {
+                  "value": "10.100.0.1",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.11": {
+                  "value": "255.255.255.0",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.4.1.12": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.13": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.14": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.15": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.16": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.17": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.4.1.18": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.19": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.2": {
+                  "value": "vlan100",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.20": {
+                  "value": "100",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.3": {
+                  "value": "VLAN 100 - Guest",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.4.1.4": {
+                  "value": "7",
+                  "type": "Integer32",
+                  "enumLabel": "vlan"
+                },
+                "1.3.6.1.4.1.99999.4.1.5": {
+                  "value": "1000",
+                  "type": "Gauge32"
+                },
+                "1.3.6.1.4.1.99999.4.1.6": {
+                  "value": "1500",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.4.1.7": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "down"
+                },
+                "1.3.6.1.4.1.99999.4.1.8": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "down"
+                },
+                "1.3.6.1.4.1.99999.4.1.9": {
+                  "value": "AA:BB:CC:DD:08:01",
+                  "type": "OctetString"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "sdSensorEntry",
+          "oid": "1.3.6.1.4.1.99999.5.1",
+          "description": "A single sensor.",
+          "labelColumn": "sdSensorName",
+          "rowCount": 8,
+          "columnCount": 8,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.1",
+              "name": "sdSensorIndex",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.2",
+              "name": "sdSensorName",
+              "description": "Human-readable sensor name.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 64,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.3",
+              "name": "sdSensorType",
+              "description": "Type of sensor.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "temperature",
+                  "value": 1
+                },
+                {
+                  "label": "humidity",
+                  "value": 2
+                },
+                {
+                  "label": "voltage",
+                  "value": 3
+                },
+                {
+                  "label": "fanSpeed",
+                  "value": 4
+                },
+                {
+                  "label": "power",
+                  "value": 5
+                },
+                {
+                  "label": "current",
+                  "value": 6
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.4",
+              "name": "sdSensorValue",
+              "description": "Current sensor reading (units depend on sensor type).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.5",
+              "name": "sdSensorUnits",
+              "description": "Display units for this sensor (C, %, V, RPM, W, A).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 16,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.6",
+              "name": "sdSensorStatus",
+              "description": "Sensor health status.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "normal",
+                  "value": 1
+                },
+                {
+                  "label": "warning",
+                  "value": 2
+                },
+                {
+                  "label": "critical",
+                  "value": 3
+                },
+                {
+                  "label": "unknown",
+                  "value": 4
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.7",
+              "name": "sdSensorThresholdLow",
+              "description": "Lower threshold. Alarm triggers if value goes below.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.5.1.8",
+              "name": "sdSensorThresholdHigh",
+              "description": "Upper threshold. Alarm triggers if value goes above.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": [
+            {
+              "index": "1",
+              "label": "CPU Temperature",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "CPU Temperature",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "temperature"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "42",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "\u00B0C",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "85",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "2",
+              "label": "Inlet Temperature",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "Inlet Temperature",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "temperature"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "28",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "\u00B0C",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "45",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "3",
+              "label": "Exhaust Temperature",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "3",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "Exhaust Temperature",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "temperature"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "38",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "\u00B0C",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "warning"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "40",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "4",
+              "label": "Humidity",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "4",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "Humidity",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "humidity"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "55",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "%RH",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "20",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "80",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "5",
+              "label": "PSU Voltage",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "PSU Voltage",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "voltage"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "12",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "V",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "11",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "13",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "6",
+              "label": "Fan 1 Speed",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "6",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "Fan 1 Speed",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "4",
+                  "type": "Integer32",
+                  "enumLabel": "fanSpeed"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "4200",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "RPM",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "2000",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "6000",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "7",
+              "label": "Fan 2 Speed",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "7",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "Fan 2 Speed",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "4",
+                  "type": "Integer32",
+                  "enumLabel": "fanSpeed"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "4150",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "RPM",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "2000",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "6000",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "8",
+              "label": "PSU Power",
+              "values": {
+                "1.3.6.1.4.1.99999.5.1.1": {
+                  "value": "8",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.2": {
+                  "value": "PSU Power",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.3": {
+                  "value": "5",
+                  "type": "Integer32",
+                  "enumLabel": "power"
+                },
+                "1.3.6.1.4.1.99999.5.1.4": {
+                  "value": "185",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.5": {
+                  "value": "W",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.5.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.5.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.5.1.8": {
+                  "value": "500",
+                  "type": "Integer32"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "sdUserEntry",
+          "oid": "1.3.6.1.4.1.99999.6.1",
+          "description": "A single user account.",
+          "labelColumn": "sdUserName",
+          "rowCount": 5,
+          "columnCount": 7,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.1",
+              "name": "sdUserIndex",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.2",
+              "name": "sdUserName",
+              "description": "Username for authentication.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 32,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.3",
+              "name": "sdUserRole",
+              "description": "User role / privilege level.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "viewer",
+              "options": [
+                {
+                  "label": "admin",
+                  "value": 1
+                },
+                {
+                  "label": "operator",
+                  "value": 2
+                },
+                {
+                  "label": "viewer",
+                  "value": 3
+                },
+                {
+                  "label": "guest",
+                  "value": 4
+                },
+                {
+                  "label": "auditor",
+                  "value": 5
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.4",
+              "name": "sdUserEnabled",
+              "description": "Whether this user account is active.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "TruthValue",
+              "defaultValue": "true",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.5",
+              "name": "sdUserLoginCount",
+              "description": "Total number of successful logins.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "counter",
+              "baseType": "Counter32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.6",
+              "name": "sdUserLastLoginIp",
+              "description": "IP address of the last successful login.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.6.1.7",
+              "name": "sdUserRowStatus",
+              "description": "Row status for creating/deleting user entries.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "RowStatus",
+              "status": "current"
+            }
+          ],
+          "rows": [
+            {
+              "index": "1",
+              "label": "admin",
+              "values": {
+                "1.3.6.1.4.1.99999.6.1.1": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.2": {
+                  "value": "admin",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.6.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "admin"
+                },
+                "1.3.6.1.4.1.99999.6.1.4": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.5": {
+                  "value": "523",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.6.1.6": {
+                  "value": "10.0.0.5",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.6.1.7": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "2",
+              "label": "operator1",
+              "values": {
+                "1.3.6.1.4.1.99999.6.1.1": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.2": {
+                  "value": "operator1",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.6.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "operator"
+                },
+                "1.3.6.1.4.1.99999.6.1.4": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.5": {
+                  "value": "187",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.6.1.6": {
+                  "value": "10.0.0.12",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.6.1.7": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "3",
+              "label": "viewer",
+              "values": {
+                "1.3.6.1.4.1.99999.6.1.1": {
+                  "value": "3",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.2": {
+                  "value": "viewer",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.6.1.3": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "viewer"
+                },
+                "1.3.6.1.4.1.99999.6.1.4": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.5": {
+                  "value": "45",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.6.1.6": {
+                  "value": "192.168.1.100",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.6.1.7": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "4",
+              "label": "guest",
+              "values": {
+                "1.3.6.1.4.1.99999.6.1.1": {
+                  "value": "4",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.2": {
+                  "value": "guest",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.6.1.3": {
+                  "value": "4",
+                  "type": "Integer32",
+                  "enumLabel": "guest"
+                },
+                "1.3.6.1.4.1.99999.6.1.4": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.5": {
+                  "value": "3",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.6.1.6": {
+                  "value": "192.168.1.200",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.6.1.7": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "5",
+              "label": "auditor",
+              "values": {
+                "1.3.6.1.4.1.99999.6.1.1": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.2": {
+                  "value": "auditor",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.6.1.3": {
+                  "value": "5",
+                  "type": "Integer32",
+                  "enumLabel": "auditor"
+                },
+                "1.3.6.1.4.1.99999.6.1.4": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.6.1.5": {
+                  "value": "12",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.6.1.6": {
+                  "value": "172.16.0.50",
+                  "type": "IpAddress"
+                },
+                "1.3.6.1.4.1.99999.6.1.7": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "sdVlanEntry",
+          "oid": "1.3.6.1.4.1.99999.7.1",
+          "description": "A single VLAN entry.",
+          "labelColumn": "sdVlanName",
+          "rowCount": 6,
+          "columnCount": 6,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.1",
+              "name": "sdVlanId",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.2",
+              "name": "sdVlanName",
+              "description": "VLAN name.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 32,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.3",
+              "name": "sdVlanStatus",
+              "description": "VLAN operational status.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "active",
+              "options": [
+                {
+                  "label": "active",
+                  "value": 1
+                },
+                {
+                  "label": "suspended",
+                  "value": 2
+                },
+                {
+                  "label": "shutdown",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.4",
+              "name": "sdVlanMemberPorts",
+              "description": "Comma-separated list of untagged member port indices.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 255,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.5",
+              "name": "sdVlanTaggedPorts",
+              "description": "Comma-separated list of tagged (trunk) port indices.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 255,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.7.1.6",
+              "name": "sdVlanRowStatus",
+              "description": "Row status for creating/deleting VLANs.",
+              "access": "read-create",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "RowStatus",
+              "status": "current"
+            }
+          ],
+          "rows": [
+            {
+              "index": "1",
+              "label": "Default",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "Default",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "active"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "1,4,6",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "10",
+              "label": "LAN-Core",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "10",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "LAN-Core",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "active"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "2",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "5",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "20",
+              "label": "ServerFarm",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "20",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "ServerFarm",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "active"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "3",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "5",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "30",
+              "label": "Storage",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "30",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "Storage",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "active"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "5",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "99",
+              "label": "Management",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "99",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "Management",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "active"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "4",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "100",
+              "label": "Guest-WiFi",
+              "values": {
+                "1.3.6.1.4.1.99999.7.1.1": {
+                  "value": "100",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.7.1.2": {
+                  "value": "Guest-WiFi",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "suspended"
+                },
+                "1.3.6.1.4.1.99999.7.1.4": {
+                  "value": "",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.5": {
+                  "value": "2,3",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.7.1.6": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "sdDioEntry",
+          "oid": "1.3.6.1.4.1.99999.8.1",
+          "description": "A single DIO channel.",
+          "labelColumn": "sdDioName",
+          "rowCount": 8,
+          "columnCount": 12,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.1",
+              "name": "sdDioIndex",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.10",
+              "name": "sdDioAlarmEnabled",
+              "description": "Whether trigger events generate an SNMP trap.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "TruthValue",
+              "defaultValue": "false",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.11",
+              "name": "sdDioCounter",
+              "description": "Number of trigger events counted.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "counter",
+              "baseType": "Counter32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.12",
+              "name": "sdDioLastChange",
+              "description": "Timestamp of last state change.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "timeticks",
+              "baseType": "TimeTicks",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.2",
+              "name": "sdDioName",
+              "description": "User-assigned channel name.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 1,
+              "maxLength": 32,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.3",
+              "name": "sdDioDirection",
+              "description": "Channel direction / mode.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "input",
+              "options": [
+                {
+                  "label": "input",
+                  "value": 1
+                },
+                {
+                  "label": "output",
+                  "value": 2
+                },
+                {
+                  "label": "bidirectional",
+                  "value": 3
+                },
+                {
+                  "label": "disabled",
+                  "value": 4
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.4",
+              "name": "sdDioState",
+              "description": "Current logical state (read for input, write for output).",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "low",
+                  "value": 0
+                },
+                {
+                  "label": "high",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.5",
+              "name": "sdDioMode",
+              "description": "Operating mode of the channel.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "normal",
+              "options": [
+                {
+                  "label": "normal",
+                  "value": 1
+                },
+                {
+                  "label": "pwm",
+                  "value": 2
+                },
+                {
+                  "label": "oneShot",
+                  "value": 3
+                },
+                {
+                  "label": "toggle",
+                  "value": 4
+                },
+                {
+                  "label": "counter",
+                  "value": 5
+                },
+                {
+                  "label": "frequency",
+                  "value": 6
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.6",
+              "name": "sdDioTrigger",
+              "description": "Event trigger configuration.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "none",
+              "options": [
+                {
+                  "label": "none",
+                  "value": 0
+                },
+                {
+                  "label": "risingEdge",
+                  "value": 1
+                },
+                {
+                  "label": "fallingEdge",
+                  "value": 2
+                },
+                {
+                  "label": "bothEdges",
+                  "value": 3
+                },
+                {
+                  "label": "levelHigh",
+                  "value": 4
+                },
+                {
+                  "label": "levelLow",
+                  "value": 5
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.7",
+              "name": "sdDioPulseWidth",
+              "description": "Pulse width for oneShot/PWM modes.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "units": "milliseconds",
+              "minValue": 0,
+              "maxValue": 60000,
+              "defaultValue": "100",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.8",
+              "name": "sdDioPullResistor",
+              "description": "Internal pull resistor configuration.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "defaultValue": "none",
+              "options": [
+                {
+                  "label": "none",
+                  "value": 0
+                },
+                {
+                  "label": "pullUp",
+                  "value": 1
+                },
+                {
+                  "label": "pullDown",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.99999.8.1.9",
+              "name": "sdDioInverted",
+              "description": "Whether the logical state is inverted.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "TruthValue",
+              "defaultValue": "false",
+              "status": "current"
+            }
+          ],
+          "rows": [
+            {
+              "index": "1",
+              "label": "Door Sensor",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "47",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "123456",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Door Sensor",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "input"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "high"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "bothEdges"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "pullUp"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "2",
+              "label": "Motion Detector",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "312",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "234567",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Motion Detector",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "input"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "low"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "risingEdge"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "pullUp"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "3",
+              "label": "Window Contact",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "3",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "1",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "5",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "345678",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Window Contact",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "input"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "high"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "bothEdges"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "pullDown"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "4",
+              "label": "Alarm Relay",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "4",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "456789",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Alarm Relay",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "output"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "low"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "normal"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "5",
+              "label": "LED Indicator",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "5",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "567890",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "LED Indicator",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "output"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "high"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "pwm"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "500",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "6",
+              "label": "Buzzer",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "6",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "0",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "678901",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Buzzer",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "2",
+                  "type": "Integer32",
+                  "enumLabel": "output"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "low"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "oneShot"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "200",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "7",
+              "label": "Counter Input",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "7",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "98765",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "789012",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Counter Input",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "input"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "low"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "5",
+                  "type": "Integer32",
+                  "enumLabel": "counter"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "risingEdge"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "pullUp"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "1",
+                  "type": "Integer32"
+                }
+              }
+            },
+            {
+              "index": "8",
+              "label": "Freq Analyzer",
+              "values": {
+                "1.3.6.1.4.1.99999.8.1.1": {
+                  "value": "8",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.10": {
+                  "value": "2",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.11": {
+                  "value": "543210",
+                  "type": "Counter32"
+                },
+                "1.3.6.1.4.1.99999.8.1.12": {
+                  "value": "890123",
+                  "type": "TimeTicks"
+                },
+                "1.3.6.1.4.1.99999.8.1.2": {
+                  "value": "Freq Analyzer",
+                  "type": "OctetString"
+                },
+                "1.3.6.1.4.1.99999.8.1.3": {
+                  "value": "1",
+                  "type": "Integer32",
+                  "enumLabel": "input"
+                },
+                "1.3.6.1.4.1.99999.8.1.4": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "low"
+                },
+                "1.3.6.1.4.1.99999.8.1.5": {
+                  "value": "6",
+                  "type": "Integer32",
+                  "enumLabel": "frequency"
+                },
+                "1.3.6.1.4.1.99999.8.1.6": {
+                  "value": "3",
+                  "type": "Integer32",
+                  "enumLabel": "bothEdges"
+                },
+                "1.3.6.1.4.1.99999.8.1.7": {
+                  "value": "0",
+                  "type": "Integer32"
+                },
+                "1.3.6.1.4.1.99999.8.1.8": {
+                  "value": "0",
+                  "type": "Integer32",
+                  "enumLabel": "none"
+                },
+                "1.3.6.1.4.1.99999.8.1.9": {
+                  "value": "2",
+                  "type": "Integer32"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

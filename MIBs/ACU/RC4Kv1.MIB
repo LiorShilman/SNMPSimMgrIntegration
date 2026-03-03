@@ -1,0 +1,326 @@
+RC4Kv1-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    enterprises,
+    MODULE-IDENTITY,
+    OBJECT-TYPE,
+    Integer32,
+    Unsigned32
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE,
+    OBJECT-GROUP
+        FROM SNMPv2-CONF;
+
+-- 1.3.6.1.4.1.39446.4000.1
+rc4kMIBv1 MODULE-IDENTITY 
+    LAST-UPDATED "201609260000Z" 
+    ORGANIZATION "Research Concepts, Inc." 
+    CONTACT-INFO "support@researchconcepts.com" 
+    DESCRIPTION 
+        "The MIB module for RC4000 version 1.xx."
+    REVISION "201603010000Z"
+    DESCRIPTION 
+        "The initial version." 
+    ::= { rc4k 1 }
+    
+-- Structure Definition
+
+rci             OBJECT IDENTIFIER ::= { enterprises 39446 }
+rc4k            OBJECT IDENTIFIER ::= { rci 4000 }
+
+-- Textual Conventions
+
+AxisPositionAngleType ::= TEXTUAL-CONVENTION
+   DISPLAY-HINT   "d-2"
+   STATUS         current
+   DESCRIPTION    "Represents an axis angular position in degrees times 100."
+   SYNTAX         Integer32 (-20000..20000)
+
+AxisPositionCountType ::= TEXTUAL-CONVENTION
+   DISPLAY-HINT   "d"
+   STATUS         current
+   DESCRIPTION    "Represents an axis count position."
+   SYNTAX         Unsigned32 (0..64000)
+
+-- Object Definitions
+
+acuConfig       OBJECT IDENTIFIER ::= { rc4kMIBv1 1 }
+uiConfig        OBJECT IDENTIFIER ::= { rc4kMIBv1 2 }
+acuStatus       OBJECT IDENTIFIER ::= { rc4kMIBv1 10 }
+
+acuStatusMode OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    modeManual(0),
+                    modeAuto(1),
+                    modeLocate(5),
+                    modeTrack(6),
+                    modeStore(7),
+                    modeSpecialAxis(10),
+                    modePowerup(11),
+                    modeStow(15),
+                    modeDeploy(16),
+                    modeRecall(17),
+                    modeAutomove(18),
+                    modeDelete(23),
+                    modeFlashSave(24),
+                    modeRemotePosition(27),
+                    modeWindHold(28),
+                    modePeakup(29),
+                    modeShake(30)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is the mode of the ACU."
+    ::= { acuStatus 1 }
+
+acuStatusState OBJECT-TYPE
+    SYNTAX      Unsigned32 (0..255)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is the state within the ACU mode."
+    ::= { acuStatus 2 }
+
+acuStatusAlarm OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    alarmNone(0),
+                    alarmFlashVersionMismatch(1),
+                    alarmFlashDataCorrupt(2),
+                    alarmNvramVersionMismatch(3),
+                    alarmNvramDataCorrupt(4),
+                    alarmLowBattery(5),
+                    alarmTimeDateError(6),
+                    alarmAzimuthJammed(7),
+                    alarmAzimuthRunaway(8),
+                    alarmElevationJammed(9),
+                    alarmElevationRunaway(10),
+                    alarmPolarizationJammed(11),
+                    alarmPolarizationRunaway(12),
+                    alarmLimitsInactive(13),
+                    alarmDriveError(14),
+                    alarmEmergencyStop(15),
+                    alarmHandcrankInterlock(16),
+                    alarmMovementInterlock(17),
+                    alarmLocalJogConnected(18)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The system alarm, or (0) if no alarm active."
+    ::= { acuStatus 7 }
+
+acuStatusLocateState OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    locateOff(0),
+                    locateDone(1),
+                    locateLocked(2)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The locate active state."
+    ::= { acuStatus 8 }
+
+acuStatusAxisTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ACUStatusAxisEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "This table contains status items for each axis."
+    ::= { acuStatus 70 }
+
+acuStatusAxisEntry OBJECT-TYPE
+    SYNTAX      ACUStatusAxisEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "This entry contains status items for an axis."
+    INDEX { acuStatusAxisIndex }
+    ::= { acuStatusAxisTable 1 }
+
+ACUStatusAxisEntry ::=
+    SEQUENCE {
+        acuStatusAxisIndex  INTEGER,
+        acuStatusAxisAngle  AxisPositionAngleType,
+        acuStatusAxisCount  AxisPositionCountType,
+        acuStatusAxisLimit  INTEGER
+    }
+    
+acuStatusAxisIndex OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    axisAzim(0),
+                    axisElev(1),
+                    axisPol(2)
+                }
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "The axis indexer."
+    ::= { acuStatusAxisEntry 1 }
+
+acuStatusAxisAngle OBJECT-TYPE
+    SYNTAX      AxisPositionAngleType
+    UNITS       "Degrees"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The axis angular position."
+    ::= { acuStatusAxisEntry 2 }
+    
+acuStatusAxisCount OBJECT-TYPE
+    SYNTAX      AxisPositionCountType
+    UNITS       "Counts"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The axis count position."
+    ::= { acuStatusAxisEntry 3 }
+    
+acuStatusAxisLimit OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    limitNone(0),
+                    limitMIN(1),
+                    limitMAX(2),
+                    limitSTOW(3),
+                    limitmin(4),
+                    limitmax(5),
+                    limitstow(6)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The axis limit state."
+    ::= { acuStatusAxisEntry 4 }
+
+acuStatusFeedIndex OBJECT-TYPE
+    SYNTAX      Unsigned32 (0..7)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The index of the connected feed."
+    ::= { acuStatus 80 }
+
+acuStatusHPA OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    hpaDisable(0),
+                    hpaMuted(1),
+                    hpaEnable(2)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The HPA status."
+    ::= { acuStatus 89 }
+    
+acuStatusSignalSource OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    sourceNone(0),
+                    sourceRec1(1),
+                    sourceRec2(2),
+                    sourceRec3(3),
+                    sourceRec4(4),
+                    sourceLBand(5),
+                    sourceDVB(6),
+                    sourceModem(7)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The selected signal source."
+    ::= { acuStatus 90 }
+
+acuStatusSignalTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ACUStatusSignalEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "This table contains status items for each signal source."
+    ::= { acuStatus 91 }
+
+acuStatusSignalEntry OBJECT-TYPE
+    SYNTAX      ACUStatusSignalEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "This entry contains status items for a signal source."
+    INDEX { acuStatusSignalIndex }
+    ::= { acuStatusSignalTable 1 }
+
+ACUStatusSignalEntry ::=
+    SEQUENCE {
+        acuStatusSignalIndex    INTEGER,
+        acuStatusSignalLevel    Unsigned32,
+        acuStatusSignalLock     INTEGER
+    }
+    
+acuStatusSignalIndex OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    sigReceiver(0),
+                    sigRF(1)
+                }
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "The signal source indexer."
+    ::= { acuStatusSignalEntry 1 }
+    
+acuStatusSignalLevel OBJECT-TYPE
+    SYNTAX      Unsigned32 (0..4095)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The level of the signal source."
+    ::= { acuStatusSignalEntry 2 }
+    
+acuStatusSignalLock OBJECT-TYPE
+    SYNTAX      INTEGER {
+                    lockOff(0),
+                    lockOn(1),
+                    lockNone(2)
+                }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The lock status of the signal source."
+    ::= { acuStatusSignalEntry 3 }
+
+-- Conformance
+
+rc4kMIBConformance  OBJECT IDENTIFIER ::= { rc4kMIBv1 100 }
+rc4kMIBCompliances  OBJECT IDENTIFIER ::= { rc4kMIBConformance 1 }
+rc4kMIBGroups       OBJECT IDENTIFIER ::= { rc4kMIBConformance 2 }
+
+rc4kMIBCompliance MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "The compliance statement for entities that implement this MIB."
+    MODULE
+        MANDATORY-GROUPS {
+            rc4kMIBGroup
+        }
+    ::= { rc4kMIBCompliances 1 }
+
+rc4kMIBGroup OBJECT-GROUP
+    OBJECTS {
+        acuStatusMode,
+        acuStatusState,
+        acuStatusAlarm,
+        acuStatusLocateState,
+        acuStatusAxisAngle,
+        acuStatusAxisCount,
+        acuStatusAxisLimit,
+        acuStatusFeedIndex,
+        acuStatusHPA,
+        acuStatusSignalSource,
+        acuStatusSignalLevel,
+        acuStatusSignalLock
+    }
+    STATUS  current
+    DESCRIPTION
+        "A collection of objects providing basic instrumentation and control."
+    ::= { rc4kMIBGroups 1 }
+
+END

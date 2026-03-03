@@ -1,0 +1,314 @@
+{
+  "deviceName": "BUC",
+  "deviceIp": "60.60.60.40",
+  "devicePort": 161,
+  "community": "public",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-03-02T14:46:58.0539386Z",
+  "totalFields": 27,
+  "modules": [
+    {
+      "moduleName": "MMI-ODU-MIB",
+      "scalarCount": 27,
+      "tableCount": 0,
+      "scalars": [
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.1",
+          "name": "mmiODUStatusWord",
+          "description": "Read-only Two-byte status word",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u002200\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.10",
+          "name": "mmiODUSWTxEnable",
+          "description": "Set or return the software Tx enable status.  0x00 inactive; 0x01 active.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.11",
+          "name": "mmiODUSWRxEnable",
+          "description": "Set or return the software Rx enable status.  0x00 inactive; 0x01 active.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.12",
+          "name": "mmiODUTxStepAtten",
+          "description": "Integer to get or set the value of the Tx step attenuator.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.13",
+          "name": "mmiODUTxLOFreq",
+          "description": "Integer to get or set the value of the Tx LO frequency in GHz.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.14",
+          "name": "mmiODUTxPower",
+          "description": "Integer to report the output power in dBm",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.15",
+          "name": "mmiODURxStepAtten",
+          "description": "Integer to get or set the value of the Rx step attenuator.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.16",
+          "name": "mmiODURxLOFreq",
+          "description": "Integer to get or set the value of the Rx LO frequency in GHz.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.17",
+          "name": "mmiODURxPower",
+          "description": "Integer to report the Rx input power",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.18",
+          "name": "mmiODUSaveSettings",
+          "description": "Write-only set to save settings",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.19",
+          "name": "mmiODUFactoryReset",
+          "description": "Write-only set to restore factory defaults",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.2",
+          "name": "mmiODUTempComp",
+          "description": "Read-only byte to indicate temp comp is ON (0x01) or OFF (0x00)",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.20",
+          "name": "mmiODUUserTemperature",
+          "description": "Integer to report the value of the system temperature.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.3",
+          "name": "mmiODURedundancyMode",
+          "description": "Sets or reports the redundancy mode.  0x00: redundancy OFF.  0x01: redundancy ON.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.4",
+          "name": "mmiODUGainSetMode",
+          "description": "Read-only object to return whether or not the gain can be set with a step attenuator.\r\n         Step attenuator NOT present: 0x00.  Step attenuator present: 0x01.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.5",
+          "name": "mmiODUFaultPolarity",
+          "description": "Set the fault bit polarity.  0x00, active low; 0x01, active high",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.6",
+          "name": "mmiODUMuteCommandPolarity",
+          "description": "Polarity of the mute command.  0x00: Active low; 0x01, active high",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.7",
+          "name": "mmiODULedEnable",
+          "description": "Enable front panel LED status indicator.  0x00 LED disabled; 0x01 LED enabled",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.8",
+          "name": "mmiODURxRefSource",
+          "description": "Set or return the Rx frequency reference source.  0x00, external source; 0x01, internal source",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.1.9",
+          "name": "mmiODUTxRefSource",
+          "description": "Set or return the Tx frequency reference source.  0x00, external source; 0x01, internal source",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "defaultValue": "0",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.2.1",
+          "name": "mmiODUModelNumber",
+          "description": "This is a read-only object to return the model number of the ODU",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u0022\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.2.2",
+          "name": "mmiODUSerialNumber",
+          "description": "This is a read-only object to return the serial number of the ODU",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u00220000\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.2.3",
+          "name": "mmiODUFirmwareVersion",
+          "description": "This is a read-only object to return the resident firmware version of the ODU",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u00220000\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.2.4",
+          "name": "mmiODUHardwareRevision",
+          "description": "This is a read-only object to return the resident hardware revision of the ODU",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u00220000\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.2.5",
+          "name": "mmiODUBootloaderVersion",
+          "description": "This is a read-only object to return the resident bootloader version of the ODU",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "defaultValue": "\u00220000\u0022",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.3.2.1",
+          "name": "mmiODUFaultStatusString",
+          "description": "Status string reported when a fault occurs",
+          "access": "accessible-for-notify",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.48246.1.3.2.2",
+          "name": "mmiODUFaultName",
+          "description": "Fault description text",
+          "access": "accessible-for-notify",
+          "isWritable": false,
+          "inputType": "text",
+          "baseType": "OCTET STRING",
+          "status": "current"
+        }
+      ],
+      "tables": []
+    }
+  ]
+}

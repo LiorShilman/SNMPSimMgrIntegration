@@ -1,0 +1,98 @@
+<div class="field-row" [class.writable]="field.isWritable" [class.editing]="isEditing">
+  <!-- Type icon + Access badge -->
+  <div class="field-meta">
+    <span class="type-icon" [title]="field.inputType">{{ typeIcon }}</span>
+    <span class="access-badge" [class]="'access-' + accessBadge.toLowerCase()">{{ accessBadge }}</span>
+  </div>
+
+  <!-- Name + Description -->
+  <div class="field-info">
+    <div class="field-name">{{ field.name }}</div>
+    @if (field.description) {
+      <div class="field-desc" [title]="field.description">{{ field.description }}</div>
+    }
+    <div class="field-oid">{{ field.oid }}</div>
+  </div>
+
+  <!-- Value / Edit area -->
+  <div class="field-value-area">
+    @if (!isEditing) {
+      <!-- Display mode -->
+      <div class="field-display" (click)="startEdit()" [class.clickable]="field.isWritable">
+        @if (field.inputType === 'status-led') {
+          <span class="status-led" [attr.data-status]="statusClass">
+            <span class="led-dot"></span>
+            <span class="led-label">{{ displayValue }}</span>
+          </span>
+        } @else {
+          <span class="current-value" [class.no-value]="!field.currentValue">{{ displayValue }}</span>
+          @if (field.currentValueType) {
+            <span class="value-type-tag">{{ field.currentValueType }}</span>
+          }
+        }
+      </div>
+      @if (field.isWritable) {
+        <button class="btn-set" (click)="startEdit()" [disabled]="!canSet"
+                [title]="canSet ? 'Edit & SET value' : 'Not connected'">
+          SET
+        </button>
+      }
+    } @else {
+      <!-- Edit mode -->
+      <div class="edit-area">
+        @switch (field.inputType) {
+          @case ('enum') {
+            <select [(ngModel)]="editValue" class="input-field" [attr.aria-label]="field.name" title="Select value">
+              @for (opt of field.options; track opt.value) {
+                <option [value]="opt.value">{{ opt.label }} ({{ opt.value }})</option>
+              }
+            </select>
+          }
+          @case ('toggle') {
+            <label class="toggle-switch">
+              <input type="checkbox" title="Toggle" aria-label="Toggle"
+                     [attr.title]="field.name" [attr.aria-label]="field.name"
+                     [checked]="editValue === toggleOnValue"
+                     (change)="editValue = $any($event.target).checked ? toggleOnValue : toggleOffValue">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">{{ editValue === toggleOnValue ? toggleOnLabel : toggleOffLabel }}</span>
+            </label>
+          }
+          @case ('number') {
+            <input type="number" [(ngModel)]="editValue"
+                   [min]="field.minValue ?? ''"
+                   [max]="field.maxValue ?? ''"
+                   class="input-field" placeholder="Enter number"
+                   title="Number" aria-label="Number"
+                   [attr.title]="field.name" [attr.aria-label]="field.name">
+          }
+          @case ('ip') {
+            <input type="text" [(ngModel)]="editValue"
+                   class="input-field" placeholder="0.0.0.0"
+                   title="IP address" aria-label="IP address"
+                   [attr.title]="field.name" [attr.aria-label]="field.name"
+                   pattern="\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}">
+          }
+          @default {
+            <input type="text" [(ngModel)]="editValue"
+                   class="input-field"
+                   title="Value" aria-label="Value" placeholder="Enter value"
+                   [attr.title]="field.name" [attr.aria-label]="field.name"
+                   [maxlength]="field.maxLength ?? 255"
+                   [placeholder]="field.defaultValue || 'Enter value'">
+          }
+        }
+        <div class="edit-actions">
+          <button class="btn-send" (click)="sendSet()" [disabled]="!canSet">⬆ SET</button>
+          <button class="btn-cancel" (click)="cancelEdit()">✕</button>
+        </div>
+      </div>
+      @if (field.minValue != null || field.maxValue != null) {
+        <div class="constraint-hint">
+          Range: {{ field.minValue ?? '∞' }} – {{ field.maxValue ?? '∞' }}
+          @if (field.units) { {{ field.units }} }
+        </div>
+      }
+    }
+  </div>
+</div>

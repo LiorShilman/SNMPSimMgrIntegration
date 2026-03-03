@@ -1,0 +1,123 @@
+.system-info-card {
+  position: relative;
+  background: linear-gradient(135deg, #141824 0%, #1a2035 50%, #141824 100%);
+  border: 1px solid #252d42;
+  border-radius: 16px;
+  padding: 20px 24px 24px;
+  overflow: hidden;
+}
+
+.system-info-glow {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 120px;
+  background: radial-gradient(ellipse, rgba(108, 159, 255, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.system-info-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #252d42;
+  color: #5A6888;
+
+  svg {
+    opacity: 0.6;
+  }
+}
+
+.system-info-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #5A6888;
+}
+
+.info-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.column-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #4A5568;
+  margin-bottom: 4px;
+}
+
+.column-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  &.identity { background: #A78BFA; box-shadow: 0 0 6px rgba(167, 139, 250, 0.4); }
+  &.system   { background: #57D9A3; box-shadow: 0 0 6px rgba(87, 217, 163, 0.4); }
+  &.network  { background: #6C9FFF; box-shadow: 0 0 6px rgba(108, 159, 255, 0.4); }
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.info-label {
+  font-size: 11px;
+  color: #5A6888;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #CDD1D8;
+  font-family: 'Consolas', monospace;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+
+  &.uptime {
+    color: #57D9A3;
+  }
+
+  &.ip-value {
+    color: #79B8FF;
+  }
+}
+
+@media (max-width: 600px) {
+  .info-columns {
+    grid-template-columns: 1fr;
+  }
+}

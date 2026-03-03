@@ -1,0 +1,132 @@
+.device-card {
+  position: relative;
+  background: linear-gradient(135deg, #1a2035 0%, #1e2740 50%, #1a2035 100%);
+  border: 1px solid #2a3555;
+  border-radius: 16px;
+  padding: 24px 28px 20px;
+  overflow: hidden;
+}
+
+.card-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(76, 154, 255, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+// ── Identity Row ──
+.card-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.device-avatar {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(76, 154, 255, 0.15), rgba(123, 97, 255, 0.1));
+  color: #6C9FFF;
+  flex-shrink: 0;
+}
+
+.identity-text {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #F0F2F5;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.device-model {
+  font-size: 13px;
+  color: #FFB347;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.uptime-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(87, 217, 163, 0.08);
+  border: 1px solid rgba(87, 217, 163, 0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.uptime-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #57D9A3;
+  box-shadow: 0 0 8px rgba(87, 217, 163, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.uptime-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: #57D9A3;
+  font-family: 'Consolas', monospace;
+}
+
+// ── Info Pills ──
+.info-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 5px 12px;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+
+  &:hover { border-color: rgba(255, 255, 255, 0.12); }
+}
+
+.pill-highlight {
+  background: rgba(76, 154, 255, 0.08);
+  border-color: rgba(76, 154, 255, 0.2);
+
+  .pill-val { color: #79B8FF; font-weight: 600; }
+}
+
+.pill-icon {
+  font-size: 12px;
+  color: #5A6888;
+}
+
+.pill-val {
+  font-size: 12px;
+  color: #9AA5B8;
+  font-family: 'Consolas', monospace;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (max-width: 600px) {
+  .card-identity { flex-wrap: wrap; }
+  .uptime-pill { width: 100%; justify-content: center; }
+}

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNMPSimMgr Integration - Sequence Diagrams</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 2rem; line-height: 1.6; }
+  h1 { text-align: center; color: #00d4ff; margin-bottom: 0.5rem; font-size: 2rem; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 2rem; font-size: 1rem; }
+  .diagram-section { background: #16213e; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #0f3460; }
+  .diagram-section h2 { color: #e94560; margin-bottom: 0.5rem; font-size: 1.4rem; border-bottom: 2px solid #0f3460; padding-bottom: 0.5rem; }
+  .diagram-section .note { color: #aaa; font-size: 0.9rem; margin-bottom: 1rem; direction: rtl; text-align: right; }
+  .mermaid { direction: ltr; text-align: center; }
+  .mermaid svg { max-width: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0; direction: ltr; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; background: #0f3460; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
+  .legend-color { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+</style>
+</head>
+<body>
+<h1>SNMPSimMgr Integration - Sequence Diagrams</h1>
+<p class="subtitle">WPF + Angular + SNMP Hardware</p>
+<div class="legend">
+  <div class="legend-item"><span class="legend-color" style="background:#4ecdc4"></span> Logic Object (WPF)</div>
+  <div class="legend-item"><span class="legend-color" style="background:#ff6b6b"></span> Hardware (SNMP)</div>
+  <div class="legend-item"><span class="legend-color" style="background:#45b7d1"></span> SignalR Hub</div>
+  <div class="legend-item"><span class="legend-color" style="background:#96ceb4"></span> Angular Panel</div>
+  <div class="legend-item"><span class="legend-color" style="background:#ffd93d"></span> OID Watch</div>
+</div>
+
+<div class="diagram-section">
+  <h2>1. Polling Flow</h2>
+  <div class="note">Logic Object polls hardware via SNMP GET/WALK every X seconds. OidWatchService checks for changes and broadcasts via SignalR.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Logic as Logic Object (WPF)
+    participant HW as Hardware (SNMP Agent)
+    participant Watch as OidWatchService
+    participant Hub as SnmpHub (SignalR)
+    participant Angular as Angular Panel (Browser)
+
+    rect rgb(30, 40, 60)
+    Note over Logic,HW: Timer tick - every X seconds
+    Logic->>HW: SNMP GET/WALK (V2c or V3)
+    HW-->>Logic: SNMP Response (OID to Value pairs)
+    Logic->>Logic: Update internal model
+    end
+
+    rect rgb(40, 50, 70)
+    Note over Logic,Watch: Check OID watches
+    Logic->>Watch: NotifyOidChanged(deviceId, oid, newValue)
+    Watch->>Watch: Compare with previous value
+    alt Value changed and watch registered
+        Watch->>Hub: BroadcastOidChanged(deviceId, oid, value)
+        Hub->>Angular: onOidChanged(deviceId, oid, value)
+        Angular->>Angular: Update field in panel UI
+    else No change or no watch
+        Watch-->>Logic: (no action)
+    end
+    end
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>2. SET Flow</h2>
+  <div class="note">User changes value in Angular panel. SignalR sends to WPF Hub which performs SNMP SET to hardware and returns result.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Angular as Angular Panel (Browser)
+    participant Hub as SnmpHub (SignalR)
+    participant Store as DeviceProfileStore
+    participant HW as Hardware (SNMP Agent)
+    participant Watch as OidWatchService
+
+    Angular->>Hub: sendSet(deviceName, oid, value, type)
+    Hub->>Store: LoadProfilesAsync()
+    Store-->>Hub: List of DeviceProfile
+    Hub->>Hub: Find device by name and active simulator
+
+    rect rgb(50, 30, 30)
+    Note over Hub,HW: SNMP SET to hardware
+    Hub->>HW: SNMP SET (oid, value, type) to device IP:161
+    HW-->>Hub: SNMP Response (success/error)
+    end
+
+    alt SET succeeded
+        Hub->>Store: LoadWalkDataAsync(device)
+        Hub->>Hub: Update walk record with new value
+        Hub->>Store: SaveWalkDataAsync(device, records)
+        Hub-->>Angular: setResult success true
+        Hub->>Watch: NotifyOidChanged(deviceId, oid, value)
+        Watch->>Hub: BroadcastOidChanged (if watched)
+        Hub->>Angular: onOidChanged(deviceId, oid, value)
+    else SET failed
+        Hub-->>Angular: setResult success false with error
+    end
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>3. Bulk SET Flow</h2>
+  <div class="note">Angular sends multiple SET operations at once. Hub performs SNMP SET for each OID sequentially and returns summary.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Angular as Angular Panel
+    participant Hub as SnmpHub
+    participant HW as Hardware
+
+    Angular->>Hub: sendBulkSet(deviceName, items list)
+
+    loop For each OID in bulk list
+        Hub->>HW: SNMP SET (oid, value, type)
+        HW-->>Hub: Response
+        Hub->>Hub: Track success/failure
+    end
+
+    Hub-->>Angular: bulkSetResult with results array
+    Hub->>Angular: onOidChanged (for each changed OID)
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>4. Schema Loading</h2>
+  <div class="note">When user selects a device in the panel, Angular requests schema from Hub. Hub builds schema from MIB files + walk data.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Angular as Angular Panel
+    participant Hub as SnmpHub
+    participant Store as DeviceProfileStore
+    participant Parser as MibParserService
+    participant Export as MibPanelExportService
+    participant Cache as Schema Cache
+
+    Angular->>Hub: requestSchema(deviceName)
+    Hub->>Cache: Check cached schema
+
+    alt Schema in cache
+        Cache-->>Hub: Cached MibPanelSchema
+        Hub-->>Angular: schema(MibPanelSchema)
+    else Not cached
+        Hub->>Store: LoadProfilesAsync()
+        Store-->>Hub: DeviceProfile with MibFilePaths
+        Hub->>Store: LoadWalkDataAsync(device)
+        Store-->>Hub: List of SnmpRecord
+        Hub->>Parser: Parse MIB files
+        Parser-->>Hub: List of MibDefinition
+        Hub->>Export: BuildSchema(device, definitions, walkData)
+        Export-->>Hub: MibPanelSchema
+        Hub->>Cache: Store schema
+        Hub-->>Angular: schema(MibPanelSchema)
+    end
+
+    Angular->>Angular: Render panel fields with current values
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>5. OID Watch - Server Automation</h2>
+  <div class="note">Register watches on specific OIDs (exact) or subtrees (prefix). When values change, OidWatchService triggers callbacks and SignalR broadcast.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Logic as Logic Object
+    participant Watch as OidWatchService
+    participant Hub as SnmpHub
+    participant Angular as Angular Panel
+
+    rect rgb(60, 50, 20)
+    Note over Logic,Watch: Registration Phase
+    Logic->>Watch: RegisterWatch(deviceId, oid, callback)
+    Watch->>Watch: Store watch entry with match type
+    end
+
+    rect rgb(30, 50, 40)
+    Note over Logic,Watch: Runtime - on every poll
+    Logic->>Watch: NotifyOidChanged(deviceId, oid, value)
+    Watch->>Watch: Find matching watches (exact OR prefix)
+
+    alt Has matching watches
+        Watch->>Logic: Execute callback(oid, value) for server automation
+        Watch->>Hub: BroadcastOidChanged(deviceId, oid, value)
+        Hub->>Angular: onOidChanged(deviceId, oid, value)
+        Angular->>Angular: Execute subscribed handlers for client automation
+    end
+    end
+
+    rect rgb(40, 30, 50)
+    Note over Angular,Hub: Client-side subscription
+    Angular->>Hub: Connection established
+    Note over Angular: oidWatchService.subscribe(deviceId, oid, handler)
+    Note over Angular: handler runs on every onOidChanged matching oid
+    end
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>6. IDD SET Flow</h2>
+  <div class="note">IDD panel allows setting values by field names (fieldId) instead of direct OID. Hub delegates to SimulatorService which triggers the appropriate Logic.</div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Angular as Angular Panel
+    participant Hub as SnmpHub
+    participant Sim as ISimulatorService
+    participant Logic as Logic Object
+    participant HW as Hardware
+
+    Angular->>Hub: sendIddSet(deviceName, fieldId, value)
+    Hub->>Hub: Find active simulator by device name
+    Hub->>Sim: RaiseIddSet(deviceId, fieldId, value)
+    Sim->>Logic: Handle IDD SET event
+    Logic->>HW: SNMP SET (resolved OID, value)
+    HW-->>Logic: Response
+    Logic->>Logic: Update internal model
+    Note over Hub,Angular: Next poll cycle picks up the change via OidWatch
+  </div>
+</div>
+
+<div class="diagram-section">
+  <h2>7. System Architecture</h2>
+  <div class="note">Overview of all system components and their connections.</div>
+  <div class="mermaid">
+flowchart TB
+    subgraph Hardware[Hardware Layer]
+        direction LR
+        COMB[COMBINER 60.60.60.22]
+        SPLIT[SPLITTER 60.60.60.21]
+        BUC_HW[BUC 60.60.60.40]
+        ACU_HW[ACU 60.60.60.41]
+        PIR[PIRANHA 60.60.60.20]
+        OSA_HW[OSA 60.60.60.42]
+    end
+
+    subgraph WPF[WPF Application .NET 4.7.2]
+        direction TB
+        subgraph Logic[Logic Layer]
+            L1[CombinerLogic]
+            L2[SplitterLogic]
+            L3[BucLogic]
+            L4[AcuLogic]
+            L5[PiranhaLogic]
+            L6[OsaLogic]
+        end
+
+        subgraph Services[Integration Services]
+            DS[DeviceProfileStore IDeviceStore]
+            SIM[SimulatorService ISimulatorService]
+            MW[IntegrationWiring Event Bridge]
+            OW[OidWatchService Server Automation]
+        end
+
+        subgraph SigR[SignalR Hub port 5050]
+            HUB[SnmpHub]
+            MPS[MibParserService]
+            MPE[MibPanelExportService]
+            IDD[IddPanelBuilderService]
+        end
+    end
+
+    subgraph Ang[Angular Panel port 4300]
+        direction TB
+        UI[MIB Panel UI]
+        SRS[SignalR Service]
+        OWS[OID Watch Service Client Automation]
+    end
+
+    Hardware <-->|SNMP V2c/V3 GET SET WALK| Logic
+    Logic -->|NotifyOidChanged| OW
+    OW -->|BroadcastOidChanged| HUB
+    Logic <-->|Events| MW
+    MW <-->|Wire| HUB
+    DS <-->|Load/Save| HUB
+    SIM -->|ActiveSimulators| HUB
+    HUB <-->|SignalR WebSocket| SRS
+    SRS <-->|Events| UI
+    SRS -->|onOidChanged| OWS
+    OWS -->|Subscriptions| UI
+
+    style Hardware fill:#2d1f1f,stroke:#ff6b6b,color:#ff6b6b
+    style WPF fill:#1a2a3a,stroke:#4ecdc4,color:#4ecdc4
+    style Ang fill:#1a3a2a,stroke:#96ceb4,color:#96ceb4
+    style SigR fill:#1a2a4a,stroke:#45b7d1,color:#45b7d1
+    style Logic fill:#2a2a1a,stroke:#ffd93d,color:#ffd93d
+    style Services fill:#1a2a3a,stroke:#4ecdc4,color:#4ecdc4
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#0f3460',
+      primaryTextColor: '#e0e0e0',
+      primaryBorderColor: '#45b7d1',
+      lineColor: '#45b7d1',
+      secondaryColor: '#16213e',
+      tertiaryColor: '#1a1a2e',
+      noteBkgColor: '#2a2a4a',
+      noteTextColor: '#e0e0e0',
+      noteBorderColor: '#45b7d1',
+      actorBkg: '#0f3460',
+      actorTextColor: '#e0e0e0',
+      actorBorder: '#45b7d1',
+      signalColor: '#45b7d1',
+      signalTextColor: '#e0e0e0',
+      labelBoxBkgColor: '#16213e',
+      labelBoxBorderColor: '#45b7d1',
+      labelTextColor: '#e0e0e0',
+      loopTextColor: '#ffd93d',
+      activationBorderColor: '#4ecdc4',
+      activationBkgColor: '#1a3a3a',
+      sequenceNumberColor: '#ff6b6b'
+    },
+    sequence: { mirrorActors: false, messageMargin: 40 },
+    flowchart: { curve: 'basis', padding: 20 }
+  });
+</script>
+</body>
+</html>

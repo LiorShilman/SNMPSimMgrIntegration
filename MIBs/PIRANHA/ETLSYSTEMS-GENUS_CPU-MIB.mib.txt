@@ -1,0 +1,533 @@
+	-- *****************************************************************
+	-- ETLSYSTEMS-GENUS-CPU-MIB.txt:  ETL Systems Ltd Enterprise
+	--                      Management Information Base for ETL systems
+	--
+	-- January 2020  		Aaron Nottingham
+	--
+	-- Copyright (c) 2020 by ETL Systems Ltd
+	-- All rights reserved.
+	-- 
+	-- *****************************************************************
+
+	ETLSYSTEMS-GENUS-CPU-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	IpAddress,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP
+		FROM SNMPv2-CONF
+	genusCpu
+		FROM ETLSYSTEMS-GENUS-MIB;
+	
+	-- Define generic genus branch
+	
+	cpu0086 MODULE-IDENTITY
+	LAST-UPDATED "202005200000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: +44 1981 259 020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Genus System"
+	REVISION "202005200000Z"
+	DESCRIPTION "Version 1.1 of this MIB module"
+	REVISION "201911060000Z"
+	DESCRIPTION "Version 1.0 of this MIB module"
+		::= { genusCpu 1 }
+	
+	
+	
+	-- **********************************
+	-- *** Settings Table Definitions ***
+	-- **********************************
+	cpuSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF CpuSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"cpu settings table"
+		::= { cpu0086 1 }
+	
+	cpuSettingsEntry OBJECT-TYPE
+		SYNTAX CpuSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in cpu settings table"
+		INDEX { cpuSettingNumber }
+		::= { cpuSettingsTable 1 }
+		
+	CpuSettingsEntry ::=
+		SEQUENCE
+		{
+			cpuSettingNumber Integer32,
+			cpuDiscovery INTEGER,
+			cpuClearSummary INTEGER,
+			cpuReboot INTEGER
+		}
+	
+	cpuIpConfigSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF CpuIpConfigSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"cpu ip config settings table"
+		::= { cpu0086 2 }
+	
+	cpuIpConfigSettingsEntry OBJECT-TYPE
+		SYNTAX CpuIpConfigSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in cpu config settings table"
+		INDEX { cpuIpConfigSettingsNumber }
+		::= { cpuIpConfigSettingsTable 1 }
+	
+	CpuIpConfigSettingsEntry ::=
+		SEQUENCE
+		{
+			cpuIpConfigSettingsNumber Integer32,
+			cpuNetworkDHCP INTEGER,
+			cpuNetworkIpAddress IpAddress,
+			cpuNetworkSubnet IpAddress,
+			cpuNetworkGateway IpAddress,
+			cpuCommitIpConfigSettings INTEGER
+		}
+	
+	cpuDataportSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF CpuDataportSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"cpu dataport settings table"
+		::= {cpu0086 3}
+		
+	cpuDataportSettingsEntry OBJECT-TYPE
+		SYNTAX CpuDataportSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in cpu dataport settings table"
+		INDEX { cpuDataportSettingsNumber }
+		::= { cpuDataportSettingsTable 1 }
+	
+	CpuDataportSettingsEntry ::=
+		SEQUENCE
+		{
+			cpuDataportSettingsNumber Integer32,
+			cpuDataportEnabled INTEGER,
+			cpuDataport Integer32,
+			cpuTimeout Integer32,
+			cpuCommitDataportSettings INTEGER
+		}
+	
+	cpuSettingNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Settings Module number"
+		::= { cpuSettingsEntry 1 }
+		
+	cpuIpConfigSettingsNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Ip Config Settings Module number"
+		::= { cpuIpConfigSettingsEntry 1 }
+		
+	cpuNetworkDHCP OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					disabled (0),
+					enabled (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"dhcp setting"
+		::= { cpuIpConfigSettingsEntry 2 }
+		
+	cpuNetworkIpAddress OBJECT-TYPE
+		SYNTAX IpAddress
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"cpu ip address"
+		::= { cpuIpConfigSettingsEntry 3 }
+		
+		
+	cpuNetworkSubnet OBJECT-TYPE
+		SYNTAX IpAddress
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"cpu subnet mask"
+		::= { cpuIpConfigSettingsEntry 4 }
+		
+	cpuNetworkGateway OBJECT-TYPE
+		SYNTAX IpAddress
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"cpu gateway address"
+		::= { cpuIpConfigSettingsEntry 5 }
+		
+	cpuCommitIpConfigSettings OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					notset (0),
+					set (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"commit all IP config settings"
+		::= { cpuIpConfigSettingsEntry 6 }
+		
+	cpuDataportSettingsNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Dataport Settings Module number"
+		::= { cpuDataportSettingsEntry 1 }
+		
+	cpuDataportEnabled OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					disabled (0),
+					enabled (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Enable/Disable TCP/IP Port"
+		::= { cpuDataportSettingsEntry 2 }
+		
+	cpuDataport OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"cpu dataport"
+		::= { cpuDataportSettingsEntry 3 }
+		
+	cpuTimeout OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"cpu timeout"
+		::= { cpuDataportSettingsEntry 4 }
+		
+	cpuCommitDataportSettings OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					notset (0),
+					set (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"commit all dataport settings"
+		::= { cpuDataportSettingsEntry 5 }
+		
+	cpuDiscovery OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					disabled (0),
+					enabled (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Enable/Disable ETL Discovery"
+		::= { cpuSettingsEntry 2 }
+		
+	cpuClearSummary OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					notset(0),
+					set (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"clear summary alarm"
+		::= { cpuSettingsEntry 3 }
+		
+	cpuReboot OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					notset (0),
+					set (1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"reboot cpu"
+		::= { cpuSettingsEntry 4 }
+	
+		
+	-- ************************************
+	-- *** Monitoring Table Definitions ***
+	-- ************************************
+	cpuMonitoringTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF CpuMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"cpu monitoring table"
+		::= { cpu0086 4 }
+	
+	cpuMonitoringEntry OBJECT-TYPE
+		SYNTAX CpuMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in cpu monitoring table"
+		INDEX { cpuMonitoringNumber }
+		::= { cpuMonitoringTable 1 }
+		
+	CpuMonitoringEntry ::=
+		SEQUENCE
+		{
+			cpuMonitoringNumber Integer32,
+			cpuSummaryStatus DisplayString,
+			cpuTemperatureStatus DisplayString,
+			cpuHumidityStatus DisplayString,
+			cpuTemperature Integer32,
+			cpuHumidity Integer32,
+			cpuOperationHours Integer32
+		}
+		
+	cpuMonitoringNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Monitoring number"
+		::= { cpuMonitoringEntry 1 }
+	
+	cpuSummaryStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu summary status (0 - OK)"
+		::= { cpuMonitoringEntry 2 }
+		
+	cpuTemperatureStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu temperature status (O - OK, H - High, L - Low)"
+		::= { cpuMonitoringEntry 3 }
+		
+	cpuHumidityStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu humidity status (O - OK, H - High, L - Low)"
+		::= { cpuMonitoringEntry 4 }
+		
+	cpuTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu temperature value, displayed in tenths of degrees C"
+		::= { cpuMonitoringEntry 5 }
+		
+	cpuHumidity OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu humidity value"
+		::= { cpuMonitoringEntry 6 }
+		
+	cpuOperationHours OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"cpu hours of operation"
+		::= { cpuMonitoringEntry 7 }
+		
+	-- **************************************************
+	-- *** Start of Trap Settings Table definitions: ***
+	-- **************************************************
+	
+	genusTrapObjects			OBJECT IDENTIFIER ::= { cpu0086 5 } -- Table of trap objects
+
+	trapTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Trap receiver table"
+		::= { genusTrapObjects 1 }
+
+	trapEntry OBJECT-TYPE
+		SYNTAX TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single trap entry (conceptual row) in the Trap receiver table"
+		INDEX { trapReceiverNumber }
+		::= { trapTable 1 }
+
+	TrapEntry ::=
+		SEQUENCE
+		{
+			trapReceiverNumber		Integer32,
+			trapEnabled				INTEGER,
+			trapReceiverIPAddress	IpAddress,
+			trapCommunity			DisplayString
+		}            
+
+	trapReceiverNumber  OBJECT-TYPE
+		SYNTAX Integer32 ( 1 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of trap receiver"
+		::= { trapEntry 1 }
+
+	trapEnabled OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					no(0),
+					yes(1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Indicates if this trap entry is enabled or not."
+		::= { trapEntry 2 }
+
+
+	trapReceiverIPAddress OBJECT-TYPE
+		SYNTAX  IpAddress
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap receiver IP address.
+			Note: A reboot of the system will be needed to apply new trap settings."
+		::= { trapEntry 3 }
+
+	trapCommunity OBJECT-TYPE
+		SYNTAX  DisplayString (SIZE (0..63))
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap community to be used by agent to send trap.
+			Note: A reboot of the system will be needed to apply new trap settings."
+		::= { trapEntry 4 }
+		
+	-- ********************************
+	-- *** Group Object Definitions ***
+	-- ********************************
+	cpuGroupObjects		OBJECT IDENTIFIER ::= { cpu0086 6 }  -- group objects, i.e. objects that are accessible
+	cpuModuleCompliance	OBJECT IDENTIFIER ::= { cpu0086 7 }  -- group objects, i.e. objects that are accessible
+	
+	cpuSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			cpuDiscovery,
+			cpuClearSummary,
+			cpuReboot
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of cpu settings objects used in this MIB"
+	::= { cpuGroupObjects 1 }
+	
+	cpuIpConfigSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			cpuNetworkDHCP,
+			cpuNetworkIpAddress,
+			cpuNetworkSubnet,
+			cpuNetworkGateway,
+			cpuCommitIpConfigSettings
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of cpu ip config settings objects used in this MIB"
+	::= { cpuGroupObjects 2 }
+	
+	cpuDataportSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			cpuDataportEnabled,
+			cpuDataport,
+			cpuTimeout,
+			cpuCommitDataportSettings
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of cpu dataport settings objects used in this MIB"
+	::= { cpuGroupObjects 3 }
+	
+	cpuMonitoringGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			cpuSummaryStatus,
+			cpuTemperatureStatus,
+			cpuHumidityStatus,
+			cpuTemperature,
+			cpuHumidity,
+			cpuOperationHours
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of cpu monitoring objects used in this MIB"
+	::= { cpuGroupObjects 4 }
+	
+	trapObjectGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			trapEnabled,
+			trapReceiverIPAddress,
+			trapCommunity
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of trap objects used in this MIB"
+	::= { cpuGroupObjects 5 }
+	
+	cpu0086-compliance MODULE-COMPLIANCE
+	STATUS current
+	DESCRIPTION
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			cpuSettingsGroupList,
+			cpuIpConfigSettingsGroupList,
+			cpuDataportSettingsGroupList,
+			cpuMonitoringGroupList,
+			trapObjectGroupList
+		}
+	::= { cpuModuleCompliance 1 }	
+		
+END

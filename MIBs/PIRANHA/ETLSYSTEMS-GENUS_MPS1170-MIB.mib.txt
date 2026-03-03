@@ -1,0 +1,289 @@
+	-- *****************************************************************
+	-- ETLSYSTEMS-GENUS_PSU-MIB.txt:  ETL Systems Ltd Enterprise
+	--                      Management Information Base for ETL systems
+	--
+	-- November 2019  		Aaron Nottingham
+	--
+	-- Copyright (c) 2019 by ETL Systems Ltd
+	-- All rights reserved.
+	-- 
+	-- *****************************************************************
+
+	ETLSYSTEMS-GENUS-PSU-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP
+		FROM SNMPv2-CONF
+	genusPsu
+		FROM ETLSYSTEMS-GENUS-MIB;
+	
+	-- Define generic genus branch
+	
+	mps1170 MODULE-IDENTITY
+	LAST-UPDATED "201911060000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: +44 1981 259 020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Genus System"
+	REVISION "201911060000Z"
+	DESCRIPTION "Version 1.0 of this MIB module"
+		::= { genusPsu 1 }
+	
+	
+	-- **********************************
+	-- *** Settings Table Definitions ***
+	-- **********************************
+	psuSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PsuSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"psu settings table"
+		::= { mps1170 1 }
+	
+	psuSettingsEntry OBJECT-TYPE
+		SYNTAX PsuSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in psu settings table"
+		INDEX { psuSettingNumber }
+		::= { psuSettingsTable 1 }
+		
+	PsuSettingsEntry ::=
+		SEQUENCE
+		{
+			psuSettingNumber Integer32,
+			psuMonitoringSet DisplayString
+		}
+		
+	psuSettingNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Settings Module number"
+		::= { psuSettingsEntry 1 }
+		
+	psuMonitoringSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Monitoring setting (S - Set, R - Reset)"
+		::= { psuSettingsEntry 2 }
+		
+	-- ************************************
+	-- *** Monitoring Table Definitions ***
+	-- ************************************
+	psuMonitoringTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PsuMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"psu monitoring table"
+		::= { mps1170 2 }
+	
+	psuMonitoringEntry OBJECT-TYPE
+		SYNTAX PsuMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in psu settings table"
+		INDEX { psuSettingNumber }
+		::= { psuMonitoringTable 1 }
+		
+	PsuMonitoringEntry ::=
+		SEQUENCE
+		{
+			psuMonitoringNumber Integer32,
+			psuSummaryStatus DisplayString,
+			psuVoltageStatus DisplayString,
+			psuCurrentStatus DisplayString,
+			psuVbusStatus DisplayString,
+			psuFanStatus DisplayString,
+			psuTemperatureStatus DisplayString,
+			psuVoltage Integer32,
+			psuCurrent Integer32,
+			psuVbusSense Integer32,
+			psuFanSpeed Integer32,
+			psuTemperature Integer32,
+			psuOperationHours Integer32
+		}
+		
+	psuMonitoringNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Monitoring Module number"
+		::= { psuMonitoringEntry 1 }
+		
+	psuSummaryStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu summary status (O - OK, F - Fault)"
+		::= { psuMonitoringEntry 2 }
+
+	psuVoltageStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu voltage status, (O - OK, H - High, L - Low)"
+		::= { psuMonitoringEntry 3 }	
+
+	psuCurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu current status, (O - OK, H - High, L - Low)"
+		::= { psuMonitoringEntry 4 } 
+		
+	psuVbusStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu vbus status, (O - OK, H - High, L - Low)"
+		::= { psuMonitoringEntry 5 }
+		
+	psuFanStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu fan status, (O - OK, H - High, L - Low)"
+		::= { psuMonitoringEntry 6 }
+		
+	psuTemperatureStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu temperature status, (O - OK, H - High, L - Low)"
+		::= { psuMonitoringEntry 7 }
+		
+	psuVoltage OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu voltage, in tenths of volts"
+		::= { psuMonitoringEntry 8 }
+		
+	psuCurrent OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu current, in mA"
+		::= { psuMonitoringEntry 9 }
+		
+	psuVbusSense OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"vbus sense, in tenths of volts"
+		::= { psuMonitoringEntry 10 }
+		
+	psuFanSpeed OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu fan speed, in PPM"
+		::= { psuMonitoringEntry 11 }
+		
+	psuTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu temperature, in tenths of degrees C"
+		::= { psuMonitoringEntry 12 }
+		
+	psuOperationHours OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"psu hours of operation"
+		::= { psuMonitoringEntry 13 }
+		
+	-- ********************************************************
+	-- Group definitions
+	-- ********************************************************
+		
+	psuGroupObjects				OBJECT IDENTIFIER ::= { mps1170 3 }  -- group objects, i.e. objects that are accessible
+	psuModuleCompliance			OBJECT IDENTIFIER ::= { mps1170 4 }  -- group objects, i.e. objects that are accessible
+	
+	-- **************************************************
+	-- *** Start of Group Table definitions: ***
+	-- **************************************************
+	
+	psuSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			psuMonitoringSet
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of module information objects used in this MIB"
+	::= { psuGroupObjects 1 }
+	
+	psuMonitoringGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			psuMonitoringNumber,
+			psuSummaryStatus,
+			psuVoltageStatus,
+			psuCurrentStatus,
+			psuVbusStatus,
+			psuFanStatus,
+			psuTemperatureStatus,
+			psuVoltage,
+			psuCurrent,
+			psuVbusSense,
+			psuFanSpeed,
+			psuTemperature,
+			psuOperationHours
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of trap objects used in this MIB"
+	::= { psuGroupObjects 2 }
+	
+	mps1170-compliance MODULE-COMPLIANCE
+	STATUS current
+	DESCRIPTION
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			psuSettingsGroupList,
+			psuMonitoringGroupList
+		}
+	::= { psuModuleCompliance 1 }
+	
+END

@@ -1,0 +1,327 @@
+	-- *****************************************************************
+	-- ETLSYSTEMS-GENUS-MIB.txt:  ETL Systems Ltd Enterprise
+	--                      Management Information Base for ETL systems
+	--
+	-- March 2023 - 	David Turner
+	--
+	-- Copyright (c) 2023 by ETL Systems Ltd
+	-- All rights reserved.
+	-- 
+	-- *****************************************************************
+
+	ETLSYSTEMS-GENUS-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	NOTIFICATION-TYPE,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP,
+	NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	misc
+		FROM ETLSYSTEMS-MIB;
+	
+	-- Define generic genus branch
+	
+	genus MODULE-IDENTITY
+	LAST-UPDATED "202304040107Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: +44 1981 259 020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Genus System"
+	REVISION 	"202304040107Z"
+	DESCRIPTION "Version 1.7 added systemSummaryAlarm missing definition & corrected type for moduleInfoSoftwareNumber"
+	REVISION 	"202303290000Z"
+	DESCRIPTION "Version 1.6 minor spelling and other corrections"
+	REVISION 	"202209050000Z"
+	DESCRIPTION "Version 1.5 added (14)genusInstrumentation & (15) genusControllerBoard branches"
+	REVISION 	"202108170000Z"
+	DESCRIPTION "Version 1.4 replace genusRedundancy alias by genusSwitches"
+	REVISION "202105200000Z"
+	DESCRIPTION "Version 1.3 of this MIB module"	--Corrected moduleInfoSummaryStatus type & description
+	REVISION "202101120000Z"
+	DESCRIPTION "Version 1.2 of this MIB module"
+	REVISION "202005200000Z"
+	DESCRIPTION "Version 1.1 of this MIB module"
+	REVISION "201911060000Z"
+	DESCRIPTION "Version 1.0 of this MIB module"
+		::= { misc 5 }
+	
+	
+	traps				OBJECT IDENTIFIER ::= { genus 0 } -- trap objects
+	
+	-- *******************************************************
+	-- System summary alarms
+	-- *******************************************************
+	systemSummaryAlarm OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					ok (0),
+					fault (1),
+					warning (2)
+				}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"system summary status"
+		::= { genus 1 }
+	
+	-- *******************************************************
+	-- module info table definitions
+	-- *******************************************************
+	moduleInfoTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF ModuleInfoEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"module info table"
+		::= { genus 2 }
+	
+	moduleInfoEntry OBJECT-TYPE
+		SYNTAX ModuleInfoEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"module entry"
+		INDEX { moduleInfoNumber }
+		::= { moduleInfoTable 1 }
+	
+	ModuleInfoEntry ::=
+		SEQUENCE
+		{
+			moduleInfoNumber Integer32,
+			moduleInfoSummaryStatus DisplayString,
+			moduleInfoAlias DisplayString,
+			moduleInfoModelNumber DisplayString,
+			moduleInfoSerialNumber DisplayString,
+			moduleInfoSoftwareNumber Integer32,
+			moduleInfoSoftwareMajorVersion Integer32,
+			moduleInfoSoftwareMinorVersion Integer32,
+			moduleInfoSoftwareDay Integer32,
+			moduleInfoSoftwareMonth Integer32,
+			moduleInfoSoftwareYear Integer32,
+			moduleInfoHoursOperation Integer32
+		}
+	
+	moduleInfoNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Module Info Number"
+		::= { moduleInfoEntry 1 }
+	
+	moduleInfoSummaryStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Summary Status
+			'A' - Absent
+			'X' - Upgrading from CPU1
+			'Y' - Upgrading from CPU2
+			'C' - Comms Issue
+			'W' - Warning
+			'I' - Invisible
+			'0' - OK
+			'1' - Monitoring Not Set
+			'2' - Temperature Alarm
+			'3' - General Alarm See Module For Detail"
+		::= { moduleInfoEntry 2 }
+	
+	moduleInfoAlias OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Module alias"
+		::= { moduleInfoEntry 3 }
+	
+	moduleInfoModelNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Model Number"
+		::= { moduleInfoEntry 4 }
+	
+	moduleInfoSerialNumber OBJECT-TYPE
+		SYNTAX DisplayString
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Serial Number"
+		::= { moduleInfoEntry 5 }
+	
+	moduleInfoSoftwareNumber OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Number"
+		::= { moduleInfoEntry 6 }
+	
+	moduleInfoSoftwareMajorVersion OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Major Number"
+		::= { moduleInfoEntry 7 }
+	
+	moduleInfoSoftwareMinorVersion OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Minor Number"
+		::= { moduleInfoEntry 8 }
+	
+	moduleInfoSoftwareDay OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Day"
+		::= { moduleInfoEntry 9 }
+	
+	moduleInfoSoftwareMonth OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Month"
+		::= { moduleInfoEntry 10	}
+	
+	moduleInfoSoftwareYear OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Software Year"
+		::= { moduleInfoEntry 11 }
+	
+	moduleInfoHoursOperation OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Module Hours Operational"
+		::= { moduleInfoEntry 12 }
+	
+	-- *******************************************************
+	-- trap definitions
+	-- *******************************************************
+	
+	chassisPsu1StatusTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"This trap sent every 5s when psu1 shows fault"
+		::= { traps 1 }
+	
+	chassisPsu2StatusTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"This trap sent every 5s when psu2 shows fault"
+		::= { traps 2 }
+	
+	chassisSummaryStatusTrap NOTIFICATION-TYPE
+		STATUS current
+		DESCRIPTION
+			"This trap sent every 5s when summary fault"
+		::= { traps 3 }
+	
+	-- ********************************************************
+	-- Group definitions
+	-- ********************************************************
+	genusCpu					OBJECT IDENTIFIER ::= { genus 3 } -- cpu module (populated by external mib)
+	genusPsu					OBJECT IDENTIFIER ::= { genus 4 } -- psu module (populated by external mib)
+	genusFan					OBJECT IDENTIFIER ::= { genus 5 } -- fan module (populated by external mib)
+	genusMatrix					OBJECT IDENTIFIER ::= { genus 6 } -- mini matrix module (populated by external mib)
+	genusAmplifiers				OBJECT IDENTIFIER ::= { genus 7 } -- amplifier module (populated by external mib)
+	genusFibre					OBJECT IDENTIFIER ::= { genus 8 } -- fibre module (populated by external mib)
+	genusFreqConverters			OBJECT IDENTIFIER ::= { genus 9 } -- frequency converter module (populated by external mib)
+	genusTenMHz					OBJECT IDENTIFIER ::= { genus 10 } -- 10 MHz card module (populated by external mib)
+	genusSplittersCombiners		OBJECT IDENTIFIER ::= { genus 11 } -- Splitter/Combiner module (populated by external mib)
+	genusPower					OBJECT IDENTIFIER ::= { genus 12 } -- Power module - LNB, etc. (populated by external mib)
+	genusSwitches				OBJECT IDENTIFIER ::= { genus 13 } -- Switches module (populated by external mib)
+	genusInstrumentation		OBJECT IDENTIFIER ::= { genus 14 } -- Instrumentation module (populated by external mib)
+	genusControllerBoard		OBJECT IDENTIFIER ::= { genus 15 } -- Controller board module (populated by external mib)
+	groupObjects				OBJECT IDENTIFIER ::= { genus 16 }  -- group objects, i.e. objects that are accessible
+	groupNotifications			OBJECT IDENTIFIER ::= { genus 17 }  -- group objects, i.e. objects that are accessible
+	moduleCompliance			OBJECT IDENTIFIER ::= { genus 18 }  -- group objects, i.e. objects that are accessible
+	
+	-- **************************************************
+	-- *** Start of Group Table definitions: ***
+	-- **************************************************
+	
+	summaryGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			systemSummaryAlarm
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of summary information objects used in this MIB"
+	::= { groupObjects 1 }
+	
+	moduleInfoGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			moduleInfoSummaryStatus,
+			moduleInfoAlias,
+			moduleInfoModelNumber,
+			moduleInfoSerialNumber,
+			moduleInfoSoftwareNumber,
+			moduleInfoSoftwareMajorVersion,
+			moduleInfoSoftwareMinorVersion,
+			moduleInfoSoftwareDay,
+			moduleInfoSoftwareMonth,
+			moduleInfoSoftwareYear,
+			moduleInfoHoursOperation
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of module information objects used in this MIB"
+	::= { groupObjects 2 }
+	
+	trapsGroupList NOTIFICATION-GROUP
+		NOTIFICATIONS
+		{
+			chassisPsu1StatusTrap,
+			chassisPsu2StatusTrap,
+			chassisSummaryStatusTrap
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of trap objects used in this MIB"
+	::= { groupNotifications 1 }
+	
+	genus-compliance MODULE-COMPLIANCE
+	STATUS current
+	DESCRIPTION
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			summaryGroupList,
+			moduleInfoGroupList,
+			trapsGroupList
+		}
+	::= { moduleCompliance 1 }
+	
+END

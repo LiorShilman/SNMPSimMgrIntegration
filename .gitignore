@@ -1,0 +1,21 @@
+# Build output
+WPF/bin/
+WPF/obj/
+
+# Node modules
+mib-panel-ui/node_modules/
+mib-panel-ui/dist/
+mib-panel-ui/.angular/
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Backup copy
+WPF - Copy/

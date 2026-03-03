@@ -1,0 +1,241 @@
+F3-TIMEZONE-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-COMPLIANCE, OBJECT-GROUP 
+             FROM SNMPv2-CONF
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32
+             FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION, DisplayString, TruthValue , DateAndTime
+             FROM SNMPv2-TC
+    fsp150cm
+             FROM  ADVA-MIB;
+
+f3TimeZoneMIB MODULE-IDENTITY
+    LAST-UPDATED        "202103170000Z"
+    ORGANIZATION    "ADVA Optical Networking SE"
+    CONTACT-INFO
+        "Web URL: http://adva.com/
+        E-mail:  support@adva.com
+        Postal:  ADVA Optical Networking SE
+             Campus Martinsried
+             Fraunhoferstrasse 9a
+             82152 Martinsried/Munich
+             Germany
+        Phone: +49 089 89 06 65 0
+        Fax:  +49 089 89 06 65 199 "
+    DESCRIPTION
+            "This module defines the Time Zone MIB definitions 
+             used by the F3 (FSP150CM/CC) product lines.
+             Copyright (C) ADVA."
+    REVISION        "202103170000Z"
+    DESCRIPTION
+        "
+         Notes from release 202103170000Z,
+         (1) Added scalar object: 
+             f3TimeZoneLeap59,        
+             f3TimeZoneLeap61,        
+             f3TimeZoneLeapSecondDate,
+             f3TimeZoneUTCToTAIOffset 
+      
+         Notes from release 202004030000Z,
+         (1) Added scalar object: f3TimeZoneName.
+
+         Notes from release 201406050000Z,
+         (1) MIB version ready for release FSP150CC 6.5.CC." 
+
+    ::= {fsp150cm 32}
+
+-- 
+-- OID definitions
+-- 
+
+f3TimeZoneConfigObjects            OBJECT IDENTIFIER ::= {f3TimeZoneMIB 1}
+f3TimeZoneConformance              OBJECT IDENTIFIER ::= {f3TimeZoneMIB 2}
+
+--
+-- Textual Conventions 
+-- 
+
+MonthOfYear ::= TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION
+        "Month of year."
+    SYNTAX      INTEGER {
+                  january(1),
+                  february(2),
+                  march(3),
+                  april(4),
+                  may(5),
+                  june(6),
+                  july(7),
+                  august(8),
+                  september(9),
+                  october(10),
+                  november(11),
+                  december(12)
+                }
+
+--
+--  Time Zone Configure Scalars
+--
+
+f3TimeZoneUtcOffset OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set UTC offset."
+    ::= { f3TimeZoneConfigObjects 1 }
+
+f3TimeZoneDstControlEnabled OBJECT-TYPE
+    SYNTAX     TruthValue
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to toggle DST functionality."
+    ::= { f3TimeZoneConfigObjects 2 }
+
+f3TimeZoneDstUtcOffset OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST Offset which is
+          the Daylight Savings Time offset from Local Time."
+    ::= { f3TimeZoneConfigObjects 3 }
+
+f3TimeZoneDstStartMonth OBJECT-TYPE
+    SYNTAX     MonthOfYear
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST start month."
+    ::= { f3TimeZoneConfigObjects 4 }
+
+f3TimeZoneDstStartDay OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST start day."
+    ::= { f3TimeZoneConfigObjects 5 }
+
+f3TimeZoneDstStartTime OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST start time."
+    ::= { f3TimeZoneConfigObjects 6 }
+
+f3TimeZoneDstEndMonth OBJECT-TYPE
+    SYNTAX     MonthOfYear
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST end month."
+    ::= { f3TimeZoneConfigObjects 7 }
+
+f3TimeZoneDstEndDay OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST end day."
+    ::= { f3TimeZoneConfigObjects 8 }
+
+f3TimeZoneDstEndTime OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides the ability to set DST end time."
+    ::= { f3TimeZoneConfigObjects 9 }
+
+f3TimeZoneName OBJECT-TYPE
+    SYNTAX     DisplayString
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This object provides a name to the time zone."
+    ::= { f3TimeZoneConfigObjects 10 }
+
+
+
+f3TimeZoneLeap59 OBJECT-TYPE
+    SYNTAX     TruthValue
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This attribute allows configuration of Leap59 second for the input 
+          that doesn't Provide leap second information or 
+          used to display of pending leap59 event."
+    ::= { f3TimeZoneConfigObjects 11 }
+
+f3TimeZoneLeap61 OBJECT-TYPE
+    SYNTAX     TruthValue
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+         "This attribute allows configuration of Leap61 second for TOD input 
+          that doesn't Provide leap second information or 
+          used to display of pending leap61 event."
+    ::= { f3TimeZoneConfigObjects 12 }
+
+f3TimeZoneLeapSecondDate OBJECT-TYPE
+    SYNTAX     DateAndTime
+    MAX-ACCESS read-write
+    STATUS     current
+    DESCRIPTION
+        "This attribute specifies next leap second date in format ddmmyy.  
+         Default value is 1-1-2000 00:00:00."
+    ::= { f3TimeZoneConfigObjects 13 }
+
+f3TimeZoneUTCToTAIOffset OBJECT-TYPE
+    SYNTAX   Integer32 (-45000..45000)
+    MAX-ACCESS read-write
+    STATUS   current
+    DESCRIPTION
+       "This attribute specifies UTC offset from TAI in seconds."
+    ::= { f3TimeZoneConfigObjects 14 }
+
+--
+-- Conformance
+--
+
+f3TimeZoneCompliances OBJECT IDENTIFIER ::= {f3TimeZoneConformance 1}
+f3TimeZoneGroups    OBJECT IDENTIFIER ::= {f3TimeZoneConformance 2}
+
+f3TimeZoneCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+            "Describes the requirements for conformance to the F3-TIMEZONE-MIB compliance."
+    MODULE  -- this module
+        MANDATORY-GROUPS {
+              f3TimeZoneConfigGroup
+        }
+    ::= { f3TimeZoneCompliances 1 }
+
+f3TimeZoneConfigGroup OBJECT-GROUP
+    OBJECTS {
+       f3TimeZoneUtcOffset,
+       f3TimeZoneDstControlEnabled,
+       f3TimeZoneDstUtcOffset,
+       f3TimeZoneDstStartMonth,
+       f3TimeZoneDstStartDay,
+       f3TimeZoneDstStartTime,
+       f3TimeZoneDstEndMonth,
+       f3TimeZoneDstEndDay,
+       f3TimeZoneDstEndTime,
+       f3TimeZoneName,
+       f3TimeZoneLeap59,
+       f3TimeZoneLeap61,
+       f3TimeZoneLeapSecondDate,
+       f3TimeZoneUTCToTAIOffset
+    }
+    STATUS  current
+    DESCRIPTION
+             "A collection of objects used to manage the Time Zone."
+    ::= { f3TimeZoneGroups 1 }
+
+END

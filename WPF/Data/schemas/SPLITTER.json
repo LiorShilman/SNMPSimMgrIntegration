@@ -1,0 +1,574 @@
+{
+  "deviceName": "SPLITTER",
+  "deviceIp": "60.60.60.21",
+  "devicePort": 161,
+  "community": "public",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-03-02T14:46:38.4168392Z",
+  "totalFields": 26,
+  "modules": [
+    {
+      "moduleName": "ETLSYSTEMS-DEXTRA-MIB",
+      "scalarCount": 3,
+      "tableCount": 6,
+      "scalars": [
+        {
+          "oid": "1.3.6.1.4.1.20938.1.3.10.1.5",
+          "name": "softReboot",
+          "description": "Write 1 to reboot unit",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "INTEGER",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.3.10.2.1",
+          "name": "dextraType",
+          "description": "Indicates Dextra splitter type.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "dextra_16WaySplitter",
+              "value": 0
+            },
+            {
+              "label": "dextra_8WaySplitter",
+              "value": 1
+            },
+            {
+              "label": "dextra_4WaySplitter",
+              "value": 2
+            },
+            {
+              "label": "dextra_Dual_8WaySplitter",
+              "value": 3
+            },
+            {
+              "label": "dextra_Dual_4WaySplitter",
+              "value": 4
+            },
+            {
+              "label": "dextra_16WayCombiner",
+              "value": 5
+            },
+            {
+              "label": "dextra_4WayCombiner",
+              "value": 6
+            },
+            {
+              "label": "dextra_8WayCombiner",
+              "value": 7
+            },
+            {
+              "label": "dextra_Dual_4WayCombiner",
+              "value": 8
+            },
+            {
+              "label": "dextra_Dual_8WayCombiner",
+              "value": 9
+            },
+            {
+              "label": "dextra_Dual_8WayHybridSplitter",
+              "value": 13
+            },
+            {
+              "label": "dextra_Dual_4WayHybridSplitter",
+              "value": 14
+            },
+            {
+              "label": "dextra_Dual_8WayHybridCombiner",
+              "value": 18
+            },
+            {
+              "label": "dextra_Dual_4WayHybridCombiner",
+              "value": 19
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.3.10.2.4",
+          "name": "unitTemperature",
+          "description": "Actual chassis temperature \r\n\t\t\tin tenths of degrees C",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        }
+      ],
+      "tables": [
+        {
+          "name": "splitterModeEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1",
+          "description": "Single setMode entry (conceptual row) in the set Mode table",
+          "rowCount": 0,
+          "columnCount": 5,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1.2",
+              "name": "splitterMode",
+              "description": "Current operating mode",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "auto",
+                  "value": 0
+                },
+                {
+                  "label": "manualPathA",
+                  "value": 1
+                },
+                {
+                  "label": "manualPathB",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1.3",
+              "name": "currentPath",
+              "description": "Path currently in use.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "pathA",
+                  "value": 0
+                },
+                {
+                  "label": "pathB",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1.4",
+              "name": "splitterStatus",
+              "description": "Current monitored status",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "pathAfailed",
+                  "value": 1
+                },
+                {
+                  "label": "pathBfailed",
+                  "value": 2
+                },
+                {
+                  "label": "pathApathBfailed",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1.5",
+              "name": "redundantMainPath",
+              "description": "Auto mode main path selection",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "pathA",
+                  "value": 0
+                },
+                {
+                  "label": "PathB",
+                  "value": 1
+                },
+                {
+                  "label": "uninstalled",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.1.1.6",
+              "name": "hotStandbyMode",
+              "description": "Hot standby mode",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "disabled",
+                  "value": 0
+                },
+                {
+                  "label": "enabled",
+                  "value": 1
+                },
+                {
+                  "label": "uninstalled",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "lnbSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1",
+          "description": "Single lnb Settings entry (conceptual row) in the LNB settings table",
+          "rowCount": 0,
+          "columnCount": 8,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.2",
+              "name": "lnbSetVoltage",
+              "description": "LNB voltage setting",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.3",
+              "name": "lnbSetTone",
+              "description": "LNB tone setting",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "on",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.4",
+              "name": "lnbVoltageStatus",
+              "description": "LNB voltage setting",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "normal",
+                  "value": 1
+                },
+                {
+                  "label": "low",
+                  "value": 2
+                },
+                {
+                  "label": "high",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.5",
+              "name": "lnbCurrentStatus",
+              "description": "LNB tone setting",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "normal",
+                  "value": 1
+                },
+                {
+                  "label": "low",
+                  "value": 2
+                },
+                {
+                  "label": "high",
+                  "value": 3
+                },
+                {
+                  "label": "limit",
+                  "value": 4
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.6",
+              "name": "lnbActualVoltage",
+              "description": "LNB actual measured voltage in mV",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.7",
+              "name": "lnbActualCurrent",
+              "description": "LNB actual measured current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.8",
+              "name": "lnbHighCurrentLimit",
+              "description": "LNB High Current Limit in mA",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.2.1.9",
+              "name": "lnbLowCurrentLimit",
+              "description": "LNB Low Current Limit in mA",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "trapEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.1.3.1",
+          "description": "Single trap entry (conceptual row) in the Trap receiver table",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.3.1.2",
+              "name": "trapEnabled",
+              "description": "Indicates if this trap entry is enabled or not.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "no",
+                  "value": 0
+                },
+                {
+                  "label": "yes",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.3.1.3",
+              "name": "trapReceiverIPAddress",
+              "description": "Trap receiver IP address",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.3.1.4",
+              "name": "trapCommunity",
+              "description": "Trap community to be used by agent to send trap",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 7,
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "ipSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.1.4.1",
+          "description": "Single entry (conceptual row) in the Input Settings Table",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.4.1.2",
+              "name": "ipIPAddress",
+              "description": "A read/write IP address.  This is the address of the unit.\r\n\t\t\tNote: this object is only writable if the ipDHCP object is set to\r\n\t\t\tdisabled(0).\r\n\t\t\tNote: ipSettingsSet will require setting to action any changes in configuration.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.4.1.3",
+              "name": "ipSubnet",
+              "description": "A read/write subnet mask.  This is the subnet mask of the unit.\r\n\t\t\tNote: this object is only writable if the ipDHCP object is set to\r\n\t\t\tdisabled(0).\r\n\t\t\tNote: ipSettingsSet will require setting to action any changes in configuration.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.1.4.1.5",
+              "name": "ipGateway",
+              "description": "A read/write gateway IP Address. \r\n\t\t\tThis is the gateway IP Address the unit will use.\r\n\t\t\tNote: ipSettingsSet will require setting to action any changes in configuration.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "ampStatusEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.2.2.1",
+          "description": "Single entry (conceptual row) in the Amp Status table",
+          "rowCount": 0,
+          "columnCount": 2,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.2.2.1.2",
+              "name": "ampStatus",
+              "description": "Current monitored status,\r\n\t\tamplifiers not in the currently selected path are not powered, i.e. in\r\n\t\tcold standby, will report their last powered status.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.2.2.1.3",
+              "name": "ampActualCurrent",
+              "description": "Amplifier Bias current in mA.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "minValue": 0,
+              "maxValue": 120,
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "psuStatusEntry",
+          "oid": "1.3.6.1.4.1.20938.1.3.10.2.3.1",
+          "description": "Single entry (conceptual row) in the PSU Status Table",
+          "rowCount": 0,
+          "columnCount": 2,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.2.3.1.2",
+              "name": "psuStatus",
+              "description": "PSU Status",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.3.10.2.3.1.3",
+              "name": "psuActualVoltage",
+              "description": "Actual voltage in mV.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    }
+  ]
+}

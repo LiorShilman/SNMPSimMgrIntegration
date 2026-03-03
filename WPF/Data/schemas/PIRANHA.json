@@ -1,0 +1,1116 @@
+{
+  "deviceName": "PIRANHA",
+  "deviceIp": "60.60.60.20",
+  "devicePort": 161,
+  "community": "public",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-03-02T14:47:46.4101046Z",
+  "totalFields": 86,
+  "modules": [
+    {
+      "moduleName": "ETLSYSTEMS-GENUS-CPU-MIB",
+      "scalarCount": 0,
+      "tableCount": 5,
+      "scalars": [],
+      "tables": [
+        {
+          "name": "cpuSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.1.1",
+          "description": "Single entry (conceptual row) in cpu settings table",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.1.1.2",
+              "name": "cpuDiscovery",
+              "description": "Enable/Disable ETL Discovery",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "disabled",
+                  "value": 0
+                },
+                {
+                  "label": "enabled",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.1.1.3",
+              "name": "cpuClearSummary",
+              "description": "clear summary alarm",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "notset",
+                  "value": 0
+                },
+                {
+                  "label": "set",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.1.1.4",
+              "name": "cpuReboot",
+              "description": "reboot cpu",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "notset",
+                  "value": 0
+                },
+                {
+                  "label": "set",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "cpuIpConfigSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1",
+          "description": "Single entry (conceptual row) in cpu config settings table",
+          "rowCount": 0,
+          "columnCount": 5,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1.2",
+              "name": "cpuNetworkDHCP",
+              "description": "dhcp setting",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "disabled",
+                  "value": 0
+                },
+                {
+                  "label": "enabled",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1.3",
+              "name": "cpuNetworkIpAddress",
+              "description": "cpu ip address",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1.4",
+              "name": "cpuNetworkSubnet",
+              "description": "cpu subnet mask",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1.5",
+              "name": "cpuNetworkGateway",
+              "description": "cpu gateway address",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.2.1.6",
+              "name": "cpuCommitIpConfigSettings",
+              "description": "commit all IP config settings",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "notset",
+                  "value": 0
+                },
+                {
+                  "label": "set",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "cpuDataportSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.3.1",
+          "description": "Single entry (conceptual row) in cpu dataport settings table",
+          "rowCount": 0,
+          "columnCount": 4,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.3.1.2",
+              "name": "cpuDataportEnabled",
+              "description": "Enable/Disable TCP/IP Port",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "disabled",
+                  "value": 0
+                },
+                {
+                  "label": "enabled",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.3.1.3",
+              "name": "cpuDataport",
+              "description": "cpu dataport",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.3.1.4",
+              "name": "cpuTimeout",
+              "description": "cpu timeout",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.3.1.5",
+              "name": "cpuCommitDataportSettings",
+              "description": "commit all dataport settings",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "notset",
+                  "value": 0
+                },
+                {
+                  "label": "set",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "cpuMonitoringEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1",
+          "description": "Single entry (conceptual row) in cpu monitoring table",
+          "rowCount": 0,
+          "columnCount": 6,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.2",
+              "name": "cpuSummaryStatus",
+              "description": "cpu summary status (0 - OK)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.3",
+              "name": "cpuTemperatureStatus",
+              "description": "cpu temperature status (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.4",
+              "name": "cpuHumidityStatus",
+              "description": "cpu humidity status (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.5",
+              "name": "cpuTemperature",
+              "description": "cpu temperature value, displayed in tenths of degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.6",
+              "name": "cpuHumidity",
+              "description": "cpu humidity value",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.4.1.7",
+              "name": "cpuOperationHours",
+              "description": "cpu hours of operation",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "trapEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.5.1.1",
+          "description": "Single trap entry (conceptual row) in the Trap receiver table",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.5.1.1.2",
+              "name": "trapEnabled",
+              "description": "Indicates if this trap entry is enabled or not.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "no",
+                  "value": 0
+                },
+                {
+                  "label": "yes",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.5.1.1.3",
+              "name": "trapReceiverIPAddress",
+              "description": "Trap receiver IP address.\r\n\t\t\tNote: A reboot of the system will be needed to apply new trap settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.3.1.5.1.1.4",
+              "name": "trapCommunity",
+              "description": "Trap community to be used by agent to send trap.\r\n\t\t\tNote: A reboot of the system will be needed to apply new trap settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 63,
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    },
+    {
+      "moduleName": "ETLSYSTEMS-GENUS-MIB",
+      "scalarCount": 0,
+      "tableCount": 1,
+      "scalars": [],
+      "tables": [
+        {
+          "name": "moduleInfoEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.2.1",
+          "description": "module entry",
+          "labelColumn": "moduleInfoAlias",
+          "rowCount": 0,
+          "columnCount": 11,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.10",
+              "name": "moduleInfoSoftwareMonth",
+              "description": "Module Software Month",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.11",
+              "name": "moduleInfoSoftwareYear",
+              "description": "Module Software Year",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.12",
+              "name": "moduleInfoHoursOperation",
+              "description": "Module Hours Operational",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.2",
+              "name": "moduleInfoSummaryStatus",
+              "description": "Module Summary Status\r\n\t\t\t\u0027A\u0027 - Absent\r\n\t\t\t\u0027X\u0027 - Upgrading from CPU1\r\n\t\t\t\u0027Y\u0027 - Upgrading from CPU2\r\n\t\t\t\u0027C\u0027 - Comms Issue\r\n\t\t\t\u0027W\u0027 - Warning\r\n\t\t\t\u0027I\u0027 - Invisible\r\n\t\t\t\u00270\u0027 - OK\r\n\t\t\t\u00271\u0027 - Monitoring Not Set\r\n\t\t\t\u00272\u0027 - Temperature Alarm\r\n\t\t\t\u00273\u0027 - General Alarm See Module For Detail",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.3",
+              "name": "moduleInfoAlias",
+              "description": "Module alias",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.4",
+              "name": "moduleInfoModelNumber",
+              "description": "Module Model Number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.5",
+              "name": "moduleInfoSerialNumber",
+              "description": "Module Serial Number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.6",
+              "name": "moduleInfoSoftwareNumber",
+              "description": "Module Software Number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.7",
+              "name": "moduleInfoSoftwareMajorVersion",
+              "description": "Module Software Major Number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.8",
+              "name": "moduleInfoSoftwareMinorVersion",
+              "description": "Module Software Minor Number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.2.1.9",
+              "name": "moduleInfoSoftwareDay",
+              "description": "Module Software Day",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    },
+    {
+      "moduleName": "ETLSYSTEMS-GENUS-PRNxxx-MIB",
+      "scalarCount": 0,
+      "tableCount": 2,
+      "scalars": [],
+      "tables": [
+        {
+          "name": "prnxxxSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1",
+          "description": "Single entry (conceptual row) in Piranha settings table",
+          "rowCount": 0,
+          "columnCount": 6,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.2",
+              "name": "dCInjVoutSet",
+              "description": "DC Injector voltage out in mV.\r\n\t\t\t Consult module specification for voltage output level options.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.3",
+              "name": "dCInjTone",
+              "description": "DC Injector 22kHz tone enable [E] or disable [D]",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.4",
+              "name": "dCInjCurrentLimitLow",
+              "description": "DC injector current low limit in mA, i.e. set to 50 for 0.05 amps as\r\n\t\t\tthe low limit alarm threshold. If the current is less than this limit \r\n\t\t\tan alarm will be raised.\r\n\t\t\tTo disable alarm triggering on low limit set value to -9999.\r\n\t\t\tConsult module specification for permissable limit range as this may \r\n\t\t\tdiffer between module types.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.5",
+              "name": "dCInjCurrentLimitHigh",
+              "description": "DC injector current high limit in mA, i.e. set to 250 for 0.25 amps as\r\n\t\t\tthe high limit alarm threshold. If the current is greater than this limit \r\n\t\t\tan alarm will be raised.\r\n\t\t\tTo disable alarm triggering on high limit set value to 9999.\r\n\t\t\tConsult module specification for permissable limit range as this may \r\n\t\t\tdiffer between module types.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.6",
+              "name": "rFPowerLimitLow",
+              "description": "RF power detector low limit in hundreths of dBm, i.e. set to -2000 for -20dBm as\r\n\t\t\tthe low limit alarm threshold. If the power is less than this limit \r\n\t\t\tan alarm will be raised.\r\n\t\t\tTo disable alarm triggering on low limit set value to -99.\r\n\t\t\tConsult module specification for permissable limit range as this may \r\n\t\t\tdiffer between module types.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.1.1.7",
+              "name": "rFPowerLimitHigh",
+              "description": "RF power detector high limit in hundreths of dBm, i.e. set to 500 for \u002B5dBm as\r\n\t\t\tthe high limit alarm threshold. If the power is greater than this limit \r\n\t\t\tan alarm will be raised.\r\n\t\t\tTo disable alarm triggering on high limit set value to 99.\r\n\t\t\tConsult module specification for permissable limit range as this may \r\n\t\t\tdiffer between module types.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "prnxxxMonitoringEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1",
+          "description": "Single entry (conceptual row) in piranha monitoring table",
+          "rowCount": 0,
+          "columnCount": 14,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.10",
+              "name": "vbusMonValue",
+              "description": "PRNxxx Vbus value, in tenths of volts.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.11",
+              "name": "plus5VStatus",
+              "description": "PRNxxx \u002B5V status, (O - OK, H - High, L - Low).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.12",
+              "name": "plus5VMonValue",
+              "description": "PRNxxx \u002B5V value, in tenths of volts.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.13",
+              "name": "pRNTemperatureStatus",
+              "description": "PRNxxx temperature status, (O - OK, H - High, L - Low).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.14",
+              "name": "pRNTemperatureMonValue",
+              "description": "PRNxxx temperature, in tenths of degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.15",
+              "name": "lifecounter",
+              "description": "PRNxxx hours of operation",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.2",
+              "name": "piranhaSummaryStatus",
+              "description": "DC injector summary status, (O - OK, F - Fail)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.3",
+              "name": "dCInjVoutStatus",
+              "description": "PRNxxx voltage out status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.4",
+              "name": "dCInjVoutMonValue",
+              "description": "Monitored voltage output from DC injector, in tenths of volts",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.5",
+              "name": "dCInjIoutStatus",
+              "description": "PRNxxx current out status, (O - OK, H - High, L - Low, D - Alarm Disabled)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.6",
+              "name": "dCInjIoutMonValue",
+              "description": "Current output from DC injector, in mA.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.7",
+              "name": "rFPowerMonStatus",
+              "description": "PRNxxx RF power detection status, (O - OK, H - High, L - Low, D - Alarm Disabled).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.8",
+              "name": "rFPowerMonValue",
+              "description": "RF power at PRNxxx Input port, in hundreths of dBm.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.12.1.2.1.9",
+              "name": "vbusStatus",
+              "description": "PRNxxx Vbus status, (O - OK, H - High, L - Low).",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    },
+    {
+      "moduleName": "ETLSYSTEMS-GENUS-PSU-MIB",
+      "scalarCount": 0,
+      "tableCount": 2,
+      "scalars": [],
+      "tables": [
+        {
+          "name": "psuSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.1.1",
+          "description": "Single entry (conceptual row) in psu settings table",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.1.1.2",
+              "name": "psuMonitoringSet",
+              "description": "Monitoring setting (S - Set, R - Reset)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "psuMonitoringEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1",
+          "description": "Single entry (conceptual row) in psu settings table",
+          "rowCount": 0,
+          "columnCount": 13,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.1",
+              "name": "psuMonitoringNumber",
+              "description": "Monitoring Module number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "minValue": 1,
+              "maxValue": 42,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.10",
+              "name": "psuVbusSense",
+              "description": "vbus sense, in tenths of volts",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.11",
+              "name": "psuFanSpeed",
+              "description": "psu fan speed, in PPM",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.12",
+              "name": "psuTemperature",
+              "description": "psu temperature, in tenths of degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.13",
+              "name": "psuOperationHours",
+              "description": "psu hours of operation",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.2",
+              "name": "psuSummaryStatus",
+              "description": "psu summary status (O - OK, F - Fault)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.3",
+              "name": "psuVoltageStatus",
+              "description": "psu voltage status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.4",
+              "name": "psuCurrentStatus",
+              "description": "psu current status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.5",
+              "name": "psuVbusStatus",
+              "description": "psu vbus status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.6",
+              "name": "psuFanStatus",
+              "description": "psu fan status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.7",
+              "name": "psuTemperatureStatus",
+              "description": "psu temperature status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.8",
+              "name": "psuVoltage",
+              "description": "psu voltage, in tenths of volts",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.4.1.2.1.9",
+              "name": "psuCurrent",
+              "description": "psu current, in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    },
+    {
+      "moduleName": "ETLSYSTEMS-GENUS-TENMHZ-MIB",
+      "scalarCount": 0,
+      "tableCount": 2,
+      "scalars": [],
+      "tables": [
+        {
+          "name": "tenMHzCardSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1",
+          "description": "Single entry (conceptual row) in tenMHzCard settings table",
+          "rowCount": 0,
+          "columnCount": 10,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.10",
+              "name": "tenMHzCardOpPort5EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.11",
+              "name": "tenMHzCardOpPort6EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.2",
+              "name": "tenMHzCardMonitoringSet",
+              "description": "Monitoring setting, (S - Set, R - Reset)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.3",
+              "name": "tenMHzCardCpuRefSet",
+              "description": "tenMHzCard Cpu reference set, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.4",
+              "name": "tenMHzCardInternalSourceSet",
+              "description": "tenMHzCard internal source set, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.5",
+              "name": "tenMHzCardRefFeedSet",
+              "description": "tenMHzCard reference feed set, (I - Internal, E - External)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.6",
+              "name": "tenMHzCardOpPort1EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.7",
+              "name": "tenMHzCardOpPort2EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.8",
+              "name": "tenMHzCardOpPort3EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.1.1.9",
+              "name": "tenMHzCardOpPort4EnabledSet",
+              "description": "tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "tenMHzCardMonitoringEntry",
+          "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1",
+          "description": "Single entry (conceptual row) in tenMHzCard monitoring table",
+          "rowCount": 0,
+          "columnCount": 10,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.10",
+              "name": "tenMHzCardOpAmp1CurrentStatus",
+              "description": "tenMHzCard Output amp current status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.11",
+              "name": "tenMHzCardOpAmp2CurrentStatus",
+              "description": "tenMHzCard Output amp current status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.2",
+              "name": "tenMHzCardSummaryStatus",
+              "description": "tenMHzCard summary status, (O - OK, F - Fault)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.3",
+              "name": "tenMHzCardTemperatureStatus",
+              "description": "tenMHzCard temperature status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.4",
+              "name": "tenMHzCardVBusStatus",
+              "description": "tenMHzCard vbus status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.5",
+              "name": "tenMHzCard5vVoltageStatus",
+              "description": "tenMHzCard 5v voltage status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.6",
+              "name": "tenMHzCardExternalRfPowerStatus",
+              "description": "tenMHzCard external rf power status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.7",
+              "name": "tenMHzCardInternalRfPowerStatus",
+              "description": "tenMHzCard internal rf power status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.8",
+              "name": "tenMHzCardAmpComCurrentStatus",
+              "description": "tenMHzCard Amp status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.7.5.10.1.2.1.9",
+              "name": "tenMHzCardAmpCpuCurrentStatus",
+              "description": "tenMHzCard Amp Cpu status, (O - OK, H - High, L - Low)",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    }
+  ]
+}

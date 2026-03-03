@@ -1,0 +1,2788 @@
+-- *****************************************************************
+-- ETLSYSTEMS-ALTO-MIB.TXT:  
+-- MIB for the ALTO amplifier
+--
+-- February 2017  S�bastien Butstraen
+--
+-- Copyright (c) 2017 by ETL Systems Ltd
+-- All rights reserved.
+-- 
+-- *****************************************************************
+--	(.1.3.6.1.4.1.) iso.org.dod.internet.private.enterprises.
+--	\----- (20938) etlsystems
+--			\----- (1) etlProducts
+--					\----- (6) amplifiers
+--							\----- (6) alto
+--									\----- (0) traps
+--									|		\----- (1.0) chassisPsu1Status-trap 
+--									|		\----- (2.0) chassisPsu2Status-trap 
+--									|		\----- (3.0) summaryAlarm-trap
+--									\----- (1) rwObjects
+--									|		\----- (1)systemSettings
+--									|		|		\----- (1.0) nbrMainModule
+--									|		|		\----- (2.0) nbrRedundantModule
+--									|		|		\----- (3.0) tracking
+--									|		|		\----- (4) pathSetModuleUseTable
+--									|		|		|		\----- (1)pathSetModuleUseEntry
+--									|		|		|				\----- (1.0) pathSetModuleUseNumber
+--									|		|		|				\----- (2.0) pathSetModuleUse
+--									|		|		|				\----- (3.0) pathSetGain
+--									|		|		|				\----- (4.0) pathSetSlope
+--									|		|		|				\----- (5.0) pathInputNumber
+--									|		|		|				\----- (6.0) pathOutputNumber
+--									|		|		|				\----- (7.0) pathAttenuator1
+--									|		|		|				\----- (8.0) pathAttenuator2
+--									|		|		|				\----- (9.0) pathAttenuator3
+--									|		|		|				\----- (10.0) pathSetMode
+--									|		|		\----- (5) hotColdRedundantModuleTable
+--									|		|		|		\----- (1)hotColdRedundantModuleEntry
+--									|		|		|				\----- (1.0) hotColdRedundantModuleNumber
+--									|		|		|				\----- (2.0) hotColdRedundantModule
+--									|		|		\----- (6) checkColdRedundantModuleTable
+--									|		|		|		\----- (1)checkColdRedundantModuleEntry
+--									|		|		|				\----- (1.0) checkColdRedundantModuleNumber
+--									|		|		|				\----- (2.0) checkColdRedundantModule
+--									|		|		\----- (7.0) priority
+--									|		|		\----- (8) blockConfigTable
+--									|		|		|		\----- (1)blockConfigEntry
+--									|		|		|				\----- (1.0) blockConfigNumber
+--									|		|		|				\----- (2.0) nbrMainModuleBlock
+--									|		|		|				\----- (3.0) nbrRedundantModuleBlock
+--									|		|		|				\----- (4.0) trackingBlock
+--									|		\----- (2)moduleSettingsTable
+--									|		|		\----- (1)moduleSettingsEntry
+--									|		|				\----- (1.0) moduleSettingsNumber
+--									|		|				\----- (2.0) moduleSetLimits
+--									|		|				\----- (3.0) moduleMode
+--									|		|				\----- (4.0) modulePower
+--									|		|				\----- (5.0) moduleGain
+--									|		|				\----- (6.0) moduleSlope
+--									|		|				\----- (7.0) moduleLNB
+--									|		|				\----- (8.0) moduleTimeConstant
+--									|		|				\----- (9.0) moduleAttenuator1
+--									|		|				\----- (10.0) moduleAttenuator2
+--									|		|				\----- (11.0) moduleAttenuator3
+--									|		|				\----- (12.0) moduleTone
+--									|		\----- (3)chassisSettingsTable
+--									|		|		\----- (1)chassisSettingsEntry
+--									|		|				\----- (1.0) chassisSettingsNumber
+--									|		|				\----- (2.0) chassisSetLimits
+--									|		\----- (4) trapTable
+--									|		|		\----- (1) trapEntry
+--									|		|				\----- (1.0) trapReceiverNumber
+--									|		|				\----- (2.0) trapEnabled
+--									|		|				\----- (3.0) trapReceiverIPAddress
+--									|		|				\----- (4.0) trapCommunity
+--									|		\----- (5) ipSettingsTable
+--									|		|		\----- (1) ipSettingsEntry
+--									|		|				\----- (1.0) ipSettingsIndex
+--									|		|				\----- (2.0) ipIPAddress
+--									|		|				\----- (3.0) ipSubnet
+--									|		|				\----- (4.0) ipDHCP
+--									|		|				\----- (5.0) ipGateway
+--									|		|				\----- (6.0) ipApplyReset
+--									|		\----- (6) ethernetConfigTable
+--									|		|		\----- (1) ethernetConfigEntry
+--									|		|				\----- (1.0) ethernetConfigIndex
+--									|		|				\----- (2.0) ethernetConfigAutoNegotiateMode
+--									|		|				\----- (3.0) ethernetConfigDuplex
+--									|		|				\----- (4.0) ethernetConfigSpeed
+--									|		\----- (7.0) initNoModules
+--									|		\----- (8.0) factoryDefault
+--									|		\----- (9.0) reboot
+--									\----- (2) roObjects
+--									|		\----- (1) systemReadings
+--									|		|		\----- (1) pathModuleUsedTable
+--									|		|		|		\----- (1)pathModuleUsedEntry
+--									|		|		|				\----- (1.0) pathModuleUsedNumber
+--									|		|		|				\----- (2.0) pathModuleUsed
+--									|		|		\----- (2) lastCheckRedundantModuleTable
+--									|		|		|		\----- (1)lastCheckRedundantModuleEntry
+--									|		|		|				\----- (1.0) lastCheckRedundantModuleNumber
+--									|		|		|				\----- (2.0) lastCheckRedundantModule
+--									|		\----- (2) moduleReadingsTable
+--									|		|		\----- (1) moduleReadingsEntry
+--									|		|				\----- (1.0) moduleReadingNumber
+--									|		|				\----- (2.0) moduleCommunication
+--									|		|				\----- (3.0) moduleIpPowerStatus
+--									|		|				\----- (4.0) moduleIpPower
+--									|		|				\----- (5.0) moduleOpPowerStatus
+--									|		|				\----- (6.0) moduleOpPower
+--									|		|				\----- (7.0) moduleAmp1Status
+--									|		|				\----- (8.0) moduleAmp1Voltage
+--									|		|				\----- (9.0) moduleAmp2Status
+--									|		|				\----- (10.0) moduleAmp2Voltage
+--									|		|				\----- (11.0) moduleAmp3Status
+--									|		|				\----- (12.0) moduleAmp3VoltageCurrent
+--									|		|				\----- (13.0) moduleAmp4Status
+--									|		|				\----- (14.0) moduleAmp4VoltageCurrent
+--									|		|				\----- (15.0) moduleAmp5Status
+--									|		|				\----- (16.0) moduleAmp5VoltageCurrent
+--									|		|				\----- (17.0) moduleAmp6Status
+--									|		|				\----- (18.0) moduleAmp6Voltage
+--									|		|				\----- (19.0) moduleLnbVoltageStatus
+--									|		|				\----- (20.0) moduleLnbVoltage
+--									|		|				\----- (21.0) moduleLnbCurrentStatus
+--									|		|				\----- (22.0) moduleLnbCurrent
+--									|		|				\----- (23.0) module65vStatus
+--									|		|				\----- (24.0) module65vVoltage
+--									|		|				\----- (25.0) module5vStatus
+--									|		|				\----- (26.0) module5vVoltage
+--									|		|				\----- (27.0) moduleTemperatureStatus
+--									|		|				\----- (28.0) moduleTemperature
+--									|		|				\----- (29.0) moduleSoftwareNumber
+--									|		|				\----- (30.0) moduleSoftwareMajorVersion
+--									|		|				\----- (31.0) moduleSoftwareMinorVersion
+--									|		|				\----- (32.0) moduleSwitchingPositionStatus
+--									|		|				\----- (33.0) moduleTemperature2Status
+--									|		|				\----- (34.0) moduleTemperature2
+--									|		|				\----- (35.0) moduleNeg2vStatus
+--									|		|				\----- (36.0) moduleNeg2vVoltage
+--									|		|				\----- (37.0) moduleNeg5vStatus
+--									|		|				\----- (38.0) moduleNeg5vVoltage
+--									|		|				\----- (39.0) module12v5Status
+--									|		|				\----- (40.0) module12v5Voltage
+--									|		|				\----- (41.0) moduleName
+--									|		|				\----- (42.0) moduleTypeId
+--									|		|				\----- (43.0) module15vStatus
+--									|		|				\----- (44.0) module15vVoltage
+--									|		|				\----- (45.0) module12vStatus
+--									|		|				\----- (46.0) module12vVoltage
+--									|		|				\----- (47.0) moduleAmp1CurrentStatus
+--									|		|				\----- (48.0) moduleAmp1Current
+--									|		|				\----- (49.0) moduleAmp1FuseStatus
+--									|		|				\----- (50.0) moduleAmp2CurrentStatus
+--									|		|				\----- (51.0) moduleAmp2Current
+--									|		|				\----- (52.0) moduleAmp2FuseStatus
+--									|		|				\----- (53.0) moduleAmp1TempStatus
+--									|		|				\----- (54.0) moduleAmp1Temperature
+--									|		|				\----- (55.0) moduleAmp2TempStatus
+--									|		|				\----- (56.0) moduleAmp2Temperature
+--									|		|				\----- (57.0) moduleSummary
+--									|		\----- (3) chassisReadingsTable
+--									|		|		\----- (1) chassisReadingsEntry
+--									|		|				\----- (1.0) chassisReadingNumber
+--									|		|				\----- (2.0) chassisCommunication
+--									|		|				\----- (3.0) chassisPsu1Status
+--									|		|				\----- (4.0) chassisPsu1Voltage
+--									|		|				\----- (5.0) chassisPsu2Status
+--									|		|				\----- (6.0) chassisPsu2Voltage
+--									|		|				\----- (7.0) chassisVbusStatus
+--									|		|				\----- (8.0) chassisVbusVoltage
+--									|		|				\----- (9.0) chassis65vStatus
+--									|		|				\----- (10.0) chassis65vVoltage
+--									|		|				\----- (11.0) chassis5vStatus
+--									|		|				\----- (12.0) chassis5vVoltage
+--									|		|				\----- (13.0) chassisFanPsu1Status
+--									|		|				\----- (14.0) chassisFanPsu1Tacho
+--									|		|				\----- (15.0) chassisFanPsu2Status
+--									|		|				\----- (16.0) chassisFanPsu2Tacho
+--									|		|				\----- (17.0) chassisFan1Status
+--									|		|				\----- (18.0) chassisFan1Tacho
+--									|		|				\----- (19.0) chassisFan2Status
+--									|		|				\----- (20.0) chassisFan2Tacho
+--									|		|				\----- (21.0) chassisTemperatureStatus
+--									|		|				\----- (22.0) chassisTemperature
+--									|		|				\----- (23.0) chassisSoftwareNumber
+--									|		|				\----- (24.0) chassisSoftwareMajorVersion
+--									|		|				\----- (25.0) chassisSoftwareMinorVersion
+--									|		|				\----- (26.0) chassisMainCPUSoftwareNumber
+--									|		|				\----- (27.0) chassisMainCPUSoftwareMajorVer
+--									|		|				\----- (28.0) chassisMainCPUSoftwareMinorVer
+--									|		|				\----- (29.0) chassisSwitchingPositionStatus
+--									|		|				\----- (30.0) chassis65vStatus2
+--									|		|				\----- (31.0) chassis65vVoltage2
+--									|		|				\----- (32.0) chassis65vStatus3
+--									|		|				\----- (33.0) chassis65vVoltage3
+--									|		|				\----- (34.0) chassis65vStatus4
+--									|		|				\----- (35.0) chassis65vVoltage4
+--									|		|				\----- (36.0) chassis65vStatus5
+--									|		|				\----- (37.0) chassis65vVoltage5
+--									|		|				\----- (38.0) chassis65vBusStatus
+--									|		|				\----- (39.0) chassis65vBusVoltage
+--									|		|				\----- (40.0) chassis3vStatus
+--									|		|				\----- (41.0) chassis3vVoltage
+--									|		|				\----- (42.0) chassis3vStatus2
+--									|		|				\----- (43.0) chassis3vVoltage2
+--									|		|				\----- (44.0) chassis3vBusStatus
+--									|		|				\----- (45.0) chassis3vBusVoltage
+--									|		|				\----- (46.0) chassisHumidityStatus
+--									|		|				\----- (47.0) chassisHumidity
+--									|		|				\----- (48.0) chassisFan3Status
+--									|		|				\----- (49.0) chassisFan3Tacho
+--									|		|				\----- (50.0) chassisFan4Status
+--									|		|				\----- (51.0) chassisFan4Tacho
+--									|		\----- (4) summaryAlarm
+
+ETLSYSTEMS-ALTO-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	NOTIFICATION-TYPE,
+	IpAddress,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP,
+	NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	amplifiers
+		FROM ETLSYSTEMS-MIB;
+		
+	-- Define the branch from etlproducts
+
+	alto MODULE-IDENTITY
+	LAST-UPDATED "201702170000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+			Tel: +44 1981 259020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of ALTO amplifier"
+
+	REVISION	"201702170000Z"
+	DESCRIPTION
+		"Version 2.9 of this MIB module to add support for ALT-R-K0-200"
+		
+	REVISION	"201701270000Z"
+	DESCRIPTION
+		"Version 2.8 of this MIB module to add support for ALT-R-K0-200"
+		
+	REVISION	"201609020000Z"
+	DESCRIPTION
+		"Version 2.7 of this MIB module to add support for ALT-S-L1-023"
+		
+	REVISION	"201608250000Z"
+	DESCRIPTION
+		"Version 2.6 of this MIB module to add support for ALT-S-L1-036/037/071"
+		
+	REVISION	"201602180000Z"
+	DESCRIPTION
+		"Version 2.5 of this MIB module to add support for ALT-R-L1-043
+		and module name."
+
+	REVISION	"201510180000Z"
+	DESCRIPTION
+		"Version 2.4 of this MIB module to add support for ALT-C305-5U"
+
+	REVISION	"201507210000Z"
+	DESCRIPTION
+		"Version 2.3 of this MIB module to add support for ALT-C315-2U"
+
+	REVISION	"201506160000Z"
+	DESCRIPTION
+		"Version 2.2 of this MIB module to change IP without reboot"
+		
+	REVISION	"201407110000Z"
+	DESCRIPTION
+		"Version 2.1 of this MIB module to add support for ALT-C309-1U"
+		
+	REVISION	"201311270000Z"
+	DESCRIPTION
+		"Version 2.0 of this MIB module to suit e333 V2.0 on all ALTO models"
+	
+ 	REVISION	"201308120000Z"
+	DESCRIPTION
+		"Version 1.0 of this MIB module to suit e333 V1.0 on all ALTO models"
+										  ::= { amplifiers 6 }
+
+	traps     			OBJECT IDENTIFIER ::= { alto 0 }  -- trap objects
+	rwObjects 			OBJECT IDENTIFIER ::= { alto 1 }  -- read/write objects
+	roObjects 			OBJECT IDENTIFIER ::= { alto 2 }  -- read-only objects
+	groupObjects		OBJECT IDENTIFIER ::= { alto 3 }  -- group objects, i.e. objects that are acessable
+	groupNotifications	OBJECT IDENTIFIER ::= { alto 4 }  -- group objects, i.e. objects that are acessable
+	moduleCompliance	OBJECT IDENTIFIER ::= { alto 5 }  -- group objects, i.e. objects that are acessable
+
+
+-- **************************************************
+-- *** read/write object definitions			  ***
+-- **************************************************
+
+	systemSettings 		OBJECT IDENTIFIER ::= { rwObjects 1 }  -- systemSettings
+
+-- **************************************************
+-- *** Ssystem Settings definitions: 	 		  ***
+-- **************************************************
+
+	nbrMainModule OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Number of main module (path) in the unit."
+		::= { systemSettings 1 }	
+
+	nbrRedundantModule OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Number of redundant module in the system."
+		::= { systemSettings 2 }	
+
+	tracking  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			off 	(0),
+			on		(1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+				"Set tracking on or off."
+		::= { systemSettings 3 }
+
+-- **************************************************
+-- *** Start of Path Set Module Used Table definitions: ***
+-- **************************************************
+	pathSetModuleUseTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF PathSetModuleUseEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Path set module to use table."
+		::= { systemSettings 4 }
+
+	pathSetModuleUseEntry  OBJECT-TYPE
+		SYNTAX 	PathSetModuleUseEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the path set module use table."
+		INDEX { pathSetModuleUseNumber }
+		::= { pathSetModuleUseTable 1 }
+
+	PathSetModuleUseEntry ::= SEQUENCE {
+		pathSetModuleUseNumber			INTEGER,
+		pathSetModuleUse				INTEGER,
+		pathSetGain						Integer32,
+		pathSetSlope					Integer32,
+		pathInputNumber					Integer32,
+		pathOutputNumber				Integer32,
+		pathAttenuator1					Integer32,
+		pathAttenuator2					Integer32,
+		pathAttenuator3					Integer32,
+		pathSetMode						INTEGER
+	}
+
+	pathSetModuleUseNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			path1 	(1),
+			path2 	(2),
+			path3 	(3),
+			path4 	(4),
+			path5 	(5),
+			path6 	(6)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Path number"
+		::= { pathSetModuleUseEntry 1 }
+
+	pathSetModuleUse  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			auto 	(0),
+			module1	(1),
+			module2	(2),
+			module3	(3),
+			module4	(4),
+			module5	(5),
+			module6	(6)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set module to use on path."
+		::= { pathSetModuleUseEntry 2 }
+
+	pathSetGain  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set gain (in hundredths of dBm) on path." 
+		::= { pathSetModuleUseEntry 3 }
+
+	pathSetSlope  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set slope (in hundredths of dBm) on path." 
+		::= { pathSetModuleUseEntry 4 }
+
+	pathInputNumber  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set input number on path." 
+		::= { pathSetModuleUseEntry 5 }
+
+	pathOutputNumber  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set output number on path." 
+		::= { pathSetModuleUseEntry 6 }
+	
+	pathAttenuator1  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set attenuator 1 (in hundredths of dBm) on path." 
+		::= { pathSetModuleUseEntry 7 }
+
+	pathAttenuator2  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set attenuator 2 (in hundredths of dBm) on path." 
+		::= { pathSetModuleUseEntry 8 }
+
+	pathAttenuator3  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set attenuator 3 (in hundredths of dBm) on path." 
+		::= { pathSetModuleUseEntry 9 }
+
+	pathSetMode  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			gain 				(0),
+			agc					(1),
+			bestcombination		(2),
+			bestnoisefigure		(3),
+			bestlinearity		(4)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set mode to use on path."
+		::= { pathSetModuleUseEntry 10 }	
+		
+	-- *** End of Path Set Module Used Table definitions. ***	
+		
+-- **************************************************
+-- *** Start of Hot Cold Redundant Module Table definitions: ***
+-- **************************************************
+	hotColdRedundantModuleTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF HotColdRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Hot cold redundant module table."
+		::= { systemSettings 5 }
+
+	hotColdRedundantModuleEntry  OBJECT-TYPE
+		SYNTAX 	HotColdRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the hot cold redundant module table."
+		INDEX { hotColdRedundantModuleNumber }
+		::= { hotColdRedundantModuleTable 1 }
+
+		
+	HotColdRedundantModuleEntry ::= SEQUENCE {
+		hotColdRedundantModuleNumber		INTEGER,
+		hotColdRedundantModule				INTEGER
+	}
+
+	hotColdRedundantModuleNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			module1 	(1),
+			module2 	(2),
+			module3 	(3),
+			module4 	(4),
+			module5 	(5),
+			module6 	(6)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Set hot or cold option for redundant module number"
+		::= { hotColdRedundantModuleEntry 1 }
+
+	hotColdRedundantModule  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			cold 	(0),
+			hot		(1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set redundant module to hot or cold."
+		::= { hotColdRedundantModuleEntry 2 }
+
+	-- *** End of Hot Cold Redundant Module Table definitions. ***	
+		
+-- **************************************************
+-- *** Start of Check Cold Redundant Module Table definitions: ***
+-- **************************************************
+	checkColdRedundantModuleTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF CheckColdRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Check cold redundant module table."
+		::= { systemSettings 6 }
+
+	checkColdRedundantModuleEntry  OBJECT-TYPE
+		SYNTAX 	CheckColdRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the check cold redundant module table."
+		INDEX { checkColdRedundantModuleNumber }
+		::= { checkColdRedundantModuleTable 1 }
+
+		
+	CheckColdRedundantModuleEntry ::= SEQUENCE {
+		checkColdRedundantModuleNumber		INTEGER,
+		checkColdRedundantModule			INTEGER
+	}
+
+	checkColdRedundantModuleNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			module1 	(1),
+			module2 	(2),
+			module3 	(3),
+			module4 	(4),
+			module5 	(5),
+			module6 	(6)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Check option for redundant module number."
+		::= { checkColdRedundantModuleEntry 1 }
+
+	checkColdRedundantModule  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			manual 	(0),
+			hourly	(1),
+			daily	(2),
+			weekly	(3)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Set check option for redundant module."
+		::= { checkColdRedundantModuleEntry 2 }
+
+	-- *** End of Check Cold Redundant Module Table definitions. ***	
+
+	priority  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			none 	(0),
+			path1	(1),
+			path2	(2)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+				"Set path priority for standby module."
+		::= { systemSettings 7 }
+	
+-- **************************************************
+-- *** Start of Block Config Table definitions: ***
+-- **************************************************
+	blockConfigTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF BlockConfigEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Block configuration table."
+		::= { systemSettings 8 }
+
+	blockConfigEntry  OBJECT-TYPE
+		SYNTAX 	BlockConfigEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the block config table."
+		INDEX { blockConfigNumber }
+		::= { blockConfigTable 1 }
+
+		
+	BlockConfigEntry ::= SEQUENCE {
+		blockConfigNumber			INTEGER,
+		nbrMainModuleBlock			Integer32,
+		nbrRedundantModuleBlock		Integer32,
+		trackingBlock				INTEGER
+	}
+	
+	blockConfigNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			block1 	(1),
+			block2 	(2),
+			block3 	(3),
+			block4 	(4)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Configuration of blocks.
+			Block 1 for path 1-4 and module 1-5.
+			Block 2 for path 5-8 and module 6-10.
+			Block 3 for path 9-12 and module 11-15.
+			Block 4 for path 13-16 and module 16-20."
+		::= { blockConfigEntry 1 }	
+	
+	nbrMainModuleBlock OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Number of main module (path) in the block."
+		::= { blockConfigEntry 2 }	
+
+	nbrRedundantModuleBlock OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Number of redundant module in the block."
+		::= { blockConfigEntry 3 }	
+
+	trackingBlock  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			off 	(0),
+			on		(1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+				"Set tracking on or off for the block."
+		::= { blockConfigEntry 4 }	
+	
+
+
+	-- *** End of Block Config Table definitions. ***		
+	
+	
+-- **************************************************
+-- *** Start of Module Settings Table definitions: ***
+-- **************************************************
+	
+	moduleSettingsTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF ModuleSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Module settings table"
+		::= { rwObjects 2 }
+
+	moduleSettingsEntry  OBJECT-TYPE
+		SYNTAX 	ModuleSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single module entry (conceptual row) in the module settings table"
+		INDEX { moduleSettingsNumber }
+		::= { moduleSettingsTable 1 }
+
+	ModuleSettingsEntry ::= SEQUENCE {
+		moduleSettingsNumber		INTEGER,
+		moduleSetLimits				INTEGER,
+		moduleMode					INTEGER,
+		modulePower					Integer32,
+		moduleGain					Integer32,
+		moduleSlope					Integer32,
+		moduleLnb					INTEGER,
+		moduleTimeConstant			INTEGER,
+		moduleAttenuator1			Integer32,
+		moduleAttenuator2			Integer32,
+		moduleAttenuator3			Integer32,
+		moduleTone					INTEGER
+	}
+
+	moduleSettingsNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			module1 (1),
+			module2 (2),
+			module3 (3),
+			module4 (4),
+			module5 (5),
+			module6 (6),
+			module7 (7),
+			module8 (8),
+			module9 (9),
+			module10 (10),
+			module11 (11),
+			module12 (12),
+			module13 (13),
+			module14 (14),
+			module15 (15),
+			module16 (16),
+			module17 (17),
+			module18 (18),
+			module19 (19),
+			module20 (20)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Amplifier module number"
+		::= { moduleSettingsEntry 1 }
+
+	moduleSetLimits OBJECT-TYPE
+		SYNTAX     INTEGER {
+			limitsNotSet (0),
+			limitsSet (1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Write 1 to set the monitoring limits on
+				 selected module."
+		::= { moduleSettingsEntry 2 }
+		
+	moduleMode OBJECT-TYPE
+		SYNTAX     INTEGER {
+			gain 				(0),
+			agc					(1),
+			bestcombination		(2),
+			bestnoisefigure		(3),
+			bestlinearity		(4)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Set mode"
+		::= { moduleSettingsEntry 3 }
+
+	modulePower  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Power setting (in hundredths of dBm)" 
+		::= { moduleSettingsEntry 4 }
+		
+	moduleGain  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Gain setting (in hundredths of dB)" 
+		::= { moduleSettingsEntry 5 }
+
+	moduleSlope  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Slope setting (in hundredths of dB)" 
+		::= { moduleSettingsEntry 6 }
+
+	moduleLnb OBJECT-TYPE
+		SYNTAX     INTEGER {
+			off (0),
+			on (1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Set LNB"
+		::= { moduleSettingsEntry 7 }
+
+	moduleTimeConstant OBJECT-TYPE
+		SYNTAX     INTEGER {
+			fast 	(0),
+			slow	(1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Set time constant (on / off)"
+		::= { moduleSettingsEntry 8 }
+
+	moduleAttenuator1  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Attenuator 1 setting (in hundredths of dB)" 
+		::= { moduleSettingsEntry 9 }
+
+	moduleAttenuator2  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Attenuator 2 setting (in hundredths of dB)" 
+		::= { moduleSettingsEntry 10 }
+
+	moduleAttenuator3  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Attenuator 3 setting (in hundredths of dB)" 
+		::= { moduleSettingsEntry 11 }
+
+	moduleTone OBJECT-TYPE
+		SYNTAX     INTEGER {
+			off (0),
+			on (1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Set Tone"
+		::= { moduleSettingsEntry 12 }
+
+-- **************************************************
+-- *** Start of Chassis Settings Table definitions: ***
+-- **************************************************
+	
+	chassisSettingsTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF ChassisSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"chassis setttings table"
+		::= { rwObjects 3 }
+
+	chassisSettingsEntry  OBJECT-TYPE
+		SYNTAX 	ChassisSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single module entry (conceptual row) in the module settings table"
+		INDEX { chassisSettingsNumber }
+		::= { chassisSettingsTable 1 }
+
+	ChassisSettingsEntry ::= SEQUENCE {
+		chassisSettingsNumber				INTEGER,
+		chassisSetLimits					INTEGER
+	}
+
+	chassisSettingsNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			chassis1 (1)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Chassis number"
+		::= { chassisSettingsEntry 1 }
+
+	chassisSetLimits OBJECT-TYPE
+		SYNTAX     INTEGER {
+			limitsNotSet (0),
+			limitsSet (1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Write 1 to set the limits on
+				 chassis."
+		::= { chassisSettingsEntry 2 }
+		
+-- **************************************************
+-- *** Start of Trap Table definitions: ***
+-- **************************************************
+
+	trapTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Trap receiver table"
+		::= { rwObjects 4 }        
+
+	trapEntry OBJECT-TYPE
+		SYNTAX TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single trap entry (conceptual row) in the Trap receiver table"
+		INDEX { trapReceiverNumber }
+		::= { trapTable 1 }
+	
+	TrapEntry ::=
+		SEQUENCE
+		{
+			trapReceiverNumber		INTEGER,
+			trapEnabled				INTEGER,
+			trapReceiverIPAddress	IpAddress,
+			trapCommunity			DisplayString
+		}            
+
+	trapReceiverNumber  OBJECT-TYPE
+		SYNTAX Integer32 (0)
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of trap receiver"
+		::= { trapEntry 1 }
+
+	trapEnabled OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					no(0),
+					yes(1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Indicates if this trap entry is enabled or not."
+		::= { trapEntry 2 }
+
+	trapReceiverIPAddress OBJECT-TYPE
+		SYNTAX  IpAddress
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap receiver IP address"
+		::= { trapEntry 3 }
+
+	trapCommunity OBJECT-TYPE
+		SYNTAX  DisplayString (SIZE (0..7))
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap community to be used by agent to send trap"
+		::= { trapEntry 4 }
+
+	
+-- **************************************************
+-- *** Start of IP Settings Table definitions: ***
+-- **************************************************
+	
+	ipSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IpSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Input Settings Table"
+		::= { rwObjects 5 }
+
+	ipSettingsEntry OBJECT-TYPE
+		SYNTAX	IpSettingsEntry
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+			"Single entry (conceptual row) in the Input Settings Table"
+		INDEX { ipSettingsIndex }
+		 ::= { ipSettingsTable 1 }
+	
+	IpSettingsEntry ::=
+		SEQUENCE
+		{
+			ipSettingsIndex	Integer32,
+			ipIPAddress		IpAddress,
+			ipSubnet		IpAddress,
+			ipDHCP			INTEGER,
+			ipGateway		IpAddress,
+			ipApplyReset	INTEGER
+		}
+
+	ipSettingsIndex OBJECT-TYPE
+		SYNTAX	Integer32 ( 0 )
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+				"Row number, only one row in this table"
+		::= { ipSettingsEntry 1 }
+
+	ipIPAddress OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write IP address.  This is the address of the unit.
+			Note: this object is only writeable if the ipDHCP object is set to
+			disabled(0).
+			Note: setting 'ipApplyReset' to '1' will be needed to apply new IP settings."
+		::= { ipSettingsEntry 2 }
+
+	ipSubnet OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write subnet mask.  This is the subnet mask of the unit.
+			Note: this object is only writeable if the ipDHCP object is set to
+			disabled(0).
+			Note: setting 'ipApplyReset' to '1' will be needed to apply new IP settings."
+		::= { ipSettingsEntry 3 }
+
+	ipDHCP OBJECT-TYPE
+		SYNTAX	INTEGER
+		{
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Enable DHCP. 0=disabled, 1=enabled.
+				Note: setting 'ipApplyReset' to '1' will be needed to apply new IP settings."
+		::= { ipSettingsEntry 4 }
+
+	ipGateway OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write gateway IP Address. 
+			Note: this object is only writeable if the ipDHCP object is set to
+			disabled(0).
+			Note: setting 'ipApplyReset' to '1' will be needed to apply new IP settings."
+		::= { ipSettingsEntry 5 }
+
+	ipApplyReset OBJECT-TYPE
+		SYNTAX	INTEGER
+		{
+			currentSettings(0),
+			newSettingsToApply(1)
+		}
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Write 1 to apply IP settings.
+				Write 0 to reset IP settings to current IP settings."
+		::= { ipSettingsEntry 6 }
+
+	-- *** End of IP Settings Table definitions. ***	
+
+-- ***************************************************
+-- *** Start of Ethernet Config Table definitions: ***
+-- ***************************************************
+
+	ethernetConfigTable		OBJECT-TYPE
+		SYNTAX	SEQUENCE OF EthernetConfigEntry
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+			"Ethernet Config Table"
+		::= { rwObjects 6 }
+
+	ethernetConfigEntry		OBJECT-TYPE
+		SYNTAX	EthernetConfigEntry
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+			"Single entry in the Ethernet Config  Table"
+		INDEX { ethernetConfigIndex }
+		 ::= { ethernetConfigTable 1 }
+	
+	EthernetConfigEntry ::=
+		SEQUENCE
+		{
+			ethernetConfigIndex						Integer32,
+			ethernetConfigAutoNegotiateMode			INTEGER,
+			ethernetConfigDuplex					INTEGER,
+			ethernetConfigSpeed						INTEGER
+		}
+
+	ethernetConfigIndex					OBJECT-TYPE
+		SYNTAX	Integer32 ( 1 )
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+			"index of Ethernet configuration."
+		::= { ethernetConfigEntry 1 }
+
+	ethernetConfigAutoNegotiateMode			OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					disable (0),
+					enable (1)
+				}			
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Enable or disable auto negociate mode on selected module."
+		::= { ethernetConfigEntry 2 }
+
+	ethernetConfigDuplex					OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					halfDuplex (0),
+					fullDuplex (1)
+				}			
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Select half or full duplex on selected module."
+		::= { ethernetConfigEntry 3 }
+		
+	ethernetConfigSpeed						OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					baseT10 	(0),
+					baseT100 	(1)
+				}			
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Select 10BaseT or 100BaseT on selected module."
+		::= { ethernetConfigEntry 4 }
+		
+	-- *** End of Ethernet Config Table definitions. ***	
+
+	initNoModules OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Always read 0.
+				Write 1 to init the number of modules."
+		::= { rwObjects 7 }	
+
+	factoryDefault OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Always read 0.
+				Write 1 to reset the unit to factory default and reboot."
+		::= { rwObjects 8 }	
+
+	reboot OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION
+				"Always read 0.
+				Write 1 to reboot the unit."
+		::= { rwObjects 9 }		
+	
+-- **************************************************
+-- *** read/only object definitions			      ***
+-- **************************************************
+
+	systemReadings 		OBJECT IDENTIFIER ::= { roObjects 1 }  -- systemReading
+
+-- **************************************************
+-- *** System Reading definitions: 				  ***
+-- **************************************************
+		
+-- **************************************************
+-- *** Start of Path Module Used Table definitions:  ***
+-- **************************************************
+	pathModuleUsedTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF PathModuleUsedEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"path set module used table."
+		::= { systemReadings 1 }
+
+	pathModuleUsedEntry  OBJECT-TYPE
+		SYNTAX 	PathModuleUsedEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the path module used table."
+		INDEX { pathModuleUsedNumber }
+		::= { pathModuleUsedTable 1 }
+
+	PathModuleUsedEntry ::= SEQUENCE {
+		pathModuleUsedNumber			INTEGER,
+		pathModuleUsed					INTEGER
+	}
+
+	pathModuleUsedNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			path1 	(1),
+			path2 	(2),
+			path3 	(3),
+			path4 	(4),
+			path5 	(5),
+			path6 	(6)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Path number"
+		::= { pathModuleUsedEntry 1 }
+
+	pathModuleUsed  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			auto 	(0),
+			module1	(1),
+			module2	(2),
+			module3	(3),
+			module4	(4),
+			module5	(5),
+			module6	(6)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"Module used on path."
+		::= { pathModuleUsedEntry 2 }
+
+-- **************************************************
+-- *** Start of Last Check Redundant Module Table definitions:  ***
+-- **************************************************
+	lastCheckRedundantModuleTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF LastCheckRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Last check redundant module table."
+		::= { systemReadings 2 }
+
+	lastCheckRedundantModuleEntry  OBJECT-TYPE
+		SYNTAX 	LastCheckRedundantModuleEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single system entry (conceptual row) in the last check redundant module table."
+		INDEX { lastCheckRedundantModuleNumber }
+		::= { lastCheckRedundantModuleTable 1 }
+
+	LastCheckRedundantModuleEntry ::= SEQUENCE {
+		lastCheckRedundantModuleNumber		INTEGER,
+		lastCheckRedundantModule			Integer32
+	}
+
+	lastCheckRedundantModuleNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			module1 	(1),
+			module2 	(2),
+			module3 	(3),
+			module4 	(4),
+			module5 	(5),
+			module6 	(6)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Module number"
+		::= { lastCheckRedundantModuleEntry 1 }
+
+	lastCheckRedundantModule  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Seconds since last check of redundant module."
+		::= { lastCheckRedundantModuleEntry 2 }		
+	
+
+		
+-- **************************************************
+-- *** Start of module reading Table definitions: ***
+-- **************************************************	
+
+	moduleReadingsTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF ModuleReadingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Module readings table"
+		::= { roObjects 2 }
+
+	moduleReadingsEntry  OBJECT-TYPE
+		SYNTAX 	ModuleReadingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single module entry (conceptual row) in the module reading table"
+		INDEX { moduleReadingNumber }
+		::= { moduleReadingsTable 1 }
+
+	ModuleReadingsEntry ::= SEQUENCE {
+		moduleReadingNumber				INTEGER,
+		moduleCommunication				INTEGER,
+		moduleIpPowerStatus				INTEGER,
+		moduleIpPower					Integer32,
+		moduleOpPowerStatus				INTEGER,
+		moduleOpPower					Integer32,
+		moduleAmp1Status				INTEGER,
+		moduleAmp1Voltage				Integer32,
+		moduleAmp2Status				INTEGER,
+		moduleAmp2Voltage				Integer32,
+		moduleAmp3Status				INTEGER,
+		moduleAmp3VoltageCurrent		Integer32,
+		moduleAmp4Status				INTEGER,
+		moduleAmp4VoltageCurrent		Integer32,
+		moduleAmp5Status				INTEGER,
+		moduleAmp5VoltageCurrent		Integer32,
+		moduleAmp6Status				INTEGER,
+		moduleAmp6Voltage				Integer32,
+		moduleLnbVoltageStatus			INTEGER,
+		moduleLnbVoltage				Integer32,
+		moduleLnbCurrentStatus			INTEGER,
+		moduleLnbCurrent				Integer32,
+		module65vStatus					INTEGER,
+		module65vVoltage				Integer32,
+		module5vStatus					INTEGER,
+		module5vVoltage					Integer32,
+		moduleTemperatureStatus			INTEGER,
+		moduleTemperature				Integer32,
+		moduleSoftwareNumber			Integer32,
+		moduleSoftwareMajorVersion		Integer32,
+		moduleSoftwareMinorVersion		Integer32,
+		moduleSwitchingPositionStatus	INTEGER,
+		moduleTemperature2Status		INTEGER,
+		moduleTemperature2				Integer32,
+		moduleNeg2vStatus				INTEGER,
+		moduleNeg2vVoltage				Integer32,
+		moduleNeg5vStatus				INTEGER,
+		moduleNeg5vVoltage				Integer32,
+		module12v5Status				INTEGER,
+		module12v5Voltage				Integer32,
+		moduleName						OCTET STRING,
+	    moduleTypeId					Integer32,
+		module15vStatus					INTEGER,
+		module15vVoltage				Integer32,
+		module12vStatus					INTEGER,
+		module12vVoltage				Integer32,
+		moduleAmp1CurrentStatus			INTEGER,
+		moduleAmp1Current				Integer32,
+		moduleAmp1FuseStatus			INTEGER,
+		moduleAmp2CurrentStatus			INTEGER,
+		moduleAmp2Current				Integer32,
+		moduleAmp2FuseStatus			INTEGER,
+		moduleAmp1TempStatus			INTEGER,
+		moduleAmp1Temperature			Integer32,
+		moduleAmp2TempStatus			INTEGER,
+		moduleAmp2Temperature			Integer32,
+		moduleSummary					INTEGER
+	}
+
+	moduleReadingNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			module1 (1),
+			module2 (2),
+			module3 (3),
+			module4 (4),
+			module5 (5),
+			module6 (6),
+			module7 (7),
+			module8 (8),
+			module9 (9),
+			module10 (10),
+			module11 (11),
+			module12 (12),
+			module13 (13),
+			module14 (14),
+			module15 (15),
+			module16 (16)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"L-band amplifier module number"
+		::= { moduleReadingsEntry 1 }
+
+	moduleCommunication  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			fail(1),
+			absent(2),
+			bootloader(3)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of module communication.
+			Other module data is only valid if moduleCommunication reads as OK."
+		::= { moduleReadingsEntry 2 }
+
+	moduleIpPowerStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of IP power"
+		::= { moduleReadingsEntry 3 }
+
+	moduleIpPower		  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"IP power measured in hundredths of dBm"
+		::= { moduleReadingsEntry 4 }
+
+	moduleOpPowerStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of OP power"
+		::= { moduleReadingsEntry 5 }
+
+	moduleOpPower		  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"OP power measured in hundredths of dBm"
+		::= { moduleReadingsEntry 6 }
+
+	moduleAmp1Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp1"
+		::= { moduleReadingsEntry 7 }
+
+	moduleAmp1Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp1 measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 8 }
+
+	moduleAmp2Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp2"
+		::= { moduleReadingsEntry 9 }
+
+	moduleAmp2Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp2 measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 10 }
+
+	moduleAmp3Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			low(1),
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp3"
+		::= { moduleReadingsEntry 11 }
+
+	moduleAmp3VoltageCurrent  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp3 measured voltage in tenths of Volt
+			or current in mA"
+		::= { moduleReadingsEntry 12 }
+
+	moduleAmp4Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp4"
+		::= { moduleReadingsEntry 13 }
+
+	moduleAmp4VoltageCurrent  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp4 measured voltage in tenths of Volt
+			or current in mA"
+		::= { moduleReadingsEntry 14 }
+
+	moduleAmp5Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp5"
+		::= { moduleReadingsEntry 15 }
+
+	moduleAmp5VoltageCurrent  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp5 measured voltage in tenths of Volt
+			or current in mA"
+		::= { moduleReadingsEntry 16 }
+
+	moduleAmp6Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			low(1),
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp6"
+		::= { moduleReadingsEntry 17 }
+
+	moduleAmp6Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp6 measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 18 }
+		
+	moduleLnbVoltageStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of LNB current"
+		::= { moduleReadingsEntry 19 }
+
+	moduleLnbVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB voltage measured current in mV"
+		::= { moduleReadingsEntry 20 }
+
+	moduleLnbCurrentStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of LNB current"
+		::= { moduleReadingsEntry 21 }
+
+	moduleLnbCurrent  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB measured current in mA"
+		::= { moduleReadingsEntry 22 }
+
+	module65vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V"
+		::= { moduleReadingsEntry 23 }
+
+	module65vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 24 }
+
+	module5vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 5V"
+		::= { moduleReadingsEntry 25 }
+
+	module5vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"5V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 26 }
+
+	moduleTemperatureStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of temperature"
+		::= { moduleReadingsEntry 27 }
+		
+	moduleTemperature  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module temperature in tenths of degrees C,
+			i.e. a reading of 375 is 37.5 degrees C"
+		::= { moduleReadingsEntry 28 }	
+
+	moduleSoftwareNumber  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module software number"
+		::= { moduleReadingsEntry 29 }	
+
+	moduleSoftwareMajorVersion  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module software major version"
+			::= { moduleReadingsEntry 30 }	
+
+	moduleSoftwareMinorVersion  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module software minor version"
+		::= { moduleReadingsEntry 31 }	
+
+	moduleSwitchingPositionStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			fail(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of switching position on switch board"
+		::= { moduleReadingsEntry 32 }
+
+	moduleTemperature2Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of temperature 2"
+		::= { moduleReadingsEntry 33 }
+		
+	moduleTemperature2  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module temperature 2 in tenths of degrees C,
+			i.e. a reading of 375 is 37.5 degrees C"
+		::= { moduleReadingsEntry 34 }	
+
+	moduleNeg2vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of -2V"
+		::= { moduleReadingsEntry 35 }
+
+	moduleNeg2vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"-2V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 36 }
+		
+	moduleNeg5vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of -5V"
+		::= { moduleReadingsEntry 37 }
+
+	moduleNeg5vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"-5V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 38 }
+
+	module12v5Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 12.5V"
+		::= { moduleReadingsEntry 39 }
+
+	module12v5Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"12.5V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 40 }
+
+	moduleName		OBJECT-TYPE
+		SYNTAX		OCTET STRING
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+				"String containing module name."
+		::= { moduleReadingsEntry 41 }
+		
+	moduleTypeId	  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module type ID"
+		::= { moduleReadingsEntry 42 }		
+
+	module15vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 15V"
+		::= { moduleReadingsEntry 43 }
+
+	module15vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"15V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 44 }
+
+	module12vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 12V"
+		::= { moduleReadingsEntry 45 }
+
+	module12vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"12V measured voltage in tenths of Volt"
+		::= { moduleReadingsEntry 46 }
+
+	moduleAmp1CurrentStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp1 current"
+		::= { moduleReadingsEntry 47 }
+
+	moduleAmp1Current  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp1 measured current in mA"
+		::= { moduleReadingsEntry 48 }
+
+	moduleAmp1FuseStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			fault(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp1 fuse"
+		::= { moduleReadingsEntry 49 }
+
+	moduleAmp2CurrentStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp2 current"
+		::= { moduleReadingsEntry 50 }
+
+	moduleAmp2Current  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp2 measured current in mA"
+		::= { moduleReadingsEntry 51 }
+
+	moduleAmp2FuseStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			fault(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp2 fuse"
+		::= { moduleReadingsEntry 52 }
+
+	moduleAmp1TempStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp1 temperature"
+		::= { moduleReadingsEntry 53 }
+		
+	moduleAmp1Temperature  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp1 temperature in tenths of degrees C,
+			i.e. a reading of 375 is 37.5 degrees C"
+		::= { moduleReadingsEntry 54 }	
+
+	moduleAmp2TempStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of amp2 temperature"
+		::= { moduleReadingsEntry 55 }
+		
+	moduleAmp2Temperature  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Amp2 temperature in tenths of degrees C,
+			i.e. a reading of 375 is 37.5 degrees C"
+		::= { moduleReadingsEntry 56 }	
+
+	moduleSummary  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			fail(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Module summary status.
+			This status is valid only if moduleCommunication reads OK."
+		::= { moduleReadingsEntry 57 }
+
+
+-- **************************************************
+-- *** Start of chassis reading Table definitions: ***
+-- **************************************************	
+
+	chassisReadingsTable  OBJECT-TYPE
+		SYNTAX SEQUENCE OF ChassisReadingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Chassis readings table"
+		::= { roObjects 3 }
+
+	chassisReadingsEntry  OBJECT-TYPE
+		SYNTAX 	ChassisReadingsEntry
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Single chassis entry (conceptual row) in the chassis reading table"
+		INDEX { chassisReadingNumber }
+		::= { chassisReadingsTable 1 }
+
+	ChassisReadingsEntry ::= SEQUENCE {
+		chassisReadingNumber					INTEGER,
+		chassisCommunication					INTEGER,
+		chassisPsu1Status						INTEGER,
+		chassisPsu1Voltage						Integer32,
+		chassisPsu2Status						INTEGER,
+		chassisPsu2Voltage						Integer32,
+		chassisVbusStatus						INTEGER,
+		chassisVbusVoltage						Integer32,
+		chassis65vStatus						INTEGER,
+		chassis65vVoltage						Integer32,
+		chassis5vStatus							INTEGER,
+		chassis5vVoltage						Integer32,
+		chassisFanPsu1Status					INTEGER,
+		chassisFanPsu1Tacho						Integer32,
+		chassisFanPsu2Status					INTEGER,
+		chassisFanPsu2Tacho						Integer32,
+		chassisFan1Status						INTEGER,
+		chassisFan1Tacho						Integer32,
+		chassisFan2Status						INTEGER,
+		chassisFan2Tacho						Integer32,
+		chassisTemperatureStatus				INTEGER,
+		chassisTemperature						Integer32,
+		chassisSoftwareNumber					Integer32,
+		chassisSoftwareMajorVersion				Integer32,
+		chassisSoftwareMinorVersion				Integer32,
+		chassisMainCPUSoftwareNumber			Integer32,
+		chassisMainCPUSoftwareMajorVer			Integer32,
+		chassisMainCPUSoftwareMinorVer			Integer32,
+		chassisSwitchingPositionStatus  		INTEGER,
+		chassis65vStatus2						INTEGER,
+		chassis65vVoltage2						Integer32,
+		chassis65vStatus3						INTEGER,
+		chassis65vVoltage3                      Integer32,
+		chassis65vStatus4						INTEGER,
+		chassis65vVoltage4                      Integer32,
+		chassis65vStatus5						INTEGER,
+		chassis65vVoltage5                      Integer32,
+		chassis65vBusStatus						INTEGER,
+		chassis65vBusVoltage                    Integer32,
+		chassis3vStatus							INTEGER,
+		chassis3vVoltage                        Integer32,
+		chassis3vStatus2						INTEGER,
+		chassis3vVoltage2                       Integer32,
+		chassis3vBusStatus						INTEGER,
+		chassis3vBusVoltage	                    Integer32,
+		chassisHumidityStatus					INTEGER,
+		chassisHumidity		                    Integer32,
+		chassisFan3Status						INTEGER,
+		chassisFan3Tacho						Integer32,
+		chassisFan4Status						INTEGER,
+		chassisFan4Tacho						Integer32
+	}
+
+	chassisReadingNumber  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			chassis1 (1)
+		}
+		MAX-ACCESS not-accessible
+		STATUS     current
+		DESCRIPTION 
+			"Chassis number"
+		::= { chassisReadingsEntry 1 }
+
+	chassisCommunication  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			fail(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"status"
+		::= { chassisReadingsEntry 2 }
+
+	chassisPsu1Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of PSU 1"
+		::= { chassisReadingsEntry 3 }
+
+	chassisPsu1Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"PSU 1 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 4 }
+
+	chassisPsu2Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of PSU 2"
+		::= { chassisReadingsEntry 5 }
+
+	chassisPsu2Voltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"PSU 2 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 6 }
+
+	chassisVbusStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),
+			low(1),
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of VBUS"
+		::= { chassisReadingsEntry 7 }
+
+	chassisVbusVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"VBUS measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 8 }
+		
+	chassis65vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V"
+		::= { chassisReadingsEntry 9 }
+
+	chassis65vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 10 }
+
+	chassis5vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 5V"
+		::= { chassisReadingsEntry 11 }
+
+	chassis5vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"5V measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 12 }
+
+	chassisFanPsu1Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN of PSU 1"
+		::= { chassisReadingsEntry 13 }
+
+	chassisFanPsu1Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN of PSU 1 speed"
+		::= { chassisReadingsEntry 14 }
+
+	chassisFanPsu2Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN of PSU 2"
+		::= { chassisReadingsEntry 15 }
+
+	chassisFanPsu2Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN of PSU 2 speed"
+		::= { chassisReadingsEntry 16 }
+
+	chassisFan1Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN 1"
+		::= { chassisReadingsEntry 17 }
+
+	chassisFan1Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN 1 speed"
+		::= { chassisReadingsEntry 18 }
+
+	chassisFan2Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN 2"
+		::= { chassisReadingsEntry 19 }
+
+	chassisFan2Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN 2 speed"
+		::= { chassisReadingsEntry 20 }
+		
+	chassisTemperatureStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of temperature"
+		::= { chassisReadingsEntry 21 }
+		
+	chassisTemperature  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Chassis temperature in tenths of degrees C,
+			i.e. a reading of 375 is 37.5 degrees C"
+		::= { chassisReadingsEntry 22 }	
+
+	chassisSoftwareNumber  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Chassis software number"
+		::= { chassisReadingsEntry 23 }	
+
+	chassisSoftwareMajorVersion  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Chassis software major version"
+		::= { chassisReadingsEntry 24 }	
+
+	chassisSoftwareMinorVersion  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Chassis software minor version"
+		::= { chassisReadingsEntry 25 }	
+
+	chassisMainCPUSoftwareNumber  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Main CPU software number"
+		::= { chassisReadingsEntry 26 }	
+
+	chassisMainCPUSoftwareMajorVer	  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Main CPU software major version"
+		::= { chassisReadingsEntry 27 }	
+
+	chassisMainCPUSoftwareMinorVer	  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Main CPU software minor version"
+		::= { chassisReadingsEntry 28 }	
+
+	chassisSwitchingPositionStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			fail(1)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of switching position on chassis"
+		::= { chassisReadingsEntry 29 }
+		
+	chassis65vStatus2  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V PSU 2"
+		::= { chassisReadingsEntry 30 }
+
+	chassis65vVoltage2  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V PSU 2 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 31 }
+
+	chassis65vStatus3  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V PSU 3"
+		::= { chassisReadingsEntry 32 }
+
+	chassis65vVoltage3  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V PSU 3 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 33 }
+
+	chassis65vStatus4  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V PSU 4"
+		::= { chassisReadingsEntry 34 }
+
+	chassis65vVoltage4  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V PSU 4 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 35 }
+
+	chassis65vStatus5  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V PSU 5"
+		::= { chassisReadingsEntry 36 }
+
+	chassis65vVoltage5  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V PSU 5 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 37 }
+
+	chassis65vBusStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 6.5V BUS"
+		::= { chassisReadingsEntry 38 }
+
+	chassis65vBusVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"6.5V BUS measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 39 }
+
+
+	chassis3vStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 3V PSU 1"
+		::= { chassisReadingsEntry 40 }
+
+	chassis3vVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"3V PSU 5 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 41 }		
+		
+	chassis3vStatus2  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 3V PSU 2"
+		::= { chassisReadingsEntry 42 }
+
+	chassis3vVoltage2  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"3V PSU 2 measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 43 }		
+		
+	chassis3vBusStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of 3V BUS"
+		::= { chassisReadingsEntry 44 }
+
+	chassis3vBusVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"3V BUS measured voltage in tenths of Volt"
+		::= { chassisReadingsEntry 45 }
+
+	chassisHumidityStatus  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of humidity"
+		::= { chassisReadingsEntry 46 }
+
+	chassisHumidity  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"humidity in %"
+		::= { chassisReadingsEntry 47 }
+
+	chassisFan3Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN 3"
+		::= { chassisReadingsEntry 48 }
+
+	chassisFan3Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN 3 speed"
+		::= { chassisReadingsEntry 49 }
+
+	chassisFan4Status  OBJECT-TYPE
+		SYNTAX     INTEGER {
+			ok(0),	
+			low(1),	
+			high(2)	
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"Status of FAN 4"
+		::= { chassisReadingsEntry 50 }
+
+	chassisFan4Tacho  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"FAN 4 speed"
+		::= { chassisReadingsEntry 51 }
+
+		
+		
+-- **************************************************
+-- **************************************************		
+
+	summaryAlarm OBJECT-TYPE
+		SYNTAX	INTEGER
+		{
+			ok(0),
+			alarm(1)
+		}
+		MAX-ACCESS	read-only
+		STATUS	current
+		DESCRIPTION
+				"Current summary alarm status."
+		::= { roObjects 4 }	
+	
+-- **************************************************
+-- *** Trap definitions: 						  ***
+-- **************************************************	
+
+	chassisPsu1Status-trap NOTIFICATION-TYPE
+			OBJECTS    {
+							chassisPsu1Status
+					   }
+			STATUS     current
+			DESCRIPTION
+					"This trap sent every 5s if PSU1 shows a fault"
+			::= { traps 1 }
+
+	chassisPsu2Status-trap NOTIFICATION-TYPE
+			OBJECTS    {
+							chassisPsu2Status
+					   }
+			STATUS     current
+			DESCRIPTION
+					"This trap sent every 5s if PSU2 shows a fault"
+			::= { traps 2 }
+
+	summaryAlarm-trap NOTIFICATION-TYPE
+			OBJECTS    {
+							summaryAlarm
+					   }
+			STATUS     current
+			DESCRIPTION
+					"This trap is sent every 5s if the unit shows a fault"
+			::= { traps 3 }
+			
+-- **************************************************
+-- *** Objects group lists: 					  ***
+-- **************************************************	
+
+	rwObjectsGroupList	OBJECT-GROUP
+		OBJECTS
+		{
+			nbrMainModule,
+			nbrRedundantModule,
+			tracking,
+			pathSetModuleUse,
+			pathSetGain,
+			pathSetSlope,
+			pathInputNumber,
+			pathOutputNumber,
+			pathAttenuator1,
+			pathAttenuator2,
+			pathAttenuator3,
+			pathSetMode,
+			hotColdRedundantModule,
+			checkColdRedundantModule,
+			priority,
+			nbrMainModuleBlock,
+			nbrRedundantModuleBlock,
+			trackingBlock,
+			moduleSetLimits,
+			moduleMode,
+			modulePower,
+			moduleGain,
+			moduleSlope,
+			moduleLnb,
+			moduleTimeConstant,
+			moduleAttenuator1,
+			moduleAttenuator2,
+			moduleAttenuator3,
+			moduleTone,
+			chassisSetLimits,
+			trapEnabled,
+			trapReceiverIPAddress,
+			trapCommunity,
+			ipIPAddress,
+			ipSubnet,
+			ipDHCP,
+			ipGateway,
+			ipApplyReset,
+			ethernetConfigAutoNegotiateMode,
+			ethernetConfigDuplex,
+			ethernetConfigSpeed,
+			initNoModules,
+			factoryDefault,
+			reboot			
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of read/write objects used in this MIB"
+	::= { groupObjects 1 }
+
+	roObjectsGroupList	OBJECT-GROUP
+		OBJECTS
+		{
+			pathModuleUsed,
+			lastCheckRedundantModule,
+			moduleCommunication,
+			moduleIpPowerStatus,
+			moduleIpPower,
+			moduleOpPowerStatus,
+			moduleOpPower,
+			moduleAmp1Status,
+			moduleAmp1Voltage,
+			moduleAmp2Status,
+			moduleAmp2Voltage,
+			moduleAmp3Status,
+			moduleAmp3VoltageCurrent,
+			moduleAmp4Status,
+			moduleAmp4VoltageCurrent,
+			moduleAmp5Status,
+			moduleAmp5VoltageCurrent,
+			moduleAmp6Status,
+			moduleAmp6Voltage,
+			moduleLnbVoltageStatus,
+			moduleLnbVoltage,
+			moduleLnbCurrentStatus,
+			moduleLnbCurrent,
+			module65vStatus,
+			module65vVoltage,
+			module5vStatus,
+			module5vVoltage,
+			moduleTemperatureStatus,
+			moduleTemperature,
+			moduleSoftwareNumber,
+			moduleSoftwareMajorVersion,
+			moduleSoftwareMinorVersion,
+			moduleSwitchingPositionStatus,
+			moduleTemperature2Status,
+			moduleTemperature2,
+			moduleNeg2vStatus,
+			moduleNeg2vVoltage,
+			moduleNeg5vStatus,
+			moduleNeg5vVoltage,
+			module12v5Status,
+			module12v5Voltage,
+			moduleName,
+			moduleTypeId,
+			module15vStatus,
+			module15vVoltage,
+			module12vStatus,
+			module12vVoltage,
+			moduleAmp1CurrentStatus,
+			moduleAmp1Current,
+			moduleAmp1FuseStatus,
+			moduleAmp2CurrentStatus,
+			moduleAmp2Current,
+			moduleAmp2FuseStatus,
+			moduleAmp1TempStatus,
+			moduleAmp1Temperature,
+			moduleAmp2TempStatus,
+			moduleAmp2Temperature,
+			moduleSummary,
+			chassisCommunication,
+			chassisPsu1Status,
+			chassisPsu1Voltage,
+			chassisPsu2Status,
+			chassisPsu2Voltage,
+			chassisVbusStatus,
+			chassisVbusVoltage,
+			chassis65vStatus,
+			chassis65vVoltage,
+			chassis5vStatus,
+			chassis5vVoltage,
+			chassisFanPsu1Status,
+			chassisFanPsu1Tacho,
+			chassisFanPsu2Status,
+			chassisFanPsu2Tacho,
+			chassisFan1Status,
+			chassisFan1Tacho,
+			chassisFan2Status,
+			chassisFan2Tacho,
+			chassisTemperatureStatus,
+			chassisTemperature,
+			chassisSoftwareNumber,
+			chassisSoftwareMajorVersion,
+			chassisSoftwareMinorVersion,
+			chassisMainCPUSoftwareNumber,
+			chassisMainCPUSoftwareMajorVer,
+			chassisMainCPUSoftwareMinorVer,
+			chassisSwitchingPositionStatus,
+			summaryAlarm,
+			chassis65vStatus2,
+			chassis65vVoltage2,
+			chassis65vStatus3,
+			chassis65vVoltage3,
+			chassis65vStatus4,
+			chassis65vVoltage4,
+			chassis65vStatus5,
+			chassis65vVoltage5,
+			chassis65vBusStatus,
+			chassis65vBusVoltage,
+			chassis3vStatus,
+			chassis3vVoltage,
+			chassis3vStatus2,
+			chassis3vVoltage2,
+			chassis3vBusStatus,
+			chassis3vBusVoltage,
+			chassisHumidityStatus,
+			chassisHumidity,
+			chassisFan3Status,
+			chassisFan3Tacho,
+			chassisFan4Status,
+			chassisFan4Tacho
+
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of read only objects used in this MIB"
+	::= { groupObjects 2 }
+
+-- Notification group lists
+	trapsGroupList	NOTIFICATION-GROUP
+		NOTIFICATIONS
+		{
+			chassisPsu1Status-trap,
+			chassisPsu2Status-trap,
+			summaryAlarm-trap		
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of trap objects used in this MIB"
+	::= { groupNotifications 1 }
+
+altoCompliance  MODULE-COMPLIANCE
+	STATUS     current
+	DESCRIPTION 
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			rwObjectsGroupList,
+			roObjectsGroupList,
+			trapsGroupList
+		} 
+	::= { moduleCompliance 1 }	
+
+
+
+END

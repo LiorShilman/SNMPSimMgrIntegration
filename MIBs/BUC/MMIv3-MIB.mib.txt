@@ -1,0 +1,300 @@
+-- WARNING!!  UNPUBLISHED, UNCERTIFIED MIB!  FOR LAB USE ONLY!
+-- Copyright 2017 Mission Microwave Technologies, Inc.  All rights reserved.
+
+MMI-ODU-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32,
+    NOTIFICATION-TYPE, enterprises             FROM SNMPv2-SMI
+;
+
+-- Enterprise: Mission Microwave Technologies, Inc.
+-- PEN 48246 — { enterprises 48246 }
+
+mmiODU MODULE-IDENTITY
+    LAST-UPDATED "201706280000Z"
+    ORGANIZATION "missionmicrowave.com"
+    CONTACT-INFO
+	"postal:   Chad Deckman
+                   9924 Norwalk Blvd, Suite 150
+                   Santa Fe Springs, CA  90670
+
+          email:   chad@missionmicrowave.com"
+    DESCRIPTION
+	"Mission Microwave development MIB"
+    REVISION     "201706280000Z"
+    DESCRIPTION
+	"Version 3 — added temperature, save/reset, notifications"
+    REVISION     "201607200000Z"
+    DESCRIPTION
+	"Development MIB, not published"
+    ::= { enterprises 48246 1 }
+
+mmiODUScalars            OBJECT IDENTIFIER ::= { mmiODU 1 }
+mmiODUStrings            OBJECT IDENTIFIER ::= { mmiODU 2 }
+mmiODUNotifications      OBJECT IDENTIFIER ::= { mmiODU 3 }
+mmiODUNotificationsPrefix  OBJECT IDENTIFIER ::= { mmiODUNotifications 0 }
+mmiODUNotificationsObjects OBJECT IDENTIFIER ::= { mmiODUNotifications 2 }
+
+-- ============================================================
+-- String objects (read-only device info)
+-- ============================================================
+
+mmiODUModelNumber OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is a read-only object to return the model number of the ODU"
+    DEFVAL { "" }
+    ::= { mmiODUStrings 1 }
+
+mmiODUSerialNumber OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is a read-only object to return the serial number of the ODU"
+    DEFVAL { "0000" }
+    ::= { mmiODUStrings 2 }
+
+mmiODUFirmwareVersion OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is a read-only object to return the resident firmware version of the ODU"
+    DEFVAL { "0000" }
+    ::= { mmiODUStrings 3 }
+
+mmiODUHardwareRevision OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is a read-only object to return the resident hardware revision of the ODU"
+    DEFVAL { "0000" }
+    ::= { mmiODUStrings 4 }
+
+mmiODUBootloaderVersion OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "This is a read-only object to return the resident bootloader version of the ODU"
+    DEFVAL { "0000" }
+    ::= { mmiODUStrings 5 }
+
+-- ============================================================
+-- Scalar objects (status, configuration, measurements)
+-- ============================================================
+
+mmiODUStatusWord OBJECT-TYPE
+    SYNTAX      OCTET STRING (SIZE (2))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Read-only Two-byte status word"
+    DEFVAL { "00" }
+    ::= { mmiODUScalars 1 }
+
+mmiODUTempComp OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Read-only byte to indicate temp comp is ON (0x01) or OFF (0x00)"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 2 }
+
+mmiODURedundancyMode OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Sets or reports the redundancy mode.  0x00: redundancy OFF.  0x01: redundancy ON."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 3 }
+
+mmiODUGainSetMode OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Read-only object to return whether or not the gain can be set with a step attenuator.
+         Step attenuator NOT present: 0x00.  Step attenuator present: 0x01."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 4 }
+
+mmiODUFaultPolarity OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Set the fault bit polarity.  0x00, active low; 0x01, active high"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 5 }
+
+mmiODUMuteCommandPolarity OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Polarity of the mute command.  0x00: Active low; 0x01, active high"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 6 }
+
+mmiODULedEnable OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Enable front panel LED status indicator.  0x00 LED disabled; 0x01 LED enabled"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 7 }
+
+mmiODURxRefSource OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Set or return the Rx frequency reference source.  0x00, external source; 0x01, internal source"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 8 }
+
+mmiODUTxRefSource OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Set or return the Tx frequency reference source.  0x00, external source; 0x01, internal source"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 9 }
+
+mmiODUSWTxEnable OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Set or return the software Tx enable status.  0x00 inactive; 0x01 active."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 10 }
+
+mmiODUSWRxEnable OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Set or return the software Rx enable status.  0x00 inactive; 0x01 active."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 11 }
+
+mmiODUTxStepAtten OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Integer to get or set the value of the Tx step attenuator."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 12 }
+
+mmiODUTxLOFreq OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Integer to get or set the value of the Tx LO frequency in GHz."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 13 }
+
+mmiODUTxPower OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Integer to report the output power in dBm"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 14 }
+
+mmiODURxStepAtten OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Integer to get or set the value of the Rx step attenuator."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 15 }
+
+mmiODURxLOFreq OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Integer to get or set the value of the Rx LO frequency in GHz."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 16 }
+
+mmiODURxPower OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Integer to report the Rx input power"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 17 }
+
+mmiODUSaveSettings OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Write-only set to save settings"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 18 }
+
+mmiODUFactoryReset OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+        "Write-only set to restore factory defaults"
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 19 }
+
+mmiODUUserTemperature OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "Integer to report the value of the system temperature."
+    DEFVAL { 0 }
+    ::= { mmiODUScalars 20 }
+
+-- ============================================================
+-- Notification objects and traps
+-- ============================================================
+
+mmiODUFaultStatusString OBJECT-TYPE
+    SYNTAX      OCTET STRING (SIZE (2))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "Status string reported when a fault occurs"
+    ::= { mmiODUNotificationsObjects 1 }
+
+mmiODUFaultName OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION
+        "Fault description text"
+    ::= { mmiODUNotificationsObjects 2 }
+
+mmiODUFaultNotification NOTIFICATION-TYPE
+    OBJECTS { mmiODUFaultStatusString, mmiODUFaultName }
+    STATUS      current
+    DESCRIPTION
+        "This is the notification that will be pushed when a fault occurs"
+    ::= { mmiODUNotificationsPrefix 1 }
+
+END

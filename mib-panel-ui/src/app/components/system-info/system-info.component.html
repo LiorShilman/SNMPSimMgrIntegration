@@ -1,0 +1,61 @@
+<div class="system-info-card">
+  <div class="system-info-glow"></div>
+
+  <div class="system-info-header">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="2" y="3" width="20" height="14" rx="2"/>
+      <path d="M8 21h8m-4-4v4"/>
+    </svg>
+    <span class="system-info-title">System Properties</span>
+  </div>
+
+  <div class="info-columns">
+    <!-- Identity Column -->
+    @if (identityItems.length > 0) {
+      <div class="info-column">
+        <div class="column-label">
+          <span class="column-dot identity"></span>
+          Identity
+        </div>
+        @for (item of identityItems; track item.label) {
+          <div class="info-row">
+            <span class="info-label">{{ item.label }}</span>
+            <span class="info-value">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- System Column -->
+    @if (systemItems.length > 0) {
+      <div class="info-column">
+        <div class="column-label">
+          <span class="column-dot system"></span>
+          System
+        </div>
+        @for (item of systemItems; track item.label) {
+          <div class="info-row">
+            <span class="info-label">{{ item.label }}</span>
+            <span class="info-value" [class.uptime]="item.label === 'Uptime'">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Network Column -->
+    @if (networkItems.length > 0) {
+      <div class="info-column">
+        <div class="column-label">
+          <span class="column-dot network"></span>
+          Network
+        </div>
+        @for (item of networkItems; track item.label) {
+          <div class="info-row">
+            <span class="info-label">{{ item.label }}</span>
+            <span class="info-value" [class.ip-value]="item.icon === 'network' || item.icon === 'gateway' || item.icon === 'subnet' || item.icon === 'dns'">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

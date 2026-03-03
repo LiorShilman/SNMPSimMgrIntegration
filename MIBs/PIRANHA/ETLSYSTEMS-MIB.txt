@@ -1,0 +1,149 @@
+-- *****************************************************************
+-- ETLSYSTEMS-MIB.txt:  ETL Systems Ltd Enterprise
+--                      Management Information Base for ETL systems
+--
+-- REVISION			"200902180000Z"
+-- Feb 2008  		David Lockyer
+--
+-- Copyright (c) 2009 by ETL Systems Ltd
+-- All rights reserved.
+-- 
+-- *****************************************************************
+
+ETLSYSTEMS-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-IDENTITY,
+	enterprises
+		FROM SNMPv2-SMI;
+
+
+etlsystems MODULE-IDENTITY
+	LAST-UPDATED "200902180000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+			
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: [+44 / 0] 1981 259 020
+
+		E-mail: david.lockyer@etlsystems.com"
+	DESCRIPTION
+		"The Management Information Base for the
+		ETL Systems enterprise."
+	REVISION      "200902180000Z"
+	DESCRIPTION
+		"Second version of this MIB module."
+	::= { enterprises 20938 }	-- assigned by IANA
+
+
+etlProducts OBJECT-IDENTITY
+	STATUS	current
+	DESCRIPTION
+		"etlProducts is the root OBJECT IDENTIFIER from
+		which sysObjectID values are assigned."
+	::= { etlsystems 1 }
+
+	lnbservice OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.lnbservice provides a root object identifier
+			for LNB Service shelves."
+		::= { etlProducts 1 }
+
+	matrix OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.matrix provides a root object identifier
+			for matrices and matrix controllers."
+		::= { etlProducts 2 }
+
+	splittercombiner OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.splittercombiner provides a root object identifier
+			for splitters and combiners."
+		::= { etlProducts 3 }
+
+	switches OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.switches provides a root object identifier
+			for switches."
+		::= { etlProducts 4 }
+
+	converters OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.converters provides a root object identifier
+			for converters."
+		::= { etlProducts 5 }
+
+	amplifiers OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.amplifiers provides a root object identifier
+			for amplifiers."
+		::= { etlProducts 6 }
+
+	misc OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.misc provides a root object identifier
+			for miscellaneous items."
+		::= { etlProducts 7 }
+
+	psu OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.psu provides a root object identifier
+			for power supplies."
+		::= { etlProducts 8 }
+
+	fibre OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.fibre provides a root object identifier
+			for fibre products."
+		::= { etlProducts 9 }
+
+	oemproducts OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlProducts.oemproducts provides a root object identifier
+			for oem products."
+		::= { etlProducts 10 }
+
+-- 		bluwan OBJECT-IDENTITY
+-- 			STATUS	current
+-- 			DESCRIPTION
+-- 				"etlProducts.oemproducts.bluwan provides a root object identifier
+-- 				for BluWan Products."
+-- 			::= { oemproducts 1 }
+
+etlModules OBJECT-IDENTITY
+	STATUS	current
+	DESCRIPTION
+		"etlModules provides a root object identifier
+		from which MODULE-IDENTITY values may be assigned."
+	::= { etlsystems 2 }
+
+	monitoringBoards OBJECT-IDENTITY
+		STATUS	current
+		DESCRIPTION
+			"etlModules.monitoringBoards provides a root object identifier
+			for Monitoring Board Modules."
+		::= { etlModules 1 }
+
+etlExperiments OBJECT-IDENTITY
+	STATUS	current
+	DESCRIPTION
+		"etlExperiments provides a root object identifier
+		from which experimental mibs may be placed."
+	::= { etlsystems 3 }
+
+END

@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIB Panel UI — מדריך אינטגרציה</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Backgrounds — GitHub Dark scale ── */
+  --bg-deep:      #0d1117;
+  --bg-main:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2128;
+  --bg-card-hover:#21262d;
+  --bg-code:      #010409;
+
+  /* ── Borders ── */
+  --border:        rgba(240,246,252,0.1);
+  --border-accent: rgba(88,166,255,0.35);
+
+  /* ── Accent — GitHub Blue ── */
+  --gold:       #58a6ff;
+  --gold-light: #79c0ff;
+  --gold-dim:   rgba(88,166,255,0.1);
+
+  /* ── Syntax / status colors ── */
+  --platinum: #c9d1d9;
+  --teal:     #39d353;
+  --teal-dim: rgba(57,211,83,0.1);
+  --blue:     #58a6ff;
+  --blue-dim: rgba(88,166,255,0.1);
+  --purple:   #d2a8ff;
+  --orange:   #ffa657;
+  --green:    #3fb950;
+  --red:      #ff7b72;
+  --yellow:   #e3b341;
+
+  /* ── Text — readable on dark ── */
+  --text-1: #f0f6fc;
+  --text-2: #8b949e;
+  --text-3: #484f58;
+
+  /* ── Shadows ── */
+  --glow-gold:   0 0 20px rgba(88,166,255,0.12);
+  --shadow-card: 0 1px 3px rgba(1,4,9,0.8), 0 4px 12px rgba(1,4,9,0.4);
+  --r:    8px;
+  --r-sm: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-1);
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 15px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.hero {
+  position: relative;
+  padding: 80px 40px 60px;
+  text-align: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse 900px 400px at 50% 0%, rgba(88,166,255,0.05) 0%, transparent 70%),
+              linear-gradient(180deg, #111827 0%, var(--bg-deep) 100%);
+  border-bottom: 1px solid var(--border);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2358a6ff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 1px solid rgba(88,166,255,0.3);
+  border-radius: 20px;
+  background: rgba(88,166,255,0.08);
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-badge::before { content: '◆'; font-size: 8px; }
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 6vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #f0f6fc 0%, var(--gold) 60%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+.hero-sub {
+  color: var(--text-2);
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 300;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── NAV ── */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,9,15,0.85);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  overflow-x: auto;
+}
+.nav-inner {
+  display: flex;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  direction: rtl;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  color: var(--text-3);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.nav-link:hover { color: var(--text-1); border-bottom-color: var(--gold); }
+.nav-link.active { color: var(--gold); border-bottom-color: var(--gold); }
+.nav-link .num {
+  color: var(--gold);
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .container { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ── SIDEBAR TOC ── */
+.sidebar {
+  position: sticky;
+  top: 60px;
+  direction: rtl;
+}
+.sidebar-title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  margin-bottom: 2px;
+  border-radius: var(--r-sm);
+  color: var(--text-3);
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.toc-item:hover { background: var(--bg-card); color: var(--text-2); }
+.toc-item.active { background: rgba(88,166,255,0.08); color: var(--gold); border-right: 2px solid var(--gold); }
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.6;
+  min-width: 20px;
+}
+
+/* ── MAIN CONTENT ── */
+.main { direction: rtl; }
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 80px;
+  scroll-margin-top: 80px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  background: rgba(88,166,255,0.08);
+  border: 1px solid rgba(88,166,255,0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.section-desc {
+  color: var(--text-2);
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: rgba(88,166,255,0.4);
+  box-shadow: var(--shadow-card);
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title::before { content: '▸'; font-size: 10px; }
+
+/* ── ARCH DIAGRAM ── */
+.arch-box {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  margin-bottom: 24px;
+  direction: ltr;
+  overflow-x: auto;
+}
+.arch-box pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-2);
+  white-space: pre;
+}
+.arch-box pre .box { color: var(--blue); }
+.arch-box pre .label { color: var(--gold); }
+.arch-box pre .arrow { color: var(--teal); }
+
+/* ── FLOW STEPS ── */
+.flow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  transition: border-color 0.2s;
+}
+.flow-step:hover { border-color: rgba(88,166,255,0.3); }
+.flow-step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-dim);
+  border: 1px solid rgba(57,211,83,0.2);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.flow-step-text { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+.flow-step-text strong { color: var(--text-1); }
+
+/* ── CODE BLOCK ── */
+.code-wrap {
+  margin-bottom: 24px;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  direction: ltr;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+.code-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+.code-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.code-copy:hover { color: var(--gold); border-color: var(--border-accent); }
+.code-body {
+  background: var(--bg-code);
+  padding: 20px;
+  overflow-x: auto;
+}
+.code-body pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+}
+/* Syntax colors */
+.kw { color: var(--purple); }
+.ty { color: var(--blue); }
+.st { color: var(--orange); }
+.cm { color: #546e7a; font-style: italic; }
+.nm { color: var(--teal); }
+.nu { color: #b5cea8; }
+.de { color: var(--yellow); }
+.op { color: var(--text-2); }
+.pr { color: var(--red); }
+.pl { color: var(--text-1); }
+
+/* ── TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 24px;
+  direction: rtl;
+}
+.data-table th {
+  background: var(--bg-panel);
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 12px 16px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-2);
+  vertical-align: top;
+}
+.data-table td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--blue);
+  white-space: nowrap;
+}
+.data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── TABS ── */
+.tabs { margin-bottom: 28px; }
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text-2); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── CALLOUT ── */
+.callout {
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: var(--r-sm);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.callout.info {
+  background: var(--blue-dim);
+  border: 1px solid rgba(86,156,214,0.2);
+  color: #8bc8e8;
+}
+.callout.warn {
+  background: rgba(255,171,0,0.08);
+  border: 1px solid rgba(255,171,0,0.2);
+  color: #ffc940;
+}
+.callout.tip {
+  background: var(--teal-dim);
+  border: 1px solid rgba(78,201,176,0.2);
+  color: #6ed9c4;
+}
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout-text { line-height: 1.6; }
+.callout-text strong { color: inherit; }
+
+/* ── BADGE TAGS ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.badge-rw { background: rgba(57,211,83,0.1); color: var(--teal); border: 1px solid rgba(57,211,83,0.2); }
+.badge-ro { background: rgba(88,166,255,0.1); color: var(--blue); border: 1px solid rgba(88,166,255,0.2); }
+.badge-req { background: rgba(88,166,255,0.1); color: var(--gold); border: 1px solid rgba(88,166,255,0.2); }
+
+/* ── INPUT TYPE CARDS ── */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.input-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  transition: all 0.2s;
+}
+.input-card:hover {
+  border-color: rgba(88,166,255,0.4);
+  transform: translateY(-2px);
+}
+.input-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.input-desc { font-size: 12px; color: var(--text-3); }
+.input-example {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  margin-top: 6px;
+}
+
+/* ── STEP LIST ── */
+.step-list { counter-reset: steps; }
+.step-item {
+  counter-increment: steps;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  margin-bottom: 36px;
+}
+.step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(88,166,255,0.08);
+  border: 2px solid rgba(88,166,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.step-line {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, rgba(88,166,255,0.35), transparent);
+  margin-top: 6px;
+  min-height: 20px;
+}
+.step-content-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 10px;
+  padding-top: 8px;
+}
+.step-content-desc { font-size: 14px; color: var(--text-2); margin-bottom: 16px; line-height: 1.7; }
+
+/* ── DTO ACCORDION ── */
+.accordion { margin-bottom: 12px; }
+.accordion-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-1);
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: right;
+}
+.accordion-btn:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+.accordion-btn.open { border-color: rgba(88,166,255,0.4); border-bottom-right-radius: 0; border-bottom-left-radius: 0; }
+.accordion-icon { color: var(--gold); font-size: 12px; transition: transform 0.3s; }
+.accordion-btn.open .accordion-icon { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  background: var(--bg-code);
+  border: 1px solid rgba(88,166,255,0.3);
+  border-top: none;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+}
+.accordion-body.open { display: block; }
+
+/* ── TROUBLESHOOT TABLE ── */
+.trouble-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  direction: rtl;
+}
+.trouble-table th {
+  background: var(--bg-panel);
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 12px 16px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+}
+.trouble-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.trouble-table td:first-child { color: var(--red); font-size: 13px; }
+.trouble-table td:last-child { color: var(--text-2); font-size: 13px; }
+.trouble-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── DEP GRAPH ── */
+.dep-graph {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  direction: ltr;
+  overflow-x: auto;
+}
+.dep-graph pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+.dep-graph pre .host { color: var(--gold); }
+.dep-graph pre .comp { color: var(--blue); }
+.dep-graph pre .svc { color: var(--teal); }
+.dep-graph pre .note { color: #546e7a; }
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px;
+  text-align: center;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: #2a3040; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero { padding: 50px 20px 40px; }
+  .container { padding: 40px 20px; }
+  .nav-bar { padding: 0 16px; }
+  .hero-stats { gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">MIB Panel UI · Integration Guide · v2.0</div>
+  <h1>מדריך אינטגרציה<br>MIB Panel UI</h1>
+  <p class="hero-sub">מדריך מקיף לשילוב פאנל SNMP MIB אינטראקטיבי בפרויקט Angular קיים, עם תמיכה ב-SignalR בזמן אמת</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-label">קומפוננטות</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">שירותים</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-label">שלבי אינטגרציה</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">0</div><div class="hero-stat-label">תלויות חיצוניות</div></div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a class="nav-link" href="#arch"><span class="num">01</span> ארכיטקטורה</a>
+    <a class="nav-link" href="#files"><span class="num">02</span> קבצים</a>
+    <a class="nav-link" href="#deps"><span class="num">03</span> תלויות</a>
+    <a class="nav-link" href="#schema"><span class="num">04</span> JSON Schema</a>
+    <a class="nav-link" href="#integration"><span class="num">05</span> אינטגרציה</a>
+    <a class="nav-link" href="#csharp"><span class="num">06</span> WPF / C#</a>
+    <a class="nav-link" href="#custom"><span class="num">07</span> התאמה</a>
+    <a class="nav-link" href="#example"><span class="num">08</span> דוגמה</a>
+    <a class="nav-link" href="#trouble"><span class="num">09</span> פתרון בעיות</a>
+    <a class="nav-link" href="#oidwatch"><span class="num">10</span> OID Watch</a>
+    <a class="nav-link" href="#mibbrowser"><span class="num">11</span> MIB Browser</a>
+    <a class="nav-link" href="#automation"><span class="num">12</span> Automation</a>
+    <a class="nav-link" href="#oidchanged"><span class="num">13</span> onOidChanged</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="sidebar">
+    <div class="sidebar-title">תוכן עניינים</div>
+    <a class="toc-item active" href="#arch"><span class="toc-num">01</span> ארכיטקטורה</a>
+    <a class="toc-item" href="#files"><span class="toc-num">02</span> קבצים</a>
+    <a class="toc-item" href="#deps"><span class="toc-num">03</span> תלויות</a>
+    <a class="toc-item" href="#schema"><span class="toc-num">04</span> JSON Schema</a>
+    <a class="toc-item" href="#integration"><span class="toc-num">05</span> אינטגרציה</a>
+    <a class="toc-item" href="#csharp"><span class="toc-num">06</span> WPF / C#</a>
+    <a class="toc-item" href="#custom"><span class="toc-num">07</span> התאמה אישית</a>
+    <a class="toc-item" href="#example"><span class="toc-num">08</span> דוגמה מינימלית</a>
+    <a class="toc-item" href="#trouble"><span class="toc-num">09</span> פתרון בעיות</a>
+    <a class="toc-item" href="#oidwatch"><span class="toc-num">10</span> OID Watch Service</a>
+    <a class="toc-item" href="#mibbrowser"><span class="toc-num">11</span> MIB Browser Live</a>
+    <a class="toc-item" href="#automation"><span class="toc-num">12</span> Full Automation</a>
+    <a class="toc-item" href="#oidchanged"><span class="toc-num">13</span> Angular onOidChanged</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══════════════════ SECTION 1: ARCH ══════════════════ -->
+    <section class="section" id="arch">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">סקירת ארכיטקטורה</h2>
+      </div>
+      <p class="section-desc">המערכת מורכבת משלוש שכבות: תקשורת (SignalR), ניהול מצב (Signals), ורנדור (Standalone Components). כל שכבה עצמאית ומוחלפת.</p>
+
+      <!-- Arch Diagram -->
+      <div class="arch-box">
+        <pre>
+┌─────────────────────────────────────────────────────┐
+│                  Your Angular App                    │
+│                                                     │
+│  ┌──────────────┐    ┌──────────────────────────┐   │
+│  │ SignalR Hub   │───▶│ MibPanelService          │   │
+│  │ (real-time)   │    │ - schema signal           │   │
+│  └──────────────┘    │ - sendSet()               │   │
+│                      │ - refreshValues()          │   │
+│                      └──────────┬───────────────┘   │
+│                                 │                    │
+│                      ┌──────────▼───────────────┐   │
+│                      │ FieldClassifierService    │   │
+│                      │ - classifyScalars()       │   │
+│                      │ - extractIdentity()       │   │
+│                      └──────────┬───────────────┘   │
+│                                 │                    │
+│         ┌───────────────────────┼──────────────┐    │
+│         ▼                       ▼              ▼    │
+│  ┌────────────┐  ┌────────────────┐  ┌──────────┐  │
+│  │StatusGrid  │  │ConfigGroup     │  │MibTable  │  │
+│  │(monitoring)│  │(SET editable)  │  │(tables)  │  │
+│  └────────────┘  └────────────────┘  └──────────┘  │
+└─────────────────────────────────────────────────────┘</pre>
+      </div>
+
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">זרימת נתונים</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="flow-step-num">1</div><div class="flow-step-text"><strong>JSON Schema</strong> מגיע — מקובץ, API, או SignalR דרך <code style="color:var(--teal);font-family:JetBrains Mono,monospace;font-size:12px;">RequestSchema</code></div></div>
+        <div class="flow-step"><div class="flow-step-num">2</div><div class="flow-step-text"><strong>MibPanelService</strong> שומר אותו ב-<code style="color:var(--teal);font-family:JetBrains Mono,monospace;font-size:12px;">signal&lt;MibPanelSchema&gt;</code></div></div>
+        <div class="flow-step"><div class="flow-step-num">3</div><div class="flow-step-text"><strong>FieldClassifierService</strong> מסווג scalars — identity / status / config / counters</div></div>
+        <div class="flow-step"><div class="flow-step-num">4</div><div class="flow-step-text"><strong>ModuleSectionComponent</strong> מרנדר כל מודול עם 3 מקטעים: Monitoring · Configuration · Tables</div></div>
+        <div class="flow-step"><div class="flow-step-num">5</div><div class="flow-step-text"><strong>עדכוני Real-Time</strong>: אירועי SignalR מעדכנים ערכי שדות אוטומטית דרך Angular <code style="color:var(--teal);font-family:JetBrains Mono,monospace;font-size:12px;">effect()</code></div></div>
+        <div class="flow-step"><div class="flow-step-num">6</div><div class="flow-step-text"><strong>פעולות SET</strong>: עריכת ערך → MibPanelService שולח ב-SignalR → toast feedback</div></div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-icon">ℹ</div>
+        <div class="callout-text"><strong>דפוסי עיצוב מרכזיים:</strong> Angular Signals לניהול מצב (לא RxJS), Standalone Components (ללא NgModule), <code>effect() + untracked()</code> לעדכון ערכים ללא לולאות אינסופיות.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 2: FILES ══════════════════ -->
+    <section class="section" id="files">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">מלאי קבצים</h2>
+      </div>
+      <p class="section-desc">העתק את הקבצים הבאים מ-<code style="color:var(--teal);font-family:JetBrains Mono,monospace;">mib-panel-ui/src/app/</code> לפרויקט שלך.</p>
+
+      <div class="tabs">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab(this,'tab-models')">Models</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-services')">Services</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-components')">Components</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-styles')">Styles</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-models">
+          <div style="padding:20px 0">
+            <p style="color:var(--text-2);font-size:14px;margin-bottom:16px;">קובץ TypeScript יחיד המכיל את כל ה-interfaces:</p>
+            <table class="data-table">
+              <thead><tr><th>קובץ</th><th>תוכן</th></tr></thead>
+              <tbody>
+                <tr><td>models/mib-schema.ts</td><td>MibPanelSchema, MibFieldSchema, MibTableSchema, EnumOption, SetFeedback ועוד</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-services">
+          <div style="padding:20px 0">
+            <table class="data-table">
+              <thead><tr><th>קובץ</th><th>תפקיד</th></tr></thead>
+              <tbody>
+                <tr><td>services/signalr.service.ts</td><td>לקוח SignalR עם auto-reconnect — <strong>יש להתאים ל-hub שלך</strong></td></tr>
+                <tr><td>services/mib-panel.service.ts</td><td>ניהול מצב הפאנל, פקודות SET, עדכוני ערכים בזמן אמת</td></tr>
+                <tr><td>services/field-classifier.service.ts</td><td>סיווג שדות (identity/status/config/counter) ועיצוב תצוגה</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-components">
+          <div style="padding:20px 0">
+            <table class="data-table">
+              <thead><tr><th>קומפוננטה</th><th>קבצים</th><th>תפקיד</th></tr></thead>
+              <tbody>
+                <tr><td>SidePanelComponent</td><td>side-panel.component.ts</td><td>מכל פאנל נשלף</td></tr>
+                <tr><td>ModuleSectionComponent</td><td>module-section.component.ts</td><td>עטיפת מודול: monitoring + config + tables</td></tr>
+                <tr><td>StatusGridComponent</td><td>status-grid.component.ts</td><td>כרטיסי סטטוס לקריאה בלבד</td></tr>
+                <tr><td>ConfigGroupComponent</td><td>.ts + .html + .scss</td><td>שדות קונפיגורציה עם SNMP SET</td></tr>
+                <tr><td>ScalarFieldComponent</td><td>.ts + .html + .scss</td><td>רנדור שדה בודד (כל סוגי הקלט)</td></tr>
+                <tr><td>MibTableComponent</td><td>.ts + .html + .scss</td><td>נתוני טבלה עם עריכת תאים</td></tr>
+                <tr><td>DeviceCardComponent</td><td>.ts + .html + .scss</td><td>כרטיס זיהוי מכשיר</td></tr>
+                <tr><td>SystemInfoComponent</td><td>.ts + .html + .scss</td><td>מידע מערכת בתחתית</td></tr>
+                <tr><td>SetFeedbackComponent</td><td>.ts (inline)</td><td>Toast notifications לתוצאות SET</td></tr>
+                <tr><td>ConnectionStatusComponent</td><td>.ts (inline)</td><td>נקודת חיבור SignalR + בחירת מכשיר</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-styles">
+          <div style="padding:20px 0">
+            <table class="data-table">
+              <thead><tr><th>קובץ</th><th>תוכן</th></tr></thead>
+              <tbody>
+                <tr><td>src/styles.scss</td><td>Dark theme גלובלי: פונטים, צבעים, סטיילינג scrollbar</td></tr>
+              </tbody>
+            </table>
+            <div class="callout tip" style="margin-top:16px">
+              <div class="callout-icon">✦</div>
+              <div class="callout-text">ניתן לצמצם את הסגנון הגלובלי לתוך class <code style="font-family:JetBrains Mono,monospace;">.mib-panel-theme</code> כדי למנוע התנגשויות עם סגנונות קיימים.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 3: DEPS ══════════════════ -->
+    <section class="section" id="deps">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">תלויות</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Angular Forms</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;"><code style="color:var(--teal);font-family:JetBrains Mono,monospace;">FormsModule</code> נדרש עבור <code style="color:var(--orange);font-family:JetBrains Mono,monospace;">[(ngModel)]</code> ב-ConfigGroup, ScalarField ו-MibTable.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="nm">npm</span> <span class="pl">install</span> @angular/forms</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">SignalR Client</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">הפרויקט משתמש ב-<strong style="color:var(--text-1)">jQuery SignalR 2.x</strong> עבור .NET Framework 4.x hubs.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="cm">&lt;!-- In your index.html --&gt;</span>
+<span class="kw">&lt;script</span> <span class="nm">src</span>=<span class="st">"assets/vendor/jquery-3.7.1.min.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script</span> <span class="nm">src</span>=<span class="st">"assets/vendor/jquery.signalR-2.4.3.min.js"</span><span class="kw">&gt;&lt;/script&gt;</span></pre></div>
+        </div>
+        <div class="callout warn">
+          <div class="callout-icon">⚠</div>
+          <div class="callout-text"><strong>ASP.NET Core SignalR?</strong> החלף את <code style="font-family:JetBrains Mono,monospace;">signalr.service.ts</code> בגרסה עם <code style="font-family:JetBrains Mono,monospace;">@microsoft/signalr</code> ← <code style="font-family:JetBrains Mono,monospace;">npm install @microsoft/signalr</code></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✦</div>
+        <div class="callout-text"><strong>ללא תלויות חיצוניות נוספות!</strong> הפאנל פועל אך ורק עם Angular core + forms.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 4: SCHEMA ══════════════════ -->
+    <section class="section" id="schema">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">חוזה JSON Schema</h2>
+      </div>
+      <p class="section-desc">ה-Schema מגדיר את הנתונים שמגיעים מהשרת לפאנל. TypeScript interfaces מצד Angular ו-C# classes מצד WPF חייבים להיות תואמים 1:1.</p>
+
+      <!-- inputType cards -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">סוגי inputType נתמכים</h3>
+      <div class="input-grid">
+        <div class="input-card"><div class="input-type">text</div><div class="input-desc">שדה טקסט חופשי</div><div class="input-example">Hostname, Description</div></div>
+        <div class="input-card"><div class="input-type">number</div><div class="input-desc">קלט מספרי עם min/max</div><div class="input-example">Port, Threshold</div></div>
+        <div class="input-card"><div class="input-type">enum</div><div class="input-desc">dropdown select</div><div class="input-example">Protocol (v1/v2c/v3)</div></div>
+        <div class="input-card"><div class="input-type">toggle</div><div class="input-desc">מתג 2 אפשרויות</div><div class="input-example">Enabled/Disabled</div></div>
+        <div class="input-card"><div class="input-type">ip</div><div class="input-desc">קלט כתובת IP</div><div class="input-example">192.168.1.1</div></div>
+        <div class="input-card"><div class="input-type">counter</div><div class="input-desc">מונה קריאה בלבד</div><div class="input-example">Packet count</div></div>
+        <div class="input-card"><div class="input-type">gauge</div><div class="input-desc">מד קריאה בלבד</div><div class="input-example">Temperature</div></div>
+        <div class="input-card"><div class="input-type">timeticks</div><div class="input-desc">uptime מעוצב</div><div class="input-example">"3d 4h 20m"</div></div>
+        <div class="input-card"><div class="input-type">status-led</div><div class="input-desc">נקודת LED</div><div class="input-example">Online/Offline</div></div>
+        <div class="input-card"><div class="input-type">oid</div><div class="input-desc">תצוגת OID</div><div class="input-example">sysObjectID</div></div>
+        <div class="input-card"><div class="input-type">bits</div><div class="input-desc">תצוגת bit flags</div><div class="input-example">Bit masks</div></div>
+      </div>
+
+      <!-- TS Interfaces accordion -->
+      <h3 style="color:var(--gold);font-size:15px;margin:24px 0 16px;">TypeScript Interfaces</h3>
+
+      <div class="accordion">
+        <button class="accordion-btn open" onclick="toggleAccordion(this)">
+          <span>MibPanelSchema — מבנה Schema ראשי</span>
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body open">
+          <div class="code-wrap" style="border-radius:0;border:none;margin:0">
+            <div class="code-header" style="border-radius:0"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-body"><pre><span class="kw">export interface</span> <span class="ty">MibPanelSchema</span> {
+  deviceName: <span class="ty">string</span>;
+  deviceIp: <span class="ty">string</span>;
+  devicePort: <span class="ty">number</span>;
+  community: <span class="ty">string</span>;
+  snmpVersion: <span class="ty">string</span>;
+  exportedAt: <span class="ty">string</span>;
+  totalFields: <span class="ty">number</span>;
+  modules: <span class="ty">MibModuleSchema</span>[];
+}</pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span>MibFieldSchema — הגדרת שדה בודד</span>
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="code-wrap" style="border-radius:0;border:none;margin:0">
+            <div class="code-header" style="border-radius:0"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-body"><pre><span class="kw">export interface</span> <span class="ty">MibFieldSchema</span> {
+  oid: <span class="ty">string</span>;          <span class="cm">// Unique OID</span>
+  name: <span class="ty">string</span>;
+  description?: <span class="ty">string</span>;
+  access: <span class="ty">string</span>;        <span class="cm">// "read-only" | "read-write"</span>
+  isWritable: <span class="ty">boolean</span>;
+  inputType: <span class="ty">string</span>;    <span class="cm">// text | number | enum | toggle | ...</span>
+  baseType: <span class="ty">string</span>;
+  units?: <span class="ty">string</span>;
+  minValue?: <span class="ty">number</span>;
+  maxValue?: <span class="ty">number</span>;
+  options?: <span class="ty">EnumOption</span>[];
+  currentValue?: <span class="ty">string</span>;
+}</pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span>MibTableSchema + MibTableRow — מבנה טבלאות</span>
+          <span class="accordion-icon">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="code-wrap" style="border-radius:0;border:none;margin:0">
+            <div class="code-header" style="border-radius:0"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+            <div class="code-body"><pre><span class="kw">export interface</span> <span class="ty">MibTableSchema</span> {
+  name: <span class="ty">string</span>;
+  oid: <span class="ty">string</span>;
+  labelColumn?: <span class="ty">string</span>;
+  rowCount: <span class="ty">number</span>;
+  columnCount: <span class="ty">number</span>;
+  columns: <span class="ty">MibFieldSchema</span>[];
+  rows: <span class="ty">MibTableRow</span>[];
+}
+
+<span class="kw">export interface</span> <span class="ty">MibTableRow</span> {
+  index: <span class="ty">string</span>;
+  label?: <span class="ty">string</span>;
+  values: <span class="ty">Record</span>&lt;<span class="ty">string</span>, <span class="ty">MibCellValue</span>&gt;;
+}</pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 5: INTEGRATION ══════════════════ -->
+    <section class="section" id="integration">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">אינטגרציה שלב-אחר-שלב</h2>
+      </div>
+
+      <div class="step-list">
+
+        <!-- Step 1 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">1</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">העתק Models</div>
+            <p class="step-content-desc">העתק את קובץ ה-interfaces לפרויקט שלך. אם ה-JSON schema שלך משתמש בשמות שדות שונים, עדכן את ה-interfaces בהתאם.</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm"># Copy to your project</span>
+your-project/src/app/models/mib-schema.ts</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">2</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">העתק Services</div>
+            <p class="step-content-desc">שלושת הסרביסים צריכים להיות בתיקיית services. שים לב — יש להתאים את SignalR לשרת שלך.</p>
+            <div class="tabs" style="margin-top:16px">
+              <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab(this,'opt-a')">Option A — שרת קיים</button>
+                <button class="tab-btn" onclick="switchTab(this,'opt-b')">Option B — שרת חדש</button>
+              </div>
+              <div class="tab-panel active" id="opt-a">
+                <div style="padding:16px 0">
+                  <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">הוסף את המתודות הבאות לסרביס SignalR הקיים שלך:</p>
+                  <div class="code-wrap">
+                    <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+                    <div class="code-body"><pre><span class="cm">// Add to your existing SignalR service:</span>
+<span class="kw">async</span> <span class="de">requestSchema</span>(deviceId: <span class="ty">string</span>): <span class="ty">Promise</span>&lt;<span class="ty">MibPanelSchema</span>&gt; {
+  <span class="kw">return</span> <span class="nm">this</span>.hubProxy.<span class="de">invoke</span>(<span class="st">'RequestSchema'</span>, deviceId);
+}
+
+<span class="kw">async</span> <span class="de">requestRefresh</span>(deviceId: <span class="ty">string</span>): <span class="ty">Promise</span>&lt;<span class="ty">Record</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;&gt; {
+  <span class="kw">return</span> <span class="nm">this</span>.hubProxy.<span class="de">invoke</span>(<span class="st">'RequestRefresh'</span>, deviceId);
+}
+
+<span class="kw">async</span> <span class="de">sendSet</span>(deviceId: <span class="ty">string</span>, oid: <span class="ty">string</span>, value: <span class="ty">string</span>, valueType: <span class="ty">string</span>): <span class="ty">Promise</span>&lt;<span class="ty">SetResult</span>&gt; {
+  <span class="kw">return</span> <span class="nm">this</span>.hubProxy.<span class="de">invoke</span>(<span class="st">'SendSet'</span>, deviceId, oid, value, valueType);
+}
+
+<span class="cm">// Required signals:</span>
+connectionState = <span class="de">signal</span>&lt;<span class="st">'disconnected'</span> | <span class="st">'connecting'</span> | <span class="st">'connected'</span> | <span class="st">'error'</span>&gt;(<span class="st">'disconnected'</span>);
+latestTraffic = <span class="de">signal</span>&lt;<span class="ty">TrafficEvent</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>, { equal: () => <span class="kw">false</span> });</pre></div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-panel" id="opt-b">
+                <div style="padding:16px 0">
+                  <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">שנה רק את ה-URL בקובץ signalr.service.ts:</p>
+                  <div class="code-wrap">
+                    <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+                    <div class="code-body"><pre><span class="cm">// In signalr.service.ts, line ~123:</span>
+<span class="kw">private</span> serverUrl = <span class="st">'http://your-server:5050'</span>;</pre></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">3</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">העתק Components</div>
+            <p class="step-content-desc">כל הקומפוננטות הן <strong>Standalone</strong> — אין צורך לרשום אותן ב-NgModule. פשוט ייבא אותן לקומפוננטה שבה תשתמש.</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre>your-project/src/app/components/
+  ├── side-panel/
+  ├── module-section/
+  ├── status-grid/
+  ├── config-group/
+  ├── scalar-field/
+  ├── mib-table/
+  ├── device-card/
+  ├── system-info/
+  ├── set-feedback/
+  └── connection-status/</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">4</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">הוסף FormsModule</div>
+            <p class="step-content-desc">הקומפוננטות ConfigGroup, ScalarField ו-MibTable כוללות כבר את ה-import פנימית. אך ודא שיש תמיכה ב-standalone bootstrap:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm">// app.config.ts</span>
+<span class="kw">import</span> { FormsModule } <span class="kw">from</span> <span class="st">'@angular/forms'</span>;</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">5</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">חבר לפאנל הצד שלך</div>
+            <p class="step-content-desc">החלף את תוכן פאנל הצד הקיים שלך בקומפוננטות שלנו:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm">&lt;!-- your-component.html --&gt;</span>
+
+<span class="kw">&lt;button</span> <span class="nm">(click)</span>=<span class="st">"isPanelOpen = true"</span><span class="kw">&gt;</span>Open Panel<span class="kw">&lt;/button&gt;</span>
+
+<span class="kw">&lt;app-side-panel</span> <span class="nm">[isOpen]</span>=<span class="st">"isPanelOpen"</span> <span class="nm">(close)</span>=<span class="st">"isPanelOpen = false"</span><span class="kw">&gt;</span>
+
+  <span class="kw">&lt;div</span> <span class="nm">panel-header</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;app-device-card</span>
+      <span class="nm">[identity]</span>=<span class="st">"identity()"</span>
+      <span class="nm">[community]</span>=<span class="st">"schema()?.community || ''"</span>
+      <span class="nm">[snmpVersion]</span>=<span class="st">"schema()?.snmpVersion || ''"</span>
+      <span class="nm">[port]</span>=<span class="st">"schema()?.devicePort || 0"</span> <span class="kw">/&gt;</span>
+  <span class="kw">&lt;/div&gt;</span>
+
+  @if (schema(); as s) {
+    @for (mod of s.modules; track mod.moduleName) {
+      <span class="kw">&lt;app-module-section</span> <span class="nm">[module]</span>=<span class="st">"mod"</span> <span class="kw">/&gt;</span>
+    }
+    <span class="kw">&lt;app-system-info</span> <span class="nm">[items]</span>=<span class="st">"systemInfo()"</span> <span class="kw">/&gt;</span>
+  }
+
+<span class="kw">&lt;/app-side-panel&gt;</span>
+
+<span class="kw">&lt;app-set-feedback</span> <span class="kw">/&gt;</span></pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">6</div><div class="step-line"></div></div>
+          <div>
+            <div class="step-content-title">הוסף Global Styles</div>
+            <p class="step-content-desc">הוסף את צבעי ה-dark theme ל-styles.scss שלך. ניתן לצמצם ל-class כדי למנוע התנגשויות.</p>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="step-item">
+          <div class="step-marker"><div class="step-circle">7</div></div>
+          <div>
+            <div class="step-content-title">SignalR Scripts (jQuery 2.x)</div>
+            <p class="step-content-desc">העתק vendor files ל-assets והוסף ל-angular.json:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">json</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre>"scripts": [
+  <span class="st">"src/assets/vendor/jquery-3.7.1.min.js"</span>,
+  <span class="st">"src/assets/vendor/jquery.signalR-2.4.3.min.js"</span>
+]</pre></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end step-list -->
+    </section>
+
+    <!-- ══════════════════ SECTION 6: C# ══════════════════ -->
+    <section class="section" id="csharp">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">WPF SignalR Hub — C#</h2>
+      </div>
+      <p class="section-desc">זהו חוזה ה-Hub המלא שה-WPF backend צריך לממש כדי שהפאנל Angular יעבוד. כולל מתודות server, DTOs, OWIN startup ו-<strong style="color:var(--gold)">סקשן 6.7 חדש</strong>: חיבור מלא של App.xaml.cs עם wiring של אירועים.</p>
+
+      <div class="tabs">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab(this,'cs-hub')">Hub Class</button>
+          <button class="tab-btn" onclick="switchTab(this,'cs-dto')">DTOs</button>
+          <button class="tab-btn" onclick="switchTab(this,'cs-schema')">Schema Classes</button>
+          <button class="tab-btn" onclick="switchTab(this,'cs-owin')">OWIN Startup</button>
+          <button class="tab-btn" onclick="switchTab(this,'cs-push')">Push Updates</button>
+          <button class="tab-btn" onclick="switchTab(this,'cs-wiring')">WPF Wiring 6.7</button>
+        </div>
+
+        <div class="tab-panel active" id="cs-hub">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">מתודות ה-Hub שה-Angular client קורא להן — יש לממש את החלקים ב-<code style="color:var(--red);font-family:JetBrains Mono,monospace;">throw new NotImplementedException</code>:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="op">[</span><span class="ty">HubName</span>(<span class="st">"snmpHub"</span>)<span class="op">]</span>
+<span class="kw">public class</span> <span class="ty">SnmpHub</span> : <span class="ty">Hub</span>
+{
+  <span class="cm">/// Angular calls this when user selects a device</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">MibPanelSchema</span>&gt; <span class="de">RequestSchema</span>(<span class="ty">string</span> deviceId)
+  {
+    <span class="cm">// Build the MibPanelSchema with modules, scalars, tables</span>
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: build panel schema"</span>);
+  }
+
+  <span class="cm">/// Returns { "1.3.6.1.2.1.1.5.0": "Router-1", ... }</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;&gt; <span class="de">RequestRefresh</span>(<span class="ty">string</span> deviceId)
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: refresh all values"</span>);
+  }
+
+  <span class="cm">/// Called when user edits a field and clicks Save</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">SetResult</span>&gt; <span class="de">SendSet</span>(<span class="ty">string</span> deviceId, <span class="ty">string</span> oid,
+                                       <span class="ty">string</span> value, <span class="ty">string</span> valueType)
+  {
+    <span class="kw">try</span>
+    {
+      <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: SNMP SET"</span>);
+    }
+    <span class="kw">catch</span> (<span class="ty">Exception</span> ex)
+    {
+      <span class="kw">return new</span> <span class="ty">SetResult</span> { Success = <span class="kw">false</span>, Message = ex.Message };
+    }
+  }
+
+  <span class="cm">/// Populates device picker dropdown in Angular</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">List</span>&lt;<span class="ty">DeviceInfo</span>&gt;&gt; <span class="de">GetDevices</span>()
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: list devices"</span>);
+  }
+
+  <span class="cm">/// Bulk SET — multiple OIDs in one call (Config Import / Bulk SET dialog)</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">BulkSetResult</span>&gt; <span class="de">SendBulkSet</span>(<span class="ty">string</span> deviceId,
+                                                <span class="ty">List</span>&lt;<span class="ty">BulkSetItem</span>&gt; items)
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: batch SNMP SET"</span>);
+  }
+
+  <span class="cm">/// IDD SET — set a field by its panel fieldId (used by IDD sub-panel)</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">SetResult</span>&gt; <span class="de">SendIddSet</span>(<span class="ty">string</span> deviceId,
+                                            <span class="ty">string</span> fieldId, <span class="ty">string</span> value)
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: IDD SET by fieldId"</span>);
+  }
+
+  <span class="cm">/// Send an SNMP trap from the UI (Trap Generator dialog)</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">SetResult</span>&gt; <span class="de">SendTrap</span>(<span class="ty">string</span> trapOid,
+      <span class="ty">string</span> targetIp, <span class="ty">int</span> targetPort, <span class="ty">List</span>&lt;<span class="ty">TrapBinding</span>&gt; bindings)
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: send SNMP trap"</span>);
+  }
+
+  <span class="cm">/// Validate MIB files loaded for a device — returns issues + dependencies</span>
+  <span class="kw">public async</span> <span class="ty">Task</span>&lt;<span class="ty">MibValidationResult</span>&gt; <span class="de">ValidateMib</span>(<span class="ty">string</span> deviceId)
+  {
+    <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>(<span class="st">"Implement: MIB validation"</span>);
+  }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="cs-dto">
+          <div style="padding:16px 0">
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">public class</span> <span class="ty">SetResult</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"success"</span>)] <span class="kw">public bool</span> Success { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"message"</span>)] <span class="kw">public string</span> Message { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+}
+
+<span class="kw">public class</span> <span class="ty">DeviceInfo</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"id"</span>)]          <span class="kw">public string</span> Id { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"name"</span>)]        <span class="kw">public string</span> Name { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"ipAddress"</span>)]   <span class="kw">public string</span> IpAddress { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"port"</span>)]        <span class="kw">public int</span> Port { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"isSimulating"</span>)] <span class="kw">public bool</span> IsSimulating { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="kw">public class</span> <span class="ty">BulkSetItem</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"oid"</span>)]       <span class="kw">public string</span> Oid { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"value"</span>)]     <span class="kw">public string</span> Value { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"valueType"</span>)] <span class="kw">public string</span> ValueType { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"OctetString"</span>;
+}
+
+<span class="kw">public class</span> <span class="ty">BulkSetResult</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"total"</span>)]     <span class="kw">public int</span> Total { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"succeeded"</span>)] <span class="kw">public int</span> Succeeded { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"failed"</span>)]    <span class="kw">public int</span> Failed { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"results"</span>)]   <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">BulkSetItemResult</span>&gt; Results { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
+}
+
+<span class="kw">public class</span> <span class="ty">BulkSetItemResult</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"oid"</span>)]     <span class="kw">public string</span> Oid { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"success"</span>)] <span class="kw">public bool</span> Success { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"message"</span>)] <span class="kw">public string</span> Message { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+}
+
+<span class="kw">public class</span> <span class="ty">TrapBinding</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"oid"</span>)]       <span class="kw">public string</span> Oid { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"value"</span>)]     <span class="kw">public string</span> Value { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"valueType"</span>)] <span class="kw">public string</span> ValueType { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"OctetString"</span>;
+}
+
+<span class="cm">// ── MIB Validation DTOs ──</span>
+
+<span class="kw">public class</span> <span class="ty">MibValidationResult</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"deviceName"</span>)]    <span class="kw">public string</span> DeviceName { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"files"</span>)]         <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">MibFileValidation</span>&gt; Files { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
+  [<span class="ty">JsonProperty</span>(<span class="st">"dependencies"</span>)]  <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">MibFileDependencies</span>&gt; Dependencies { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
+}
+
+<span class="kw">public class</span> <span class="ty">MibFileValidation</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"fileName"</span>)]        <span class="kw">public string</span> FileName { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"definitionCount"</span>)] <span class="kw">public int</span> DefinitionCount { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"issueCount"</span>)]      <span class="kw">public int</span> IssueCount { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"issues"</span>)]          <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">MibValidationIssue</span>&gt; Issues { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
+}
+
+<span class="kw">public class</span> <span class="ty">MibValidationIssue</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"severity"</span>)] <span class="kw">public string</span> Severity { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"warning"</span>;
+  [<span class="ty">JsonProperty</span>(<span class="st">"message"</span>)]  <span class="kw">public string</span> Message { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"context"</span>)]  <span class="kw">public string</span> Context { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+}
+
+<span class="kw">public class</span> <span class="ty">MibFileDependencies</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"fileName"</span>)]   <span class="kw">public string</span> FileName { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"moduleName"</span>)] <span class="kw">public string</span> ModuleName { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"imports"</span>)]    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">MibDependency</span>&gt; Imports { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
+}
+
+<span class="kw">public class</span> <span class="ty">MibDependency</span>
+{
+  <span class="cm">/// "loaded" | "standard" | "missing"</span>
+  [<span class="ty">JsonProperty</span>(<span class="st">"moduleName"</span>)] <span class="kw">public string</span> ModuleName { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"status"</span>)]     <span class="kw">public string</span> Status { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"missing"</span>;
+  [<span class="ty">JsonProperty</span>(<span class="st">"providedBy"</span>)] <span class="kw">public string</span> ProvidedBy { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="cs-schema">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">ה-C# classes ממפות 1:1 ל-TypeScript interfaces — JSON נסריאלז ישירות למה ש-Angular מצפה:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">public class</span> <span class="ty">MibFieldSchema</span>
+{
+  [<span class="ty">JsonProperty</span>(<span class="st">"oid"</span>)]        <span class="kw">public string</span> Oid { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"name"</span>)]       <span class="kw">public string</span> Name { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="ty">string</span>.Empty;
+  [<span class="ty">JsonProperty</span>(<span class="st">"access"</span>)]     <span class="kw">public string</span> Access { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"read-only"</span>;
+  [<span class="ty">JsonProperty</span>(<span class="st">"isWritable"</span>)] <span class="kw">public bool</span> IsWritable { <span class="kw">get</span>; <span class="kw">set</span>; }
+  
+  <span class="cm">/// text | number | enum | toggle | ip | counter | gauge | timeticks | status-led</span>
+  [<span class="ty">JsonProperty</span>(<span class="st">"inputType"</span>)]  <span class="kw">public string</span> InputType { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"text"</span>;
+  [<span class="ty">JsonProperty</span>(<span class="st">"baseType"</span>)]   <span class="kw">public string</span> BaseType { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="st">"OCTET STRING"</span>;
+  [<span class="ty">JsonProperty</span>(<span class="st">"units"</span>)]      <span class="kw">public string</span>? Units { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"minValue"</span>)]   <span class="kw">public long</span>? MinValue { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"maxValue"</span>)]   <span class="kw">public long</span>? MaxValue { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"options"</span>)]    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">EnumOption</span>&gt;? Options { <span class="kw">get</span>; <span class="kw">set</span>; }
+  [<span class="ty">JsonProperty</span>(<span class="st">"currentValue"</span>)]<span class="kw">public string</span>? CurrentValue { <span class="kw">get</span>; <span class="kw">set</span>; }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="cs-owin">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">הוסף ל-App.xaml.cs כדי להפעיל את שרת SignalR:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">var</span> url = <span class="st">"http://localhost:5050"</span>;
+<span class="ty">WebApp</span>.<span class="de">Start</span>(url, app =>
+{
+  app.<span class="de">UseCors</span>(<span class="ty">Microsoft.Owin.Cors.CorsOptions</span>.AllowAll);
+  
+  <span class="kw">var</span> hubConfig = <span class="kw">new</span> <span class="ty">HubConfiguration</span>
+  {
+    EnableDetailedErrors = <span class="kw">true</span>,
+    EnableJSONP = <span class="kw">true</span>
+  };
+  app.<span class="de">MapSignalR</span>(hubConfig);
+});
+
+<span class="cm">// NuGet packages required:</span>
+<span class="cm">// Microsoft.AspNet.SignalR.SelfHost</span>
+<span class="cm">// Microsoft.Owin.Cors</span></pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="cs-push">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">קרא לשיטות Static אלה מכל מקום ב-WPF כדי לדחוף עדכונים ל-Angular:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm">// After polling a device value:</span>
+<span class="ty">SnmpHub</span>.<span class="de">BroadcastTraffic</span>(
+    deviceName: <span class="st">"MyDevice"</span>,
+    operation: <span class="st">"GET"</span>,
+    oid: <span class="st">"1.3.6.1.2.1.1.5.0"</span>,
+    value: <span class="st">"Router-Lab-1"</span>,
+    sourceIp: <span class="st">"192.168.1.100"</span>
+);
+
+<span class="cm">// Batch refresh (more efficient):</span>
+<span class="kw">var</span> values = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;
+{
+    [<span class="st">"1.3.6.1.2.1.1.5.0"</span>] = <span class="st">"Router-Lab-1"</span>,
+    [<span class="st">"1.3.6.1.2.1.1.3.0"</span>] = <span class="st">"8654321"</span>,
+};
+<span class="ty">SnmpHub</span>.<span class="de">BroadcastMibUpdate</span>(<span class="st">"device-123"</span>, values);</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6.7 WPF Wiring -->
+        <div class="tab-panel" id="cs-wiring">
+          <div style="padding:16px 0">
+            <div class="callout info" style="margin-bottom:20px">
+              <div class="callout-icon">ℹ</div>
+              <div class="callout-text"><strong>הפרק החשוב ביותר:</strong> כאן תלמד איך App.xaml.cs מאגד הכל ביחד — Hub, שרת, ואירועי מכשירים → broadcasts.</div>
+            </div>
+
+            <!-- App.xaml.cs -->
+            <h4 style="color:var(--gold);font-size:14px;margin-bottom:12px;">App.xaml.cs — Startup מלא</h4>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">public partial class</span> <span class="ty">App</span> : <span class="ty">Application</span>
+{
+    <span class="kw">private</span> <span class="ty">IDisposable</span>? _signalRHost;
+    <span class="kw">private bool</span> _signalRRunning;
+
+    <span class="kw">protected override void</span> <span class="de">OnStartup</span>(<span class="ty">StartupEventArgs</span> e)
+    {
+        <span class="kw">base</span>.<span class="de">OnStartup</span>(e);
+
+        <span class="cm">// ── 1. יצירת שירותים ──────────────────────────────────</span>
+        <span class="kw">var</span> deviceStore   = <span class="kw">new</span> <span class="ty">DeviceProfileStore</span>();
+        <span class="kw">var</span> snmpService   = <span class="kw">new</span> <span class="ty">SnmpPollingService</span>();
+        <span class="kw">var</span> schemaBuilder = <span class="kw">new</span> <span class="ty">SchemaBuilderService</span>();
+        <span class="kw">var</span> simulatorVm   = <span class="kw">new</span> <span class="ty">SimulatorViewModel</span>();
+
+        <span class="cm">// ── 2. הגדרת Static references ל-Hub ─────────────────</span>
+        <span class="cm">// SignalR 2.0 יוצר instance חדש לכל קריאה — statics הם</span>
+        <span class="cm">// הדפוס הסטנדרטי ללא DI container.</span>
+        <span class="ty">SnmpHub</span>.Store         = deviceStore;
+        <span class="ty">SnmpHub</span>.ExportService = schemaBuilder;
+        <span class="ty">SnmpHub</span>.SimulatorVm   = simulatorVm;
+
+        <span class="cm">// ── 3. הפעלת שרת SignalR ────────────────────────────</span>
+        <span class="de">StartSignalR</span>(port: <span class="nu">5050</span>);
+
+        <span class="cm">// ── 4. חיבור אירועי מכשיר → SignalR broadcasts ───────</span>
+        <span class="de">WireEventBroadcasts</span>(snmpService, simulatorVm);
+
+        <span class="cm">// ── 5. פתיחת חלון ראשי ────────────────────────────────</span>
+        <span class="kw">var</span> mainWindow = <span class="kw">new</span> <span class="ty">MainWindow</span> { DataContext = simulatorVm };
+        mainWindow.<span class="de">Show</span>();
+    }
+
+    <span class="kw">private void</span> <span class="de">StartSignalR</span>(<span class="ty">int</span> port)
+    {
+        <span class="kw">try</span>
+        {
+            <span class="cm">// ניסיון ל-all interfaces (דורש Admin או urlacl)</span>
+            <span class="kw">var</span> url = <span class="st">$"http://+:{port}"</span>;
+            _signalRHost = <span class="ty">WebApp</span>.<span class="de">Start</span>&lt;<span class="ty">SignalRStartup</span>&gt;(url);
+            _signalRRunning = <span class="kw">true</span>;
+        }
+        <span class="kw">catch</span>
+        {
+            <span class="kw">try</span>
+            {
+                <span class="cm">// fallback: localhost בלבד (ללא Admin)</span>
+                <span class="kw">var</span> url = <span class="st">$"http://localhost:{port}"</span>;
+                _signalRHost = <span class="ty">WebApp</span>.<span class="de">Start</span>&lt;<span class="ty">SignalRStartup</span>&gt;(url);
+                _signalRRunning = <span class="kw">true</span>;
+            }
+            <span class="kw">catch</span> (<span class="ty">Exception</span> ex)
+            {
+                <span class="ty">MessageBox</span>.<span class="de">Show</span>(
+                    <span class="st">$"SignalR failed to start:\n{ex.Message}\n\n"</span> +
+                    <span class="st">"Tip: run as Admin, or execute:\n"</span> +
+                    <span class="st">$"netsh http add urlacl url=http://+:{port}/ user=Everyone"</span>,
+                    <span class="st">"SignalR"</span>, <span class="ty">MessageBoxButton</span>.OK, <span class="ty">MessageBoxImage</span>.Warning);
+            }
+        }
+    }
+
+    <span class="kw">private void</span> <span class="de">WireEventBroadcasts</span>(
+        <span class="ty">SnmpPollingService</span> poller,
+        <span class="ty">SimulatorViewModel</span> simulatorVm)
+    {
+        <span class="cm">// PATTERN A: ערכים בודדים — BroadcastTraffic</span>
+        poller.ValueReceived += (deviceName, operation, oid, value, sourceIp) =>
+        {
+            <span class="kw">if</span> (!_signalRRunning) <span class="kw">return</span>;
+            <span class="ty">SnmpHub</span>.<span class="de">BroadcastTraffic</span>(deviceName, operation, oid, value, sourceIp);
+        };
+
+        <span class="cm">// PATTERN B: סטטוס מכשיר — BroadcastDeviceStatus</span>
+        simulatorVm.ActiveSimulators.CollectionChanged += (_, args) =>
+        {
+            <span class="kw">if</span> (!_signalRRunning) <span class="kw">return</span>;
+
+            <span class="kw">if</span> (args.Action == <span class="ty">NotifyCollectionChangedAction</span>.Add &amp;&amp; args.NewItems != <span class="kw">null</span>)
+                <span class="kw">foreach</span> (<span class="ty">SimulatorDeviceStatus</span> s <span class="kw">in</span> args.NewItems)
+                    <span class="ty">SnmpHub</span>.<span class="de">BroadcastDeviceStatus</span>(s.DeviceId, s.DeviceName, <span class="st">"Running"</span>);
+
+            <span class="kw">if</span> (args.Action == <span class="ty">NotifyCollectionChangedAction</span>.Remove &amp;&amp; args.OldItems != <span class="kw">null</span>)
+                <span class="kw">foreach</span> (<span class="ty">SimulatorDeviceStatus</span> s <span class="kw">in</span> args.OldItems)
+                    <span class="ty">SnmpHub</span>.<span class="de">BroadcastDeviceStatus</span>(s.DeviceId, s.DeviceName, <span class="st">"Stopped"</span>);
+        };
+
+        <span class="cm">// PATTERN C: batch לאחר מחזור poll — BroadcastMibUpdate</span>
+        poller.PollCycleCompleted += (deviceId, allValues) =>
+        {
+            <span class="kw">if</span> (!_signalRRunning) <span class="kw">return</span>;
+            <span class="ty">SnmpHub</span>.<span class="de">BroadcastMibUpdate</span>(deviceId, allValues);
+        };
+    }
+
+    <span class="kw">protected override void</span> <span class="de">OnExit</span>(<span class="ty">ExitEventArgs</span> e)
+    {
+        _signalRHost?.<span class="de">Dispose</span>();
+        <span class="kw">base</span>.<span class="de">OnExit</span>(e);
+    }
+}</pre></div>
+            </div>
+
+            <!-- SnmpPollingService -->
+            <h4 style="color:var(--gold);font-size:14px;margin:24px 0 12px;">SnmpPollingService — Raising Events</h4>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">public class</span> <span class="ty">SnmpPollingService</span>
+{
+    <span class="cm">/// כל ערך שמתקבל בנפרד</span>
+    <span class="kw">public event</span> <span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>, <span class="ty">string</span>, <span class="ty">string</span>, <span class="ty">string</span>&gt;? ValueReceived;
+    <span class="cm">//             deviceName, operation, oid,    value,  sourceIp</span>
+
+    <span class="cm">/// כל הערכים לאחר מחזור poll שלם</span>
+    <span class="kw">public event</span> <span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;&gt;? PollCycleCompleted;
+    <span class="cm">//             deviceId, { oid → value }</span>
+
+    <span class="kw">private readonly</span> <span class="ty">System.Timers.Timer</span> _timer;
+
+    <span class="kw">public</span> <span class="de">SnmpPollingService</span>(<span class="ty">int</span> intervalMs = <span class="nu">5000</span>)
+    {
+        _timer = <span class="kw">new</span> <span class="ty">System.Timers.Timer</span>(intervalMs);
+        _timer.Elapsed += <span class="kw">async</span> (_, _) => <span class="kw">await</span> <span class="de">PollAllDevicesAsync</span>();
+    }
+
+    <span class="kw">public void</span> <span class="de">StartPolling</span>() => _timer.<span class="de">Start</span>();
+    <span class="kw">public void</span> <span class="de">StopPolling</span>()  => _timer.<span class="de">Stop</span>();
+
+    <span class="kw">private async</span> <span class="ty">Task</span> <span class="de">PollAllDevicesAsync</span>()
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> device <span class="kw">in</span> <span class="de">GetActiveDevices</span>())
+        {
+            <span class="kw">var</span> allValues = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;();
+
+            <span class="kw">foreach</span> (<span class="kw">var</span> oid <span class="kw">in</span> device.MonitoredOids)
+            {
+                <span class="kw">try</span>
+                {
+                    <span class="kw">var</span> value = <span class="kw">await</span> <span class="de">SnmpGetAsync</span>(device.IpAddress, device.Port,
+                                                   device.Community, oid);
+                    allValues[oid] = value;
+
+                    <span class="cm">// אירוע בודד → BroadcastTraffic</span>
+                    ValueReceived?.Invoke(device.Name, <span class="st">"GET"</span>, oid, value, device.IpAddress);
+                }
+                <span class="kw">catch</span> (<span class="ty">Exception</span> ex)
+                {
+                    <span class="ty">Debug</span>.<span class="de">WriteLine</span>(<span class="st">$"Poll failed: {oid} — {ex.Message}"</span>);
+                }
+            }
+
+            <span class="cm">// אירוע batch → BroadcastMibUpdate (יעיל יותר)</span>
+            <span class="kw">if</span> (allValues.Count > <span class="nu">0</span>)
+                PollCycleCompleted?.Invoke(device.Id, allValues);
+        }
+    }
+
+    <span class="kw">private</span> <span class="ty">Task</span>&lt;<span class="ty">string</span>&gt; <span class="de">SnmpGetAsync</span>(<span class="ty">string</span> ip, <span class="ty">int</span> port,
+                                         <span class="ty">string</span> community, <span class="ty">string</span> oid)
+    {
+        <span class="cm">// YOUR SNMP library call (e.g., SharpSNMP, SnmpSharpNet)</span>
+        <span class="kw">throw new</span> <span class="ty">NotImplementedException</span>();
+    }
+}</pre></div>
+            </div>
+
+            <!-- Broadcast patterns table -->
+            <h4 style="color:var(--gold);font-size:14px;margin:24px 0 12px;">מתי להשתמש בכל Broadcast</h4>
+            <table class="data-table" style="direction:rtl">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>מתי לקרוא</th>
+                  <th>Angular Handler</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BroadcastTraffic()</td>
+                  <td>אחרי כל GET/SET — עדכון שדה בזמן אמת</td>
+                  <td><code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onTrafficReceived</code></td>
+                </tr>
+                <tr>
+                  <td>BroadcastDeviceStatus()</td>
+                  <td>מכשיר התחיל/עצר/התחבר/offline</td>
+                  <td><code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onDeviceStatusChanged</code></td>
+                </tr>
+                <tr>
+                  <td>BroadcastMibUpdate()</td>
+                  <td>אחרי מחזור poll שלם — עדכון כל השדות</td>
+                  <td><code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onMibUpdated</code></td>
+                </tr>
+                <tr>
+                  <td>BroadcastTrap()</td>
+                  <td>בקבלת SNMP trap</td>
+                  <td><code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onTrapReceived</code></td>
+                </tr>
+                <tr>
+                  <td>BroadcastOidChanged()</td>
+                  <td>אחרי SET מוצלח — OID ספציפי השתנה (כולל ערך קודם)</td>
+                  <td><code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onOidChanged</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Angular processing flow -->
+            <h4 style="color:var(--gold);font-size:14px;margin:24px 0 12px;">זרימת עיבוד Angular לאחר Broadcast</h4>
+            <div class="arch-box">
+              <pre>
+BroadcastTraffic("MyDevice", "GET", "1.3.6.1.2.1.1.5.0", "Router-1", "10.0.0.1")
+    │
+    ▼  SignalR WebSocket
+    │
+    ▼  Angular SignalRService.latestTraffic signal מתעדכן
+    │
+    ▼  MibPanelService effect() מזהה שינוי
+    │
+    ▼  מוצא שדה עם OID תואם ב-schema הנוכחי
+    │
+    ▼  מעדכן field.currentValue = "Router-1"
+    │
+    ▼  פולט clone חדש של schema → Angular change detection
+    │
+    ▼  קומפוננטה מרנדרת מחדש עם הערך החדש (ללא reload)</pre>
+            </div>
+
+            <!-- Thread safety -->
+            <div class="callout warn" style="margin-top:20px">
+              <div class="callout-icon">⚠</div>
+              <div class="callout-text">
+                <strong>Thread Safety:</strong> broadcast אפשרי מכל thread — SignalR מטפל בסריאליזציה פנימית. אך אם צריך לקרוא נתוני UI (ObservableCollection), השתמש ב-Dispatcher:
+                <div class="code-wrap" style="margin-top:10px">
+                  <div class="code-header"><span class="code-lang">csharp</span></div>
+                  <div class="code-body"><pre><span class="cm">// בטוח — broadcast לא נוגע ב-UI</span>
+<span class="ty">SnmpHub</span>.<span class="de">BroadcastTraffic</span>(name, <span class="st">"GET"</span>, oid, value, ip);  <span class="cm">// ✓ Any thread</span>
+
+<span class="cm">// צריך Dispatcher — קריאה מ-ObservableCollection</span>
+<span class="ty">Application</span>.Current.<span class="ty">Dispatcher</span>.<span class="de">Invoke</span>(() =>
+{
+    <span class="kw">var</span> items = viewModel.SomeCollection.<span class="de">ToList</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> item <span class="kw">in</span> items)
+        <span class="ty">SnmpHub</span>.<span class="de">BroadcastTraffic</span>(item.Name, <span class="st">"GET"</span>, item.Oid, item.Value, item.Ip);
+});</pre></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Comm flow diagram -->
+      <h3 style="color:var(--gold);font-size:15px;margin:24px 0 16px;">תרשים תקשורת Angular ↔ WPF</h3>
+      <div class="arch-box">
+        <pre>
+┌──────────────────── WPF Backend ────────────────────────────────┐
+│                                                                  │
+│  ┌────────────┐    ┌─────────────────────────────────────────┐  │
+│  │ Your Device │──▶ │ SnmpHub                                 │  │
+│  │  Service    │    │  RequestSchema()  ◀── Angular calls     │  │
+│  └────────────┘    │  RequestRefresh() ◀── Angular calls     │  │
+│                    │  SendSet()        ◀── Angular calls     │  │
+│  ┌────────────┐    │  GetDevices()     ◀── Angular calls     │  │
+│  │  Polling   │──▶ │                                         │  │
+│  │  Events    │    │  BroadcastTraffic()  ──▶ Push Angular   │  │
+│  └────────────┘    │  BroadcastUpdate()   ──▶ Push Angular   │  │
+│                    └─────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+              ▲              SignalR WebSocket              │
+              │              (localhost:5050)               ▼
+┌──────────────────── Angular Client ─────────────────────────────┐
+│  SignalRService ──▶ MibPanelService ──▶ Components (auto-UI)    │
+│  User clicks SET ──▶ sendSet() ──▶ Hub ──▶ Toast notification   │
+└─────────────────────────────────────────────────────────────────┘</pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 7: CUSTOM ══════════════════ -->
+    <section class="section" id="custom">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 class="section-title">התאמה אישית</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">הוספת סוג inputType מותאם</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">ב-ConfigGroupComponent וב-ScalarFieldComponent, מצא את בלוק <code style="color:var(--teal);font-family:JetBrains Mono,monospace;">@switch (field.inputType)</code> והוסף את ה-case שלך:</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre>@case (<span class="st">'my-custom-type'</span>) {
+  <span class="kw">&lt;my-custom-input</span> <span class="nm">[(ngModel)]</span>=<span class="st">"editValue"</span> ... <span class="kw">/&gt;</span>
+}</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">שינוי ערכי סיווג שדות</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">ב-field-classifier.service.ts, ערוך את מערכי הדפוסים:</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="kw">const</span> IDENTITY_PATTERNS = [
+  /devicename|sysname/i,
+  /model/i,
+  /firmware|fwver|swver/i,
+  /my-custom-identity-field/i,  <span class="cm">// ← add here</span>
+];
+
+<span class="kw">const</span> STATUS_PATTERNS = [
+  /status/i,
+  /alarm/i,
+  /my-custom-status/i,  <span class="cm">// ← add here</span>
+];</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">מצב מדומה (ללא SignalR)</div>
+        <p style="color:var(--text-2);font-size:14px;">כאשר SignalR לא מחובר, פעולות SET נכנסות אוטומטית ל-<strong style="color:var(--text-1)">simulated mode</strong> — הערך מתעדכן מקומית עם השהייה של 400-600ms ומציג "SET acknowledged (simulated)" ב-toast. אין צורך בשינוי קוד. לטעינה ללא SignalR:</p>
+        <div class="code-wrap" style="margin-top:14px">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="nm">this</span>.panelService.<span class="de">loadFromFile</span>(file);     <span class="cm">// from JSON file</span>
+<span class="nm">this</span>.panelService.<span class="de">loadFromJson</span>(mySchema);  <span class="cm">// from object</span></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 8: EXAMPLE ══════════════════ -->
+    <section class="section" id="example">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2 class="section-title">דוגמה מינימלית עובדת</h2>
+      </div>
+      <p class="section-desc">קומפוננטה standalone מלאה שמרנדרת את פאנל ה-MIB מ-JSON schema. העתק, הרץ, ומיד רואה תוצאות.</p>
+
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-body"><pre><span class="op">@</span><span class="ty">Component</span>({
+  selector: <span class="st">'app-minimal-panel'</span>,
+  standalone: <span class="kw">true</span>,
+  imports: [<span class="ty">SidePanelComponent</span>, <span class="ty">ModuleSectionComponent</span>, <span class="ty">SetFeedbackComponent</span>],
+  template: <span class="st">`
+    &lt;button (click)="isPanelOpen = true"&gt;Open MIB Panel&lt;/button&gt;
+
+    &lt;app-side-panel [isOpen]="isPanelOpen" (close)="isPanelOpen = false"&gt;
+      &lt;h2 panel-header&gt;{{ schema()?.deviceName || 'MIB Panel' }}&lt;/h2&gt;
+
+      @if (schema(); as s) {
+        @for (mod of s.modules; track mod.moduleName) {
+          &lt;app-module-section [module]="mod" /&gt;
+        }
+      }
+    &lt;/app-side-panel&gt;
+
+    &lt;app-set-feedback /&gt;
+  `</span>
+})
+<span class="kw">export class</span> <span class="ty">MinimalPanelComponent</span> <span class="kw">implements</span> <span class="ty">OnInit</span> {
+  <span class="kw">private</span> panelService = <span class="de">inject</span>(<span class="ty">MibPanelService</span>);
+  schema = <span class="nm">this</span>.panelService.schema;
+  isPanelOpen = <span class="kw">false</span>;
+
+  <span class="de">ngOnInit</span>() {
+    <span class="nm">this</span>.panelService.<span class="de">loadFromJson</span>({
+      deviceName: <span class="st">'Demo Device'</span>,
+      deviceIp: <span class="st">'192.168.1.1'</span>,
+      devicePort: <span class="nu">161</span>,
+      community: <span class="st">'public'</span>,
+      snmpVersion: <span class="st">'V2c'</span>,
+      exportedAt: <span class="kw">new</span> <span class="ty">Date</span>().<span class="de">toISOString</span>(),
+      totalFields: <span class="nu">3</span>,
+      modules: [{
+        moduleName: <span class="st">'Configuration'</span>,
+        scalarCount: <span class="nu">3</span>,
+        tableCount: <span class="nu">0</span>,
+        scalars: [
+          { oid: <span class="st">'1.3.6.1.2.1.1.5.0'</span>, name: <span class="st">'sysName'</span>,
+            access: <span class="st">'read-write'</span>, isWritable: <span class="kw">true</span>,
+            inputType: <span class="st">'text'</span>, baseType: <span class="st">'OCTET STRING'</span>,
+            currentValue: <span class="st">'MyRouter'</span>, maxLength: <span class="nu">64</span> },
+          { oid: <span class="st">'1.3.6.1.4.1.99.1.0'</span>, name: <span class="st">'outputEnabled'</span>,
+            access: <span class="st">'read-write'</span>, isWritable: <span class="kw">true</span>,
+            inputType: <span class="st">'toggle'</span>, baseType: <span class="st">'Integer32'</span>,
+            currentValue: <span class="st">'1'</span>,
+            options: [{ label: <span class="st">'Disabled'</span>, value: <span class="nu">0</span> }, { label: <span class="st">'Enabled'</span>, value: <span class="nu">1</span> }] },
+        ],
+        tables: []
+      }]
+    });
+  }
+}</pre></div>
+      </div>
+
+      <!-- Dep Graph -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">גרף תלויות קומפוננטות</h3>
+      <div class="dep-graph">
+        <pre>
+<span style="color:#58a6ff;font-weight:700">MinimalPanelComponent</span> (or your host)
+  ├── <span class="comp">SidePanelComponent</span>
+  │     └── (projected content via ng-content)
+  │
+  ├── <span class="comp">ModuleSectionComponent</span>
+  │     ├── <span class="comp">StatusGridComponent</span>         <span class="note">(monitoring cards — read only)</span>
+  │     ├── <span class="comp">ConfigGroupComponent</span>        <span class="note">(editable fields)</span>
+  │     │     └── uses <span class="svc">MibPanelService.sendSet()</span>
+  │     └── <span class="comp">MibTableComponent</span>           <span class="note">(data tables)</span>
+  │           └── uses <span class="svc">MibPanelService.sendSet()</span>
+  │
+  └── <span class="comp">SetFeedbackComponent</span>
+        └── reads <span class="svc">MibPanelService.feedbacks signal</span>
+
+<span class="note">Services (providedIn: 'root' — auto-injected):</span>
+  ├── <span class="svc">MibPanelService</span>         <span class="note">← manages schema + SET commands</span>
+  ├── <span class="svc">SignalRService</span>           <span class="note">← hub communication</span>
+  └── <span class="svc">FieldClassifierService</span>  <span class="note">← field categorization</span></pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 9: TROUBLESHOOT ══════════════════ -->
+    <section class="section" id="trouble">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2 class="section-title">פתרון בעיות</h2>
+      </div>
+
+      <table class="trouble-table">
+        <thead>
+          <tr><th>בעיה</th><th>פתרון</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Module sections ריקים</td>
+            <td>בדוק שבמערך <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">scalars</code> יש שדות <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">inputType</code> ו-<code style="font-family:JetBrains Mono,monospace;color:var(--teal)">access</code></td>
+          </tr>
+          <tr>
+            <td>כפתור SET לא מופיע</td>
+            <td>ודא <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">isWritable: true</code> ו-<code style="font-family:JetBrains Mono,monospace;color:var(--teal)">access: "read-write"</code> על השדה</td>
+          </tr>
+          <tr>
+            <td>Toggle לא מרונדר</td>
+            <td>צריך בדיוק 2 options עם <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">value: 0</code> ו-<code style="font-family:JetBrains Mono,monospace;color:var(--teal)">value: 1</code></td>
+          </tr>
+          <tr>
+            <td>Enum dropdown ריק</td>
+            <td>בדוק שמערך <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">options</code> מכיל פריטים מסוג <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">&#123; label: string, value: number &#125;</code></td>
+          </tr>
+          <tr>
+            <td>SignalR לא מתחבר</td>
+            <td>ודא URL שרת, בדוק הגדרות CORS, ודא שה-hub name תואם</td>
+          </tr>
+          <tr>
+            <td>ערכים לא מתעדכנים</td>
+            <td>ודא שה-<code style="font-family:JetBrains Mono,monospace;color:var(--teal)">onTrafficReceived</code> broadcasts כוללים את ה-OID עם סיומת <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">.0</code> עבור scalars</td>
+          </tr>
+          <tr>
+            <td>התנגשות Dark theme</td>
+            <td>הכנס סגנונות בתוך parent class: <code style="font-family:JetBrains Mono,monospace;color:var(--teal)">.mib-panel-theme &#123; ... &#125;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+
+    <!-- ══════════════════ SECTION 10: OID WATCH ══════════════════ -->
+    <section class="section" id="oidwatch">
+      <div class="section-header">
+        <span class="section-num">10</span>
+        <h2 class="section-title">OID Watch Service</h2>
+      </div>
+      <p class="section-desc">שירות C# שמאפשר להירשם לשינויים בזמן אמת של OIDs ספציפיים — exact match או prefix לכל ה-subtree. כל שינוי ערך שמגיע דרך SignalR מפעיל את ה-callbacks הרשומים אוטומטית.</p>
+
+      <!-- Interface -->
+      <div class="card">
+        <div class="card-title">OidWatchService — ממשק ציבורי</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="kw">public class</span> <span class="ty">OidWatchService</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">ConcurrentDictionary</span>&lt;<span class="ty">string</span>, <span class="ty">List</span>&lt;<span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;&gt;&gt; _exactWatches = <span class="kw">new</span>();
+    <span class="kw">private readonly</span> <span class="ty">ConcurrentDictionary</span>&lt;<span class="ty">string</span>, <span class="ty">List</span>&lt;<span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt;&gt;&gt; _prefixWatches = <span class="kw">new</span>();
+
+    <span class="cm">// הרשמה ל-OID מדויק — callback מקבל (oid, newValue)</span>
+    <span class="kw">public void</span> <span class="de">Watch</span>(<span class="ty">string</span> oid, <span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt; callback);
+
+    <span class="cm">// הרשמה לכל OID תחת prefix — subtree watch</span>
+    <span class="cm">// לדוגמה: "1.3.6.1.2.1.2.2.1.8" מפעיל עבור ifOperStatus.1, .2, .3, ...</span>
+    <span class="kw">public void</span> <span class="de">WatchPrefix</span>(<span class="ty">string</span> oidPrefix, <span class="ty">Action</span>&lt;<span class="ty">string</span>, <span class="ty">string</span>&gt; callback);
+
+    <span class="cm">// הסרת watches</span>
+    <span class="kw">public void</span> <span class="de">Unwatch</span>(<span class="ty">string</span> oid);
+    <span class="kw">public void</span> <span class="de">UnwatchPrefix</span>(<span class="ty">string</span> oidPrefix);
+    <span class="kw">public void</span> <span class="de">Clear</span>();
+
+    <span class="cm">// נקרא פנימית בכל שינוי ערך — מפעיל callbacks תואמים</span>
+    <span class="kw">public void</span> <span class="de">NotifyChange</span>(<span class="ty">string</span> oid, <span class="ty">string</span> newValue);
+}</pre></div>
+        </div>
+      </div>
+
+      <!-- Wiring -->
+      <div class="card">
+        <div class="card-title">חיבור ב-App.xaml.cs</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="kw">var</span> oidWatch = <span class="kw">new</span> <span class="ty">OidWatchService</span>();
+
+<span class="cm">// גישה גלובלית דרך SnmpHub</span>
+<span class="ty">SnmpHub</span>.OidWatch = oidWatch;
+
+<span class="cm">// הזנת traffic לשירות</span>
+simulatorVm.TrafficReceived += (deviceName, op, oid, val, sourceIp) =>
+{
+    <span class="kw">if</span> (op == <span class="st">"SET"</span> || op == <span class="st">"GET"</span>)
+        oidWatch.<span class="de">NotifyChange</span>(oid, val);
+};</pre></div>
+        </div>
+      </div>
+
+      <!-- Examples tabs -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">דוגמאות שימוש</h3>
+      <div class="tabs">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab(this,'ow-exact')">Exact OID</button>
+          <button class="tab-btn" onclick="switchTab(this,'ow-prefix')">Prefix Watch</button>
+          <button class="tab-btn" onclick="switchTab(this,'ow-temp')">Temperature Alert</button>
+          <button class="tab-btn" onclick="switchTab(this,'ow-cleanup')">Cleanup</button>
+        </div>
+
+        <div class="tab-panel active" id="ow-exact">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">מעקב אחרי שדה יחיד — כאן hostname:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm">// התראה כשה-hostname משתנה</span>
+oidWatch.<span class="de">Watch</span>(<span class="st">"1.3.6.1.2.1.1.5.0"</span>, (oid, newValue) =>
+{
+    StatusText = <span class="st">$"Hostname changed to: {newValue}"</span>;
+    <span class="cm">// עדכון UI, שליחת alert, לוגינג וכו'</span>
+});</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="ow-prefix">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">מעקב אחרי כל ה-ifOperStatus subtree — כל ממשק רשת:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="cm">// מגיב לכל שינוי סטטוס ממשק (ifOperStatus.*)</span>
+oidWatch.<span class="de">WatchPrefix</span>(<span class="st">"1.3.6.1.2.1.2.2.1.8"</span>, (oid, newValue) =>
+{
+    <span class="kw">var</span> ifIndex = oid.<span class="de">Split</span>(<span class="st">'.'</span>).<span class="de">Last</span>();
+    <span class="kw">var</span> status = newValue == <span class="st">"1"</span> ? <span class="st">"UP"</span> : <span class="st">"DOWN"</span>;
+    <span class="de">Log</span>(<span class="st">$"Interface {ifIndex} went {status}"</span>);
+
+    <span class="cm">// שינוי צבע LED ב-WPF dashboard</span>
+    <span class="de">UpdateInterfaceLed</span>(ifIndex, status);
+});</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="ow-temp">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">ניטור טמפרטורה עם threshold:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre>oidWatch.<span class="de">Watch</span>(<span class="st">"1.3.6.1.2.1.99.1.1.1.4.1"</span>, (oid, newValue) =>
+{
+    <span class="kw">if</span> (<span class="ty">int</span>.<span class="de">TryParse</span>(newValue, <span class="kw">out var</span> temp) &amp;&amp; temp > <span class="nu">75</span>)
+    {
+        <span class="ty">MessageBox</span>.<span class="de">Show</span>(<span class="st">$"Temperature alert: {temp}°C!"</span>, <span class="st">"Warning"</span>,
+            <span class="ty">MessageBoxButton</span>.OK, <span class="ty">MessageBoxImage</span>.Warning);
+    }
+});</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="ow-cleanup">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">הסרת watches בסיום שימוש:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre>oidWatch.<span class="de">Unwatch</span>(<span class="st">"1.3.6.1.2.1.1.5.0"</span>);           <span class="cm">// exact watch</span>
+oidWatch.<span class="de">UnwatchPrefix</span>(<span class="st">"1.3.6.1.2.1.2.2.1.8"</span>);    <span class="cm">// prefix watch</span>
+oidWatch.<span class="de">Clear</span>();                                    <span class="cm">// כל ה-watches</span></pre></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features table -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">יכולות השירות</h3>
+      <table class="data-table">
+        <thead><tr><th>יכולת</th><th>פרטים</th></tr></thead>
+        <tbody>
+          <tr><td>Thread safety</td><td>callbacks מופעלים על WPF UI thread אוטומטית</td></tr>
+          <tr><td>Collapsed scalars</td><td>Watch על <code style="font-family:JetBrains Mono,monospace;color:var(--blue)">1.3.6.1.2.1.1.5</code> תופס גם traffic של <code style="font-family:JetBrains Mono,monospace;color:var(--blue)">1.3.6.1.2.1.1.5.0</code></td></tr>
+          <tr><td>Multiple callbacks</td><td>כמה watches על אותו OID — כולם מופעלים</td></tr>
+          <tr><td>Error isolation</td><td>callback שנכשל לא פוגע בשאר</td></tr>
+          <tr><td>Global access</td><td>גישה מכל מקום דרך <code style="font-family:JetBrains Mono,monospace;color:var(--blue)">SnmpHub.OidWatch</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══════════════════ SECTION 11: MIB BROWSER ══════════════════ -->
+    <section class="section" id="mibbrowser">
+      <div class="section-header">
+        <span class="section-num">11</span>
+        <h2 class="section-title">MIB Browser Live Updates</h2>
+      </div>
+      <p class="section-desc">עץ ה-MIB Browser מתעדכן בזמן אמת כאשר ערכים משתנים מ-Angular (SET), injection, scenario, או automation. אין צורך ב-refresh ידני.</p>
+
+      <!-- Data flow -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">זרימת נתונים</h3>
+      <div class="arch-box">
+        <pre>
+Angular SET → SnmpHub.SendSet() → SNMP SET to Simulator
+    → Simulator.RequestReceived → SimulatorVm.TrafficReceived
+        → App.xaml.cs handler:
+            1. SnmpHub.BroadcastTraffic()     ← Angular מקבל עדכון
+            2. mibBrowserVm.UpdateNodeValue()  ← עץ MIB Browser מתעדכן
+            3. oidWatch.NotifyChange()         ← OID watches מופעלים</pre>
+      </div>
+
+      <!-- Node map -->
+      <div class="card">
+        <div class="card-title">Node Lookup Map</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;"><code style="color:var(--blue);font-family:JetBrains Mono,monospace;">MibBrowserViewModel</code> שומר <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">_nodeMap</code> — מילון <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">Dictionary&lt;string, OidTreeNode&gt;</code> שממפה OIDs לצמתי עץ גלויים. המפה נבנית מחדש אחרי כל טרנספורמציות העץ (chain collapse, table labeling, scalar collapse) ומכילה רק צמתים שמוצגים בפועל.</p>
+      </div>
+
+      <!-- Collapsed scalar handling -->
+      <div class="card">
+        <div class="card-title">טיפול ב-Collapsed Scalars</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">Scalar OIDs כמו <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">sysName.0</code> מוסתרים בעץ — הצומת <code style="color:var(--orange);font-family:JetBrains Mono,monospace;">.0</code> מוסר והערך מועלה לצומת האב. <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">UpdateNodeValue</code> מטפל בכך:</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="kw">public void</span> <span class="de">UpdateNodeValue</span>(<span class="ty">string</span> deviceName, <span class="ty">string</span> oid, <span class="ty">string</span> value)
+{
+    <span class="cm">// רק אם המכשיר המוצג כרגע</span>
+    <span class="kw">if</span> (!deviceName.<span class="de">Equals</span>(LoadedDeviceName, <span class="ty">StringComparison</span>.OrdinalIgnoreCase))
+        <span class="kw">return</span>;
+
+    <span class="cm">// ניסיון exact OID match</span>
+    <span class="kw">if</span> (_nodeMap.<span class="de">TryGetValue</span>(oid, <span class="kw">out var</span> node) &amp;&amp; node.IsLeaf)
+    {
+        node.Value = value;  <span class="cm">// ObservableProperty — UI מתעדכן אוטומטית</span>
+        <span class="kw">return</span>;
+    }
+
+    <span class="cm">// Collapsed scalar: "x.y.z.0" → tree node "x.y.z"</span>
+    <span class="kw">if</span> (oid.<span class="de">EndsWith</span>(<span class="st">".0"</span>))
+    {
+        <span class="kw">var</span> parentOid = oid[..^<span class="nu">2</span>];
+        <span class="kw">if</span> (_nodeMap.<span class="de">TryGetValue</span>(parentOid, <span class="kw">out</span> node) &amp;&amp; node.IsLeaf)
+            node.Value = value;
+    }
+}</pre></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✦</div>
+        <div class="callout-text"><strong>ObservableProperty:</strong> שינוי ל-<code style="font-family:JetBrains Mono,monospace;">node.Value</code> מפעיל PropertyChanged אוטומטית — העץ מתרענן ללא קריאה ידנית ל-NotifyPropertyChanged.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 12: AUTOMATION ══════════════════ -->
+    <section class="section" id="automation">
+      <div class="section-header">
+        <span class="section-num">12</span>
+        <h2 class="section-title">Full Automation — E2E Testing</h2>
+      </div>
+      <p class="section-desc">כפתור יחיד שמפעיל את כל ה-pipeline מ-WPF ועד Angular: טעינת נתונים, הפעלת simulators, injection, תרחיש E2E ושליחת traps — הכל אוטומטי ב-5 שלבים.</p>
+
+      <!-- 5 phases table -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">5 שלבי הרצה</h3>
+      <table class="data-table">
+        <thead><tr><th>שלב</th><th>פעולה</th><th>Broadcasts</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span style="color:var(--gold);font-family:JetBrains Mono,monospace;font-weight:700">1/5</span></td>
+            <td>טעינת demo data (4 מכשירים)</td>
+            <td style="color:var(--text-3);font-style:italic">—</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--gold);font-family:JetBrains Mono,monospace;font-weight:700">2/5</span></td>
+            <td>הפעלת כל ה-simulators (ports 10161+)</td>
+            <td><code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:11px">onDeviceStatusChanged</code> ×4</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--gold);font-family:JetBrains Mono,monospace;font-weight:700">3/5</span></td>
+            <td>Inject recorded sessions</td>
+            <td><code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:11px">onTrafficReceived</code> (INJ frames)</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--gold);font-family:JetBrains Mono,monospace;font-weight:700">4/5</span></td>
+            <td>הרצת E2E scenario (18 שניות, 7 אירועים)</td>
+            <td><code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:11px">onTrafficReceived</code> (SET) ×7</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--gold);font-family:JetBrains Mono,monospace;font-weight:700">5/5</span></td>
+            <td>שליחת traps + batch MIB update</td>
+            <td><code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:11px">onTrapReceived</code> + <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:11px">onMibUpdated</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- E2E scenario timeline -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">תרחיש E2E מובנה — Phase 4</h3>
+      <p style="color:var(--text-2);font-size:14px;margin-bottom:16px;">7 אירועים בפרשי 3 שניות — כל אירוע מעדכן את הסימולטור, Angular, MIB Browser ו-OID watches במקביל:</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--red);background:rgba(255,123,114,0.1);border-color:rgba(255,123,114,0.2)">0s</div>
+          <div class="flow-step-text"><strong>Interface DOWN</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">ifOperStatus.1 = 2</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--orange);background:rgba(255,166,87,0.1);border-color:rgba(255,166,87,0.2)">3s</div>
+          <div class="flow-step-text"><strong>CPU spike 95%</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">hrProcessorLoad.1 = 95</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--red);background:rgba(255,123,114,0.1);border-color:rgba(255,123,114,0.2)">6s</div>
+          <div class="flow-step-text"><strong>Temperature alert 78°C</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">entPhySensorValue.1 = 78</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--yellow);background:rgba(227,179,65,0.1);border-color:rgba(227,179,65,0.2)">9s</div>
+          <div class="flow-step-text"><strong>SET hostname (write test)</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">sysName.0 = "E2E-Automation-Test"</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--teal);background:var(--teal-dim);border-color:rgba(57,211,83,0.2)">12s</div>
+          <div class="flow-step-text"><strong>Interface UP</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">ifOperStatus.1 = 1</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--teal);background:var(--teal-dim);border-color:rgba(57,211,83,0.2)">15s</div>
+          <div class="flow-step-text"><strong>CPU returns 12%</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">hrProcessorLoad.1 = 12</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num" style="color:var(--teal);background:var(--teal-dim);border-color:rgba(57,211,83,0.2)">18s</div>
+          <div class="flow-step-text"><strong>Temperature normal 42°C</strong> — <code style="font-family:JetBrains Mono,monospace;color:var(--blue);font-size:12px">entPhySensorValue.1 = 42</code></div>
+        </div>
+      </div>
+
+      <div class="callout info" style="margin-bottom:24px">
+        <div class="callout-icon">ℹ</div>
+        <div class="callout-text">כל אירוע ב-Phase 4: (1) מעדכן ערך פנימי בסימולטור <code style="font-family:JetBrains Mono,monospace">TrySetValue</code> → (2) Broadcast ל-Angular → (3) עדכון MIB Browser tree → (4) הפעלת OID watches.</div>
+      </div>
+
+      <!-- UI Button -->
+      <h3 style="color:var(--gold);font-size:15px;margin-bottom:16px;">כפתור UI — XAML</h3>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">xml</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-body"><pre><span class="cm">&lt;!-- MainWindow.xaml — מציג "Full Automation" או "Stop" לפי מצב --&gt;</span>
+<span class="kw">&lt;Button</span> <span class="nm">Command</span>=<span class="st">"{Binding RunFullAutomationCommand}"</span>
+        <span class="nm">Visibility</span>=<span class="st">"{Binding IsAutomationRunning,</span>
+<span class="st">            Converter={StaticResource BoolToVisConverter},</span>
+<span class="st">            ConverterParameter=Invert}"</span><span class="kw">&gt;</span>
+    ⚡ Full Automation
+<span class="kw">&lt;/Button&gt;</span>
+
+<span class="kw">&lt;Button</span> <span class="nm">Content</span>=<span class="st">"■ Stop Automation"</span>
+        <span class="nm">Command</span>=<span class="st">"{Binding StopAutomationCommand}"</span>
+        <span class="nm">Visibility</span>=<span class="st">"{Binding IsAutomationRunning,</span>
+<span class="st">            Converter={StaticResource BoolToVisConverter}}"</span><span class="kw">/&gt;</span></pre></div>
+      </div>
+
+      <!-- Custom steps -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">הוספת אירועים מותאמים אישית</h3>
+      <p style="color:var(--text-2);font-size:14px;margin-bottom:16px;">הרחב את <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">RunE2EScenario</code> ב-<code style="color:var(--blue);font-family:JetBrains Mono,monospace;">MainViewModel.cs</code>:</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">csharp</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-body"><pre><span class="kw">var</span> events = <span class="kw">new</span>[]
+{
+    (delay: <span class="nu">0</span>,  label: <span class="st">"Interface DOWN"</span>,  oid: <span class="st">"1.3.6.1.2.1.2.2.1.8.1"</span>,         value: <span class="st">"2"</span>,              type: <span class="st">"Integer32"</span>),
+    (delay: <span class="nu">5</span>,  label: <span class="st">"CPU spike"</span>,       oid: <span class="st">"1.3.6.1.2.1.25.3.3.1.2.1"</span>,       value: <span class="st">"95"</span>,             type: <span class="st">"Integer32"</span>),
+    <span class="cm">// הוסף אירועים מותאמים כאן:</span>
+    (delay: <span class="nu">10</span>, label: <span class="st">"My custom test"</span>,  oid: <span class="st">"1.3.6.1.4.1.99999.3.1.0"</span>,       value: <span class="st">"new-hostname"</span>,   type: <span class="st">"OctetString"</span>),
+};
+
+<span class="cm">// או השתמש בלשונית Scenarios לבניית קבצי .scenario.json עם עורך timeline ויזואלי</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✦</div>
+        <div class="callout-text"><strong>Scenarios Tab:</strong> בניה ושמירה של תרחישים לשימוש חוזר בפורמט <code style="font-family:JetBrains Mono,monospace;">.scenario.json</code> עם עורך timeline ויזואלי — ללא צורך בקוד.</div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════ SECTION 13: onOidChanged ══════════════════ -->
+    <section class="section" id="oidchanged">
+      <div class="section-header">
+        <span class="section-num">13</span>
+        <h2 class="section-title">Angular: onOidChanged Event</h2>
+      </div>
+      <p class="section-desc">
+        האירוע <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">onOidChanged</code> שודר מ-WPF ל-Angular בכל פעם שערך OID <em>משתנה בפועל</em> — כולל הערך הקודם ומקור השינוי. מאפשר לוגיקת אוטומציה בצד הקליינט שמגיבה לשינויי MIB ספציפיים בזמן אמת.
+      </p>
+
+      <!-- 12.1 Event Payload -->
+      <div class="card">
+        <div class="card-title">12.1 — Event Payload</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">TypeScript interface של ה-event:</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="kw">interface</span> <span class="ty">OidChangedEvent</span> {
+  deviceId:      <span class="ty">string</span>;  <span class="cm">// Device profile ID</span>
+  deviceName:    <span class="ty">string</span>;  <span class="cm">// שם מכשיר קריא</span>
+  oid:           <span class="ty">string</span>;  <span class="cm">// ה-OID שהשתנה (e.g. "1.3.6.1.2.1.1.5.0")</span>
+  newValue:      <span class="ty">string</span>;  <span class="cm">// הערך החדש</span>
+  previousValue: <span class="ty">string</span>;  <span class="cm">// הערך לפני השינוי</span>
+  source:        <span class="ty">string</span>;  <span class="cm">// IP כתובת ה-SNMP client</span>
+  timestamp:     <span class="ty">string</span>;  <span class="cm">// ISO 8601 UTC</span>
+}</pre></div>
+        </div>
+      </div>
+
+      <!-- 12.2 Subscribe -->
+      <div class="card">
+        <div class="card-title">12.2 — Subscribe ב-SignalR Service</div>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:14px;">הוסף <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">latestOidChanged</code> signal ואת ה-listener לסרביס הקיים:</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <div class="code-body"><pre><span class="op">@</span><span class="ty">Injectable</span>({ providedIn: <span class="st">'root'</span> })
+<span class="kw">export class</span> <span class="ty">SignalRService</span> {
+  <span class="cm">// signals קיימים...</span>
+  latestTraffic   = <span class="de">signal</span>&lt;<span class="ty">any</span>&gt;(<span class="kw">null</span>);
+  latestTrap      = <span class="de">signal</span>&lt;<span class="ty">any</span>&gt;(<span class="kw">null</span>);
+
+  <span class="cm">// חדש: OID change signal לאוטומציה בצד הקליינט</span>
+  latestOidChanged = <span class="de">signal</span>&lt;<span class="ty">OidChangedEvent</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>);
+
+  <span class="kw">private</span> <span class="de">setupListeners</span>(): <span class="ty">void</span> {
+    <span class="cm">// listener קיים</span>
+    <span class="nm">this</span>.connection.<span class="de">on</span>(<span class="st">'onTrafficReceived'</span>, (data: <span class="ty">any</span>) => {
+      <span class="nm">this</span>.latestTraffic.<span class="de">set</span>(data);
+    });
+
+    <span class="cm">// listener חדש</span>
+    <span class="nm">this</span>.connection.<span class="de">on</span>(<span class="st">'onOidChanged'</span>, (data: <span class="ty">OidChangedEvent</span>) => {
+      console.<span class="de">log</span>(<span class="st">`[OID Changed] \${data.oid}: '\${data.previousValue}' → '\${data.newValue}'`</span>);
+      <span class="nm">this</span>.latestOidChanged.<span class="de">set</span>(data);
+    });
+  }
+}</pre></div>
+        </div>
+      </div>
+
+      <!-- 12.3 React in Component -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">12.3 — תגובה בקומפוננטה עם effect()</h3>
+      <div class="tabs">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab(this,'oc-basic')">דוגמאות בסיסיות</button>
+          <button class="tab-btn" onclick="switchTab(this,'oc-advanced')">OID Watch Map</button>
+        </div>
+
+        <div class="tab-panel active" id="oc-basic">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">שלושה דפוסים בשימוש יחיד של <code style="color:var(--blue);font-family:JetBrains Mono,monospace;">effect()</code>:</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="op">@</span><span class="ty">Component</span>({ selector: <span class="st">'app-automation'</span>, standalone: <span class="kw">true</span>, template: <span class="st">`...`</span> })
+<span class="kw">export class</span> <span class="ty">AutomationComponent</span> {
+  <span class="kw">private</span> signalR = <span class="de">inject</span>(<span class="ty">SignalRService</span>);
+
+  <span class="de">constructor</span>() {
+    <span class="de">effect</span>(() => {
+      <span class="kw">const</span> change = <span class="nm">this</span>.signalR.<span class="de">latestOidChanged</span>();
+      <span class="kw">if</span> (!change) <span class="kw">return</span>;
+
+      <span class="cm">// דוגמה 1: ממשק ירד</span>
+      <span class="kw">if</span> (change.oid.<span class="de">startsWith</span>(<span class="st">'1.3.6.1.2.1.2.2.1.8'</span>) &amp;&amp; change.newValue === <span class="st">'2'</span>) {
+        console.<span class="de">warn</span>(<span class="st">`Interface DOWN on \${change.deviceName}: \${change.oid}`</span>);
+        <span class="nm">this</span>.<span class="de">handleInterfaceDown</span>(change);
+      }
+
+      <span class="cm">// דוגמה 2: שינוי hostname</span>
+      <span class="kw">if</span> (change.oid === <span class="st">'1.3.6.1.2.1.1.5.0'</span>) {
+        console.<span class="de">log</span>(<span class="st">`Hostname: '\${change.previousValue}' → '\${change.newValue}'`</span>);
+      }
+
+      <span class="cm">// דוגמה 3: התראת טמפרטורה</span>
+      <span class="kw">if</span> (change.oid === <span class="st">'1.3.6.1.2.1.99.1.1.1.4.1'</span>) {
+        <span class="kw">const</span> temp = <span class="de">parseInt</span>(change.newValue, <span class="nu">10</span>);
+        <span class="kw">if</span> (temp > <span class="nu">75</span>) <span class="nm">this</span>.<span class="de">showTemperatureAlert</span>(change.deviceName, temp);
+      }
+    });
+  }
+
+  <span class="kw">private</span> <span class="de">handleInterfaceDown</span>(change: <span class="ty">OidChangedEvent</span>) { <span class="cm">/* toast, dashboard, API call */</span> }
+  <span class="kw">private</span> <span class="de">showTemperatureAlert</span>(device: <span class="ty">string</span>, temp: <span class="ty">number</span>) { <span class="cm">/* alarm logic */</span> }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12.4 Advanced -->
+        <div class="tab-panel" id="oc-advanced">
+          <div style="padding:16px 0">
+            <p style="color:var(--text-2);font-size:13px;margin-bottom:12px;">לאוטומציה מורכבת עם כמה כללי OID — דפוס dispatcher מבוסס Map (מקביל ל-<code style="color:var(--blue);font-family:JetBrains Mono,monospace;">OidWatchService</code> ב-WPF):</p>
+            <div class="code-wrap">
+              <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <div class="code-body"><pre><span class="kw">type</span> <span class="ty">OidHandler</span> = (change: <span class="ty">OidChangedEvent</span>) => <span class="ty">void</span>;
+
+<span class="op">@</span><span class="ty">Component</span>({ <span class="cm">/* ... */</span> })
+<span class="kw">export class</span> <span class="ty">AutomationEngineComponent</span> {
+  <span class="kw">private</span> signalR = <span class="de">inject</span>(<span class="ty">SignalRService</span>);
+
+  <span class="cm">// Exact OID → handlers</span>
+  <span class="kw">private</span> exactWatches  = <span class="kw">new</span> <span class="ty">Map</span>&lt;<span class="ty">string</span>, <span class="ty">OidHandler</span>[]&gt;();
+  <span class="cm">// Prefix → handlers (subtree)</span>
+  <span class="kw">private</span> prefixWatches = <span class="kw">new</span> <span class="ty">Map</span>&lt;<span class="ty">string</span>, <span class="ty">OidHandler</span>[]&gt;();
+
+  <span class="de">constructor</span>() {
+    <span class="cm">// רישום watches</span>
+    <span class="nm">this</span>.<span class="de">watchExact</span>(<span class="st">'1.3.6.1.2.1.1.5.0'</span>, (c) =>
+      console.<span class="de">log</span>(<span class="st">`sysName: \${c.previousValue} → \${c.newValue}`</span>));
+
+    <span class="nm">this</span>.<span class="de">watchPrefix</span>(<span class="st">'1.3.6.1.2.1.2.2.1.8'</span>, (c) =>
+      console.<span class="de">log</span>(<span class="st">`ifOperStatus \${c.oid}: \${c.newValue === '1' ? 'UP' : 'DOWN'}`</span>));
+
+    <span class="cm">// dispatch loop</span>
+    <span class="de">effect</span>(() => {
+      <span class="kw">const</span> change = <span class="nm">this</span>.signalR.<span class="de">latestOidChanged</span>();
+      <span class="kw">if</span> (!change) <span class="kw">return</span>;
+      <span class="nm">this</span>.<span class="de">dispatch</span>(change);
+    });
+  }
+
+  <span class="de">watchExact</span>(oid: <span class="ty">string</span>, handler: <span class="ty">OidHandler</span>) {
+    <span class="kw">const</span> list = <span class="nm">this</span>.exactWatches.<span class="de">get</span>(oid) ?? [];
+    list.<span class="de">push</span>(handler);
+    <span class="nm">this</span>.exactWatches.<span class="de">set</span>(oid, list);
+  }
+
+  <span class="de">watchPrefix</span>(prefix: <span class="ty">string</span>, handler: <span class="ty">OidHandler</span>) {
+    <span class="kw">const</span> list = <span class="nm">this</span>.prefixWatches.<span class="de">get</span>(prefix) ?? [];
+    list.<span class="de">push</span>(handler);
+    <span class="nm">this</span>.prefixWatches.<span class="de">set</span>(prefix, list);
+  }
+
+  <span class="kw">private</span> <span class="de">dispatch</span>(change: <span class="ty">OidChangedEvent</span>) {
+    <span class="cm">// exact match</span>
+    <span class="nm">this</span>.exactWatches.<span class="de">get</span>(change.oid)?.forEach(h => <span class="de">h</span>(change));
+
+    <span class="cm">// prefix match</span>
+    <span class="kw">for</span> (<span class="kw">const</span> [prefix, handlers] <span class="kw">of</span> <span class="nm">this</span>.prefixWatches) {
+      <span class="kw">if</span> (change.oid.<span class="de">startsWith</span>(prefix))
+        handlers.<span class="de">forEach</span>(h => <span class="de">h</span>(change));
+    }
+  }
+}</pre></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12.5 Data Flow -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">12.5 — זרימת נתונים מלאה</h3>
+      <div class="arch-box">
+        <pre>
+WPF Simulator receives SNMP SET/GET
+    │
+    ▼  SimulatorVm.TrafficReceived event
+    │
+    ├─▶ oidWatch.NotifyChange(oid, val)        ← WPF-side watches מופעלים
+    │       מחזיר previousValue
+    │
+    ├─▶ if (previousValue != val):
+    │       SnmpHub.BroadcastOidChanged()      ← SignalR broadcast
+    │           │
+    │           ▼  WebSocket
+    │           ▼  Angular SignalRService.latestOidChanged signal
+    │           ▼  effect() מפעיל dispatcher לפי OID
+    │
+    ├─▶ SnmpHub.BroadcastTraffic()             ← אירוע traffic רגיל (קיים)
+    │
+    └─▶ mibBrowserVm.UpdateNodeValue()         ← MIB Browser live update</pre>
+      </div>
+
+      <!-- 12.6 Comparison table -->
+      <h3 style="color:var(--gold);font-size:15px;margin:28px 0 16px;">12.6 — onOidChanged vs onTrafficReceived</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>הבדל</th>
+            <th><code style="font-family:JetBrains Mono,monospace">onTrafficReceived</code></th>
+            <th><code style="font-family:JetBrains Mono,monospace">onOidChanged</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>מתי יורה</td>
+            <td style="color:var(--text-2)">כל פעולת GET/SET</td>
+            <td style="color:var(--text-2)">רק כשהערך <em>משתנה בפועל</em></td>
+          </tr>
+          <tr>
+            <td>ערך קודם</td>
+            <td style="color:var(--red)">✗ לא</td>
+            <td style="color:var(--teal)">✓ כן (<code style="font-family:JetBrains Mono,monospace;color:var(--blue)">previousValue</code>)</td>
+          </tr>
+          <tr>
+            <td>מטרה</td>
+            <td style="color:var(--text-2)">לוג traffic, עדכון שדות UI</td>
+            <td style="color:var(--text-2)">אוטומציה, זיהוי שינויים</td>
+          </tr>
+          <tr>
+            <td>סינון כפולים</td>
+            <td style="color:var(--red)">✗ יורה גם אם הערך זהה</td>
+            <td style="color:var(--teal)">✓ מובנה — מדלג אם <code style="font-family:JetBrains Mono,monospace;color:var(--blue)">newValue == previousValue</code></td>
+          </tr>
+          <tr>
+            <td>שימוש אופטימלי</td>
+            <td style="color:var(--text-2)">עדכון פאנל MIB</td>
+            <td style="color:var(--text-2)">triggers לוגיקה כשמשהו משתנה</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <div class="callout-icon">✦</div>
+        <div class="callout-text"><strong>כלל אצבע:</strong> להצגת ערכים בפאנל — <code style="font-family:JetBrains Mono,monospace">onTrafficReceived</code>. להפעלת לוגיקה כשמשהו משתנה — <code style="font-family:JetBrains Mono,monospace">onOidChanged</code>.</div>
+      </div>
+    </section>
+
+<footer class="footer">
+  <div style="color:var(--gold);font-size:14px;margin-bottom:8px;">◆ MIB Panel UI</div>
+  <div>Angular Signals · Standalone Components · jQuery SignalR 2.x · WPF .NET Framework</div>
+  <div style="margin-top:8px;font-size:10px;opacity:0.4;">DocAnalyzer Pro · Integration Guide · 2026</div>
+</footer>
+
+<script>
+// Tab switching
+function switchTab(btn, panelId) {
+  const tabBar = btn.closest('.tab-bar');
+  const tabsWrapper = tabBar.closest('.tabs') || tabBar.parentElement;
+  
+  // Deactivate all buttons in this tab bar
+  tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Find all tab panels in the same scope
+  const allPanels = tabsWrapper.querySelectorAll('.tab-panel');
+  allPanels.forEach(p => {
+    p.classList.toggle('active', p.id === panelId);
+  });
+}
+
+// Accordion
+function toggleAccordion(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  btn.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
+// Copy code
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = 'Copied!';
+    btn.style.color = '#4ec9b0';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+  });
+}
+
+// Sticky TOC active state
+const sections = document.querySelectorAll('.section');
+const tocItems = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocItems.forEach(item => item.classList.remove('active'));
+      const active = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

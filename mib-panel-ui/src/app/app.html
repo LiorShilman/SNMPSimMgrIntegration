@@ -1,0 +1,180 @@
+<div class="app-container">
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="logo-area">
+      <span class="logo-icon">&#9783;</span>
+      <span class="logo-text">MIB Panel</span>
+    </div>
+
+    <div class="conn-indicator">
+      <span class="conn-dot" [class]="signalRState()"></span>
+      @switch (signalRState()) {
+        @case ('connected') { <span class="conn-label connected">Connected</span> }
+        @case ('connecting') { <span class="conn-label connecting">Connecting...</span> }
+        @case ('error') { <span class="conn-label error">Connection error</span> }
+        @default { <span class="conn-label">Disconnected</span> }
+      }
+    </div>
+
+    @if (schema()) {
+      <div class="top-actions">
+        <button type="button" class="btn-bulkset" title="Bulk SET / Config Import" (click)="isBulkSetOpen = true">
+          &#9776; Bulk SET
+        </button>
+      </div>
+    }
+  </header>
+
+  <!-- Connection Status Banner -->
+  @if (isDisconnected()) {
+    <div class="conn-banner" [class]="signalRState()">
+      <span class="conn-banner-dot"></span>
+      @if (signalRState() === 'error') {
+        <span>Connection error — retrying</span>
+      } @else {
+        <span>Disconnected from server</span>
+      }
+      @if (reconnectAttempt() > 0) {
+        <span class="conn-banner-attempt">(attempt {{ reconnectAttempt() }})</span>
+      }
+    </div>
+  }
+
+  <!-- Device Dashboard -->
+  <main class="device-dashboard">
+    @if (signalRState() !== 'connected') {
+      <div class="dashboard-empty">
+        <div class="empty-icon">&#9783;</div>
+        <div class="empty-text">Waiting for server connection...</div>
+      </div>
+    } @else if (isLoadingDevices()) {
+      <div class="dashboard-empty">
+        <div class="empty-icon spinning">&#8635;</div>
+        <div class="empty-text">Loading devices...</div>
+      </div>
+    } @else if (devices().length === 0) {
+      <div class="dashboard-empty">
+        <div class="empty-icon">&#9783;</div>
+        <div class="empty-text">No devices configured</div>
+        <div class="empty-hint">Add devices in SNMP SimManager to see them here</div>
+      </div>
+    } @else {
+      <div class="device-grid">
+        @for (dev of devices(); track dev.id) {
+          <div class="device-card" [class.simulating]="dev.isSimulating"
+               [class.selected]="selectedDeviceId() === dev.id"
+               (click)="openDevice(dev)"
+               [title]="'Open panel for ' + dev.name">
+            <div class="card-status-bar" [class.simulating]="dev.isSimulating"></div>
+            <div class="card-body">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                  <path d="M8 21h8m-4-4v4"/>
+                  <circle cx="12" cy="10" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="card-status-dot" [class.simulating]="dev.isSimulating"></div>
+              <div class="card-name">{{ dev.name }}</div>
+              <div class="card-address">{{ dev.ipAddress }}:{{ dev.port }}</div>
+              @if (dev.isSimulating) {
+                <div class="card-sim-badge">SIM :{{ dev.simulatorPort }}</div>
+              } @else {
+                <div class="card-offline-badge">Offline</div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </main>
+
+  <!-- Side Panel -->
+  <app-side-panel [isOpen]="isPanelOpen" (close)="closePanel()">
+    <div panel-header>
+      @if (identity(); as id) {
+        <div class="panel-header-card">
+          <div class="panel-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <path d="M8 21h8m-4-4v4"/>
+              <circle cx="12" cy="10" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="panel-identity">
+            <div class="panel-device-name">
+              <span class="panel-conn-dot" [class]="signalRState()"></span>
+              {{ id.name }}
+            </div>
+            @if (id.model || id.firmware) {
+              <div class="panel-device-meta">
+                @if (id.model) { <span>{{ id.model }}</span> }
+                @if (id.model && id.firmware) { <span> &middot; </span> }
+                @if (id.firmware) { <span>{{ id.firmware }}</span> }
+              </div>
+            }
+          </div>
+          @if (panelStats(); as ps) {
+            <div class="panel-quick-stats">{{ ps.fields }} fields &middot; {{ ps.tables }} tables &middot; {{ ps.modules }} mod</div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (schema(); as s) {
+      <!-- Health Summary Strip -->
+      @if (healthSummary(); as h) {
+        @if (h.ok + h.warning + h.alarm > 0) {
+          <div class="health-strip">
+            @if (h.ok > 0) {
+              <span class="health-item ok"><span class="health-dot"></span>{{ h.ok }} OK</span>
+            }
+            @if (h.warning > 0) {
+              <span class="health-item warning"><span class="health-dot"></span>{{ h.warning }} Warning</span>
+            }
+            @if (h.alarm > 0) {
+              <span class="health-item alarm"><span class="health-dot"></span>{{ h.alarm }} Alarm</span>
+            }
+            @if (h.info > 0) {
+              <span class="health-item info"><span class="health-dot"></span>{{ h.info }} Info</span>
+            }
+          </div>
+        }
+      }
+
+      <!-- Module Tabs -->
+      @if (moduleTabs().length > 1) {
+        <div class="module-tabs">
+          @for (tab of moduleTabs(); track tab.index) {
+            <button type="button" class="module-tab"
+                    [class.active]="activeModuleIndex === tab.index"
+                    (click)="scrollToModule(tab.index)">
+              {{ tab.name }}
+              <span class="tab-badge">{{ tab.count }}</span>
+            </button>
+          }
+        </div>
+      }
+
+      <div class="panel-modules">
+        @for (module of s.modules; track module.moduleName; let i = $index) {
+          <div [id]="'panel-module-' + i">
+            <app-module-section [module]="module" />
+          </div>
+        }
+      </div>
+
+      @if (systemInfo().length > 0) {
+        <app-system-info [items]="systemInfo()" />
+      }
+    }
+  </app-side-panel>
+
+  <!-- SET Feedback Toasts -->
+  <app-set-feedback />
+
+  <!-- Bulk SET Dialog -->
+  @if (isBulkSetOpen) {
+    <app-bulk-set (close)="isBulkSetOpen = false" />
+  }
+</div>

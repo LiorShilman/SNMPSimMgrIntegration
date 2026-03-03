@@ -1,0 +1,377 @@
+	-- *****************************************************************
+	-- ETLSYSTEMS-GENUS-PRN-MIB.txt:  ETL Systems Ltd Enterprise
+	--                      Management Information Base for ETL systems
+	--
+	-- November 2020  		Seth Allen
+	--
+	-- Copyright (c) 2019 by ETL Systems Ltd
+	-- All rights reserved.
+	-- 
+	-- *****************************************************************
+
+	ETLSYSTEMS-GENUS-PRNxxx-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP
+		FROM SNMPv2-CONF
+	genusPower
+		FROM ETLSYSTEMS-GENUS-MIB;
+	
+	-- Define generic genus branch
+	
+	prnxxx MODULE-IDENTITY
+	LAST-UPDATED "202011271456Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: +44 1981 259 020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Genus Piranha DC Injectors"
+	REVISION "202011271456Z"
+	DESCRIPTION "Version 1.0 of this prnxxx MIB module"
+		::= { genusPower 1 }
+	
+	
+	
+	-- **********************************
+	-- *** Settings Table Definitions ***
+	-- **********************************
+	prnxxxSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PRNxxxSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Piranha settings table"
+		::= { prnxxx 1 }
+	
+	prnxxxSettingsEntry OBJECT-TYPE
+		SYNTAX PRNxxxSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in Piranha settings table"
+		INDEX { piranhaSettingNumber }
+		::= { prnxxxSettingsTable 1 }
+		
+	PRNxxxSettingsEntry ::=
+		SEQUENCE
+		{
+			piranhaSettingNumber 	Integer32,
+			dCInjVoutSet 				Integer32,
+			dCInjTone					DisplayString,
+			dCInjCurrentLimitLow		Integer32,
+			dCInjCurrentLimitHigh		Integer32,
+			rFPowerLimitLow		Integer32,
+			rFPowerLimitHigh		Integer32
+		}
+		
+	piranhaSettingNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Settings Module number"
+		::= { prnxxxSettingsEntry 1 }
+		
+	dCInjVoutSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"DC Injector voltage out in mV.
+			 Consult module specification for voltage output level options."
+		::= { prnxxxSettingsEntry 2 }
+		
+	dCInjTone OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"DC Injector 22kHz tone enable [E] or disable [D]"
+		::= { prnxxxSettingsEntry 3 }
+		
+	dCInjCurrentLimitLow OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"DC injector current low limit in mA, i.e. set to 50 for 0.05 amps as
+			the low limit alarm threshold. If the current is less than this limit 
+			an alarm will be raised.
+			To disable alarm triggering on low limit set value to -9999.
+			Consult module specification for permissable limit range as this may 
+			differ between module types."
+		::= { prnxxxSettingsEntry 4 }
+		
+	dCInjCurrentLimitHigh OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"DC injector current high limit in mA, i.e. set to 250 for 0.25 amps as
+			the high limit alarm threshold. If the current is greater than this limit 
+			an alarm will be raised.
+			To disable alarm triggering on high limit set value to 9999.
+			Consult module specification for permissable limit range as this may 
+			differ between module types."
+		::= { prnxxxSettingsEntry 5 }
+		
+	rFPowerLimitLow OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"RF power detector low limit in hundreths of dBm, i.e. set to -2000 for -20dBm as
+			the low limit alarm threshold. If the power is less than this limit 
+			an alarm will be raised.
+			To disable alarm triggering on low limit set value to -99.
+			Consult module specification for permissable limit range as this may 
+			differ between module types."
+		::= { prnxxxSettingsEntry 6 }
+		
+	rFPowerLimitHigh OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"RF power detector high limit in hundreths of dBm, i.e. set to 500 for +5dBm as
+			the high limit alarm threshold. If the power is greater than this limit 
+			an alarm will be raised.
+			To disable alarm triggering on high limit set value to 99.
+			Consult module specification for permissable limit range as this may 
+			differ between module types."
+		::= { prnxxxSettingsEntry 7 }
+	
+	
+	
+	-- ************************************
+	-- *** Monitoring Table Definitions ***
+	-- ************************************
+	prnxxxMonitoringTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PRNxxxMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"pirahna monitoring table"
+		::= { prnxxx 2 }
+	
+	prnxxxMonitoringEntry OBJECT-TYPE
+		SYNTAX PRNxxxMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in piranha monitoring table"
+		INDEX { piranhaMonitoringNumber }
+		::= { prnxxxMonitoringTable 1 }
+		
+	PRNxxxMonitoringEntry ::=
+		SEQUENCE
+		{
+			piranhaMonitoringNumber Integer32,
+			piranhaSummaryStatus DisplayString,
+			dCInjVoutStatus DisplayString,
+			dCInjVoutMonValue Integer32,
+			dCInjIoutStatus DisplayString,
+			dCInjIoutMonValue Integer32,
+			rFPowerMonStatus DisplayString,
+			rFPowerMonValue Integer32,
+			vbusStatus DisplayString,
+			vbusMonValue Integer32,
+			plus5VStatus DisplayString,
+			plus5VMonValue Integer32,
+			pRNTemperatureStatus DisplayString,
+			pRNTemperatureMonValue Integer32,
+			lifecounter Integer32
+		}
+		
+	piranhaMonitoringNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Monitoring Module number"
+		::= { prnxxxMonitoringEntry 1 }
+	
+	piranhaSummaryStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"DC injector summary status, (O - OK, F - Fail)"
+		::= { prnxxxMonitoringEntry 2 }
+		
+	dCInjVoutStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx voltage out status, (O - OK, H - High, L - Low)"
+		::= { prnxxxMonitoringEntry 3 }
+	
+	dCInjVoutMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Monitored voltage output from DC injector, in tenths of volts"
+		::= { prnxxxMonitoringEntry 4 }
+		
+	dCInjIoutStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx current out status, (O - OK, H - High, L - Low, D - Alarm Disabled)"
+		::= { prnxxxMonitoringEntry 5 }
+	
+	dCInjIoutMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Current output from DC injector, in mA."
+		::= { prnxxxMonitoringEntry 6 }
+	
+	rFPowerMonStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx RF power detection status, (O - OK, H - High, L - Low, D - Alarm Disabled)."
+		::= { prnxxxMonitoringEntry 7 }
+	
+	rFPowerMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"RF power at PRNxxx Input port, in hundreths of dBm."
+		::= { prnxxxMonitoringEntry 8 }
+	
+	vbusStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx Vbus status, (O - OK, H - High, L - Low)."
+		::= { prnxxxMonitoringEntry 9 }
+	
+	vbusMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx Vbus value, in tenths of volts."
+		::= { prnxxxMonitoringEntry 10 }
+		
+	plus5VStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx +5V status, (O - OK, H - High, L - Low)."
+		::= { prnxxxMonitoringEntry 11 }
+	
+	plus5VMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx +5V value, in tenths of volts."
+		::= { prnxxxMonitoringEntry 12 }
+	
+	pRNTemperatureStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx temperature status, (O - OK, H - High, L - Low)."
+		::= { prnxxxMonitoringEntry 13 }
+	
+	pRNTemperatureMonValue OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx temperature, in tenths of degrees C"
+		::= { prnxxxMonitoringEntry 14 }
+		
+	lifecounter OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"PRNxxx hours of operation"
+		::= { prnxxxMonitoringEntry 15 }
+		
+	-- ********************************
+	-- *** Group Object Definitions ***
+	-- ********************************
+	prnxxxGroupObjects		OBJECT IDENTIFIER ::= { prnxxx 3 }  -- group objects, i.e. objects that are accessible
+	prnxxxModuleCompliance	OBJECT IDENTIFIER ::= { prnxxx 4 }  -- group objects, i.e. objects that are accessible
+	
+	prnxxxSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			dCInjVoutSet, 				
+			dCInjTone,					
+			dCInjCurrentLimitLow,		
+			dCInjCurrentLimitHigh,		
+			rFPowerLimitLow,	
+			rFPowerLimitHigh	
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of Piranha settings objects used in this MIB"
+	::= { prnxxxGroupObjects 1 }
+	
+	prnxxxMonitoringGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			piranhaSummaryStatus, 
+			dCInjVoutStatus, 
+			dCInjVoutMonValue, 
+			dCInjIoutStatus, 
+			dCInjIoutMonValue, 
+			rFPowerMonStatus, 
+			rFPowerMonValue, 
+			vbusStatus, 
+			vbusMonValue,
+			plus5VStatus, 
+			plus5VMonValue, 
+			pRNTemperatureStatus, 
+			pRNTemperatureMonValue, 
+			lifecounter 
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of Piranha monitoring objects used in this MIB"
+	::= { prnxxxGroupObjects 2 }
+	
+	prnxxx-compliance MODULE-COMPLIANCE
+	STATUS current
+	DESCRIPTION
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			prnxxxSettingsGroupList,
+			prnxxxMonitoringGroupList
+		}
+	::= { prnxxxModuleCompliance 1 }
+	
+END

@@ -1,0 +1,422 @@
+{
+  "deviceName": "ACU",
+  "deviceIp": "60.60.60.41",
+  "devicePort": 161,
+  "community": "public",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-03-02T14:47:15.0809621Z",
+  "totalFields": 12,
+  "modules": [
+    {
+      "moduleName": "RC4Kv1-MIB",
+      "scalarCount": 7,
+      "tableCount": 2,
+      "scalars": [
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.1",
+          "name": "acuStatusMode",
+          "description": "This is the mode of the ACU.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "modeManual",
+              "value": 0
+            },
+            {
+              "label": "modeAuto",
+              "value": 1
+            },
+            {
+              "label": "modeLocate",
+              "value": 5
+            },
+            {
+              "label": "modeTrack",
+              "value": 6
+            },
+            {
+              "label": "modeStore",
+              "value": 7
+            },
+            {
+              "label": "modeSpecialAxis",
+              "value": 10
+            },
+            {
+              "label": "modePowerup",
+              "value": 11
+            },
+            {
+              "label": "modeStow",
+              "value": 15
+            },
+            {
+              "label": "modeDeploy",
+              "value": 16
+            },
+            {
+              "label": "modeRecall",
+              "value": 17
+            },
+            {
+              "label": "modeAutomove",
+              "value": 18
+            },
+            {
+              "label": "modeDelete",
+              "value": 23
+            },
+            {
+              "label": "modeFlashSave",
+              "value": 24
+            },
+            {
+              "label": "modeRemotePosition",
+              "value": 27
+            },
+            {
+              "label": "modeWindHold",
+              "value": 28
+            },
+            {
+              "label": "modePeakup",
+              "value": 29
+            },
+            {
+              "label": "modeShake",
+              "value": 30
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.2",
+          "name": "acuStatusState",
+          "description": "This is the state within the ACU mode.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "minValue": 0,
+          "maxValue": 255,
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.7",
+          "name": "acuStatusAlarm",
+          "description": "The system alarm, or (0) if no alarm active.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "alarmNone",
+              "value": 0
+            },
+            {
+              "label": "alarmFlashVersionMismatch",
+              "value": 1
+            },
+            {
+              "label": "alarmFlashDataCorrupt",
+              "value": 2
+            },
+            {
+              "label": "alarmNvramVersionMismatch",
+              "value": 3
+            },
+            {
+              "label": "alarmNvramDataCorrupt",
+              "value": 4
+            },
+            {
+              "label": "alarmLowBattery",
+              "value": 5
+            },
+            {
+              "label": "alarmTimeDateError",
+              "value": 6
+            },
+            {
+              "label": "alarmAzimuthJammed",
+              "value": 7
+            },
+            {
+              "label": "alarmAzimuthRunaway",
+              "value": 8
+            },
+            {
+              "label": "alarmElevationJammed",
+              "value": 9
+            },
+            {
+              "label": "alarmElevationRunaway",
+              "value": 10
+            },
+            {
+              "label": "alarmPolarizationJammed",
+              "value": 11
+            },
+            {
+              "label": "alarmPolarizationRunaway",
+              "value": 12
+            },
+            {
+              "label": "alarmLimitsInactive",
+              "value": 13
+            },
+            {
+              "label": "alarmDriveError",
+              "value": 14
+            },
+            {
+              "label": "alarmEmergencyStop",
+              "value": 15
+            },
+            {
+              "label": "alarmHandcrankInterlock",
+              "value": 16
+            },
+            {
+              "label": "alarmMovementInterlock",
+              "value": 17
+            },
+            {
+              "label": "alarmLocalJogConnected",
+              "value": 18
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.8",
+          "name": "acuStatusLocateState",
+          "description": "The locate active state.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "locateOff",
+              "value": 0
+            },
+            {
+              "label": "locateDone",
+              "value": 1
+            },
+            {
+              "label": "locateLocked",
+              "value": 2
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.80",
+          "name": "acuStatusFeedIndex",
+          "description": "The index of the connected feed.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "gauge",
+          "baseType": "Unsigned32",
+          "minValue": 0,
+          "maxValue": 7,
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.89",
+          "name": "acuStatusHPA",
+          "description": "The HPA status.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "hpaDisable",
+              "value": 0
+            },
+            {
+              "label": "hpaMuted",
+              "value": 1
+            },
+            {
+              "label": "hpaEnable",
+              "value": 2
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.90",
+          "name": "acuStatusSignalSource",
+          "description": "The selected signal source.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "sourceNone",
+              "value": 0
+            },
+            {
+              "label": "sourceRec1",
+              "value": 1
+            },
+            {
+              "label": "sourceRec2",
+              "value": 2
+            },
+            {
+              "label": "sourceRec3",
+              "value": 3
+            },
+            {
+              "label": "sourceRec4",
+              "value": 4
+            },
+            {
+              "label": "sourceLBand",
+              "value": 5
+            },
+            {
+              "label": "sourceDVB",
+              "value": 6
+            },
+            {
+              "label": "sourceModem",
+              "value": 7
+            }
+          ],
+          "status": "current"
+        }
+      ],
+      "tables": [
+        {
+          "name": "acuStatusAxisEntry",
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.70.1",
+          "description": "This entry contains status items for an axis.",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.39446.4000.1.10.70.1.2",
+              "name": "acuStatusAxisAngle",
+              "description": "The axis angular position.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "AxisPositionAngleType",
+              "units": "Degrees",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.39446.4000.1.10.70.1.3",
+              "name": "acuStatusAxisCount",
+              "description": "The axis count position.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "text",
+              "baseType": "AxisPositionCountType",
+              "units": "Counts",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.39446.4000.1.10.70.1.4",
+              "name": "acuStatusAxisLimit",
+              "description": "The axis limit state.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "limitNone",
+                  "value": 0
+                },
+                {
+                  "label": "limitMIN",
+                  "value": 1
+                },
+                {
+                  "label": "limitMAX",
+                  "value": 2
+                },
+                {
+                  "label": "limitSTOW",
+                  "value": 3
+                },
+                {
+                  "label": "limitmin",
+                  "value": 4
+                },
+                {
+                  "label": "limitmax",
+                  "value": 5
+                },
+                {
+                  "label": "limitstow",
+                  "value": 6
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "acuStatusSignalEntry",
+          "oid": "1.3.6.1.4.1.39446.4000.1.10.91.1",
+          "description": "This entry contains status items for a signal source.",
+          "rowCount": 0,
+          "columnCount": 2,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.39446.4000.1.10.91.1.2",
+              "name": "acuStatusSignalLevel",
+              "description": "The level of the signal source.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "gauge",
+              "baseType": "Unsigned32",
+              "minValue": 0,
+              "maxValue": 4095,
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.39446.4000.1.10.91.1.3",
+              "name": "acuStatusSignalLock",
+              "description": "The lock status of the signal source.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "lockOff",
+                  "value": 0
+                },
+                {
+                  "label": "lockOn",
+                  "value": 1
+                },
+                {
+                  "label": "lockNone",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,872 @@
+-- *****************************************************************
+-- ETLSYSTEMS-DEXTRA-MIB.mib:  MIB for Dextra
+--
+-- December 2014	Stuart Probert
+--
+-- Copyright (c) 2014 by ETL Systems Ltd
+-- All rights reserved.
+-- 
+-- *****************************************************************
+-- (.1.3.6.1.4.1.) iso.org.dod.internet.private.enterprises.									
+-- 	(20938) etlsystems								
+-- 		(1) etlProducts							
+-- 			(3) splittercombiner					
+-- 				(10) dextra				
+--					(0) traps			
+--						(1) splitter1Fault		
+--						(2) splitter2Fault		
+--						(3) lnb1Fault		
+--						(4) lnb2Fault	
+--						(5) psuAFault		
+--						(6) psuBFault		
+--					(1) rwObjects			
+--						(1.0) splitterModeTable		
+--							(1) splitterModeEntry	
+--								(1.1..2) splitterNumber
+--								(2.1..2) splitterMode
+--								(3.1..2) currentPath
+--								(4.1..2) splitterStatus
+--								(5.1..2) redunantMainPath
+--								(6.1..2) hotStandbyMode
+--								(7.1..2) splitterAlias
+--						(2) lnbSettingsTable		
+--							(1) lnbSettingsEntry	
+--								(1.1..2) lnbNumber
+--								(2.1..2) lnbSetVoltage
+--								(3.1..2) lnbSetTone
+--								(4.1..2) lnbVoltageStatus
+--								(5.1..2) lnbCurrentStatus
+--								(6.1..2) lnbActualVoltage
+--								(7.1..2) lnbActualCurrent
+--								(8.1..2) lnbHighCurrentLimit
+--								(9.1..2) lnbLowCurrentLimit
+--						(3) trapTable		
+--							(1) trapEntry	
+--								(1.1) trapReceiverNumber
+--								(2.1) trapEnabled
+--								(3.1) trapReceiverIPAddress
+--								(4.1) trapCommunity
+--						(4) ipSettingsTable		
+--							(1) ipSettingsEntry	
+--								(1.1) ipSettingsIndex,
+--								(2.1) ipIPAddress,
+--								(3.1) ipSubnet,
+--								(4.1) ipDHCP,
+--								(5.1) ipGateway,
+--								(6.1) ipNetBIOSName,
+--								(7.1) ipSettingsSet
+--						(5.0) softReboot		
+--					(2) roObjects
+--						(1.0) dextraType			
+--						(2) ampStatusTable		
+--							(1) ampStatusEntry	
+--								(1.1..4) ampName
+--								(2.1..4) ampStatus
+--								(3.1..4) ampActualCurrent
+--						(3) psuStatusTable		
+--							(1) psuStatusEntry	
+--								(1.1..5) psuName
+--								(2.1..5) psuStatus
+--								(3.1..5) psuActualVoltage
+--						(4.0) unitTemperature		
+							
+
+
+ETLSYSTEMS-DEXTRA-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	NOTIFICATION-TYPE,
+	IpAddress,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP,
+	NOTIFICATION-GROUP
+		FROM SNMPv2-CONF
+	splittercombiner
+		FROM ETLSYSTEMS-MIB;
+
+	-- Define the branch from oemproducts.bluwan
+
+	dextra MODULE-IDENTITY
+	LAST-UPDATED "201412080000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+			Tel: +44 1981 259020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Dextra"
+	REVISION	"201412080000Z"
+	DESCRIPTION
+		"Version 1.1 of this MIB module to suit e351 V1.4."
+										  ::= { splittercombiner 10 }
+
+	traps     			OBJECT IDENTIFIER ::= { dextra 0 }  -- trap objects
+	rwObjects 			OBJECT IDENTIFIER ::= { dextra 1 }  -- read/write objects
+	roObjects 			OBJECT IDENTIFIER ::= { dextra 2 }  -- read-only objects
+	groupObjects		OBJECT IDENTIFIER ::= { dextra 3 }  -- group objects, i.e. objects that are acessable
+	groupNotifications	OBJECT IDENTIFIER ::= { dextra 4 }  -- group objects, i.e. objects that are acessable
+	moduleCompliance	OBJECT IDENTIFIER ::= { dextra 5 }  -- group objects, i.e. objects that are acessable
+
+	-- read/write object definitions
+
+	
+
+-- **************************************************
+-- *** Start of Trap Settings Table definitions: ***
+-- **************************************************
+
+	splitterModeTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF SplitterModeEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Trap receiver table"
+		::= { rwObjects 1 }        
+
+	splitterModeEntry OBJECT-TYPE
+		SYNTAX SplitterModeEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single setMode entry (conceptual row) in the set Mode table"
+		INDEX { splitterNumber }
+		::= { splitterModeTable 1 }
+
+	SplitterModeEntry ::=
+		SEQUENCE
+		{
+			splitterNumber		INTEGER,
+			splitterMode		INTEGER,
+			currentPath			INTEGER,
+			splitterStatus		INTEGER,
+			redundantMainPath	INTEGER,
+			hotStandbyMode		INTEGER,
+			splitterAlias		DisplayString
+		}            
+
+	splitterNumber  OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					splitter1(1),
+					splitter2(2)
+				}
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Splitter number"
+		::= { splitterModeEntry 1 }
+
+	splitterMode OBJECT-TYPE
+		SYNTAX  INTEGER
+				{
+					auto(0),
+					manualPathA(1),
+					manualPathB(2)
+				}
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Current operating mode"
+		::= { splitterModeEntry 2 }
+
+	currentPath OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					pathA(0),
+					pathB(1)
+				}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Path currently in use."
+		::= { splitterModeEntry 3 }
+		
+	splitterStatus OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					ok(0),
+					pathAfailed(1),
+					pathBfailed(2),
+					pathApathBfailed(3)
+				}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Current monitored status"
+		::= { splitterModeEntry 4 }
+
+	redundantMainPath OBJECT-TYPE
+		SYNTAX  INTEGER
+				{
+					pathA(0),
+					PathB(1),
+					uninstalled(2)
+				}
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Auto mode main path selection"
+		::= { splitterModeEntry 5 }
+		
+	hotStandbyMode OBJECT-TYPE
+		SYNTAX  INTEGER
+				{
+					disabled(0),
+					enabled(1),
+					uninstalled(2)
+				}
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Hot standby mode"
+		::= { splitterModeEntry 6 }
+		
+	splitterAlias	OBJECT-TYPE
+		SYNTAX  DisplayString (SIZE (0..11))
+		MAX-ACCESS	read-write
+		STATUS		current
+		DESCRIPTION
+				"Alias name for the splitter/combiner."
+		::= { splitterModeEntry 7 }
+
+-- *** End of Splitter Mode Table definitions. ***
+
+-- **************************************************
+-- *** Start of LNB Settings Table definitions: ***
+-- **************************************************
+
+	lnbSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF LNBSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Trap receiver table"
+		::= { rwObjects 2 }        
+
+	lnbSettingsEntry OBJECT-TYPE
+		SYNTAX LNBSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single lnb Settings entry (conceptual row) in the LNB settings table"
+		INDEX { lnbNumber }
+		::= { lnbSettingsTable 1 }
+
+	LNBSettingsEntry ::=
+		SEQUENCE
+		{
+			lnbNumber			INTEGER,
+			lnbSetVoltage		INTEGER,
+			lnbSetTone			INTEGER,
+			lnbVoltageStatus	INTEGER,
+			lnbCurrentStatus	INTEGER,
+			lnbActualVoltage	Integer32,
+			lnbActualCurrent	Integer32,
+			lnbHighCurrentLimit	Integer32,	
+			lnbLowCurrentLimit	Integer32
+		}
+
+	lnbNumber  OBJECT-TYPE
+		SYNTAX INTEGER
+				{
+					lnb1(1),
+					lnb2(2)
+				}
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"LNB number"
+		::= { lnbSettingsEntry 1 }
+		
+	lnbSetVoltage  OBJECT-TYPE
+		SYNTAX     INTEGER 
+		{
+			off (0),
+			low (1),
+			high (2)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"LNB voltage setting"
+		::= { lnbSettingsEntry 2 }
+		
+	lnbSetTone  OBJECT-TYPE
+		SYNTAX     INTEGER 
+		{
+			off (0),
+			on (1)
+		}
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"LNB tone setting"
+		::= { lnbSettingsEntry 3 }
+		
+	lnbVoltageStatus  OBJECT-TYPE
+		SYNTAX     INTEGER 
+		{
+			off (0),
+			normal (1),
+			low (2),
+			high (3)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB voltage setting"
+		::= { lnbSettingsEntry 4 }
+		
+	lnbCurrentStatus  OBJECT-TYPE
+		SYNTAX     INTEGER 
+		{
+			off (0),
+			normal (1),
+			low (2),
+			high (3),
+			limit (4)
+		}
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB tone setting"
+		::= { lnbSettingsEntry 5 }
+		
+	lnbActualVoltage  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB actual measured voltage in mV"
+		::= { lnbSettingsEntry 6 }
+
+	lnbActualCurrent  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-only
+		STATUS     current
+		DESCRIPTION 
+			"LNB actual measured current in mA"
+		::= { lnbSettingsEntry 7 }
+		
+	lnbHighCurrentLimit  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"LNB High Current Limit in mA"
+		::= { lnbSettingsEntry 8 }
+
+	lnbLowCurrentLimit  OBJECT-TYPE
+		SYNTAX     Integer32
+		MAX-ACCESS read-write
+		STATUS     current
+		DESCRIPTION 
+			"LNB Low Current Limit in mA"
+		::= { lnbSettingsEntry 9 }	
+	
+-- **************************************************
+-- *** Start of Trap Settings Table definitions: ***
+-- **************************************************
+
+	trapTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Trap receiver table"
+		::= { rwObjects 3 }        
+
+	trapEntry OBJECT-TYPE
+		SYNTAX TrapEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single trap entry (conceptual row) in the Trap receiver table"
+		INDEX { trapReceiverNumber }
+		::= { trapTable 1 }
+
+	TrapEntry ::=
+		SEQUENCE
+		{
+			trapReceiverNumber		INTEGER,
+			trapEnabled				INTEGER,
+			trapReceiverIPAddress	IpAddress,
+			trapCommunity			DisplayString
+		}            
+
+	trapReceiverNumber  OBJECT-TYPE
+		SYNTAX Integer32 (0)
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of trap receiver"
+		::= { trapEntry 1 }
+
+	trapEnabled OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					no(0),
+					yes(1)
+				}
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Indicates if this trap entry is enabled or not."
+		::= { trapEntry 2 }
+
+	trapReceiverIPAddress OBJECT-TYPE
+		SYNTAX  IpAddress
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap receiver IP address"
+		::= { trapEntry 3 }
+
+	trapCommunity OBJECT-TYPE
+		SYNTAX  DisplayString (SIZE (0..7))
+		MAX-ACCESS  read-write
+		STATUS current
+		DESCRIPTION
+			"Trap community to be used by agent to send trap"
+		::= { trapEntry 4 }
+
+-- *** End of Trap Settings Table definitions. ***
+
+-- **************************************************
+-- *** Start of IP Settings Table definitions: ***
+-- **************************************************
+
+	ipSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF IpSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Input Settings Table"
+		::= { rwObjects 4 }
+
+
+	ipSettingsEntry OBJECT-TYPE
+		SYNTAX	IpSettingsEntry
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+			"Single entry (conceptual row) in the Input Settings Table"
+		INDEX { ipSettingsIndex }
+		 ::= { ipSettingsTable 1 }
+	
+	IpSettingsEntry ::=
+		SEQUENCE
+		{
+			ipSettingsIndex	Integer32,
+			ipIPAddress		IpAddress,
+			ipSubnet		IpAddress,
+			ipDHCP			Integer32,
+			ipGateway		IpAddress,
+			ipNetBIOSName	DisplayString,
+			ipSettingsSet	Integer32
+		}
+
+	ipSettingsIndex OBJECT-TYPE
+		SYNTAX	Integer32 ( 0 )
+		MAX-ACCESS	not-accessible
+		STATUS	current
+		DESCRIPTION
+				"Row number, only one row in this table"
+		::= { ipSettingsEntry 1 }
+
+	ipIPAddress OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write IP address.  This is the address of the unit.
+			Note: this object is only writable if the ipDHCP object is set to
+			disabled(0).
+			Note: ipSettingsSet will require setting to action any changes in configuration."
+		::= { ipSettingsEntry 2 }
+
+	ipSubnet OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write subnet mask.  This is the subnet mask of the unit.
+			Note: this object is only writable if the ipDHCP object is set to
+			disabled(0).
+			Note: ipSettingsSet will require setting to action any changes in configuration."
+		::= { ipSettingsEntry 3 }
+
+	ipDHCP OBJECT-TYPE
+		SYNTAX	INTEGER
+		{
+			disabled(0),
+			enabled(1)
+		}
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Enable trap messages. 0=disabled, 1=enabled.
+				Note: ipSettingsSet will require setting to action any changes in configuration."
+		::= { ipSettingsEntry 4 }
+
+	ipGateway OBJECT-TYPE
+		SYNTAX	IpAddress
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"A read/write gateway IP Address. 
+			This is the gateway IP Address the unit will use.
+			Note: ipSettingsSet will require setting to action any changes in configuration."
+		::= { ipSettingsEntry 5 }
+
+	ipNetBIOSName	OBJECT-TYPE
+		SYNTAX  DisplayString (SIZE (0..15))
+		MAX-ACCESS	read-write
+		STATUS		current
+		DESCRIPTION
+				"A read/write String containing the Net BIOS Name.
+			This is the Net BIOS Name the unit will use.
+			Note: ipSettingsSet will require setting to action any changes in configuration."
+		::= { ipSettingsEntry 6 }
+	
+	ipSettingsSet	OBJECT-TYPE
+		SYNTAX  Integer32
+		MAX-ACCESS	read-write
+		STATUS		current
+		DESCRIPTION
+				"Write 1 to set the ip settings with current values set in the ipSettingsTable.
+				NOTE: The unit will reboot if set is successful."
+		::= { ipSettingsEntry 7 }
+	
+	-- *** End of IP Settings Table definitions. ***
+	
+	softReboot OBJECT-TYPE
+		SYNTAX	INTEGER
+		MAX-ACCESS	read-write
+		STATUS	current
+		DESCRIPTION
+				"Write 1 to reboot unit"
+		::= { rwObjects 5 }	
+
+		
+-- *** Start of Read Only Object Definitions. ***
+
+	dextraType OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					dextra_16WaySplitter(0),
+					dextra_8WaySplitter(1),
+					dextra_4WaySplitter(2),
+					dextra_Dual_8WaySplitter(3),
+					dextra_Dual_4WaySplitter(4),
+					dextra_16WayCombiner(5),
+					dextra_4WayCombiner(6),
+					dextra_8WayCombiner(7),
+					dextra_Dual_4WayCombiner(8),
+					dextra_Dual_8WayCombiner(9),
+					dextra_Dual_8WayHybridSplitter(13),
+					dextra_Dual_4WayHybridSplitter(14),
+					dextra_Dual_8WayHybridCombiner(18),
+					dextra_Dual_4WayHybridCombiner(19),
+				}
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Indicates Dextra splitter type."
+		::= { roObjects 1 }
+
+		
+	-- **************************************************
+	-- *** Start of amp Status Table definitions: ***
+	-- **************************************************
+
+	ampStatusTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF AmpStatusEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Unit Configuration Table"
+		::= { roObjects 2 }        
+
+	ampStatusEntry OBJECT-TYPE
+		SYNTAX AmpStatusEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+				"Single entry (conceptual row) in the Amp Status table"
+		INDEX { ampName }
+		 ::= { ampStatusTable 1 }
+
+	AmpStatusEntry ::=
+		SEQUENCE
+		{
+			ampName				INTEGER,
+			ampStatus			INTEGER,
+			ampActualCurrent	Integer32
+		}
+
+	ampName  OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					ampMon1(1),
+					ampMon2(2),
+					ampMon3(3),
+					ampMon4(4)
+				}
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Index of Amp Monitor table / defined name of amp"
+		::= { ampStatusEntry 1 }
+
+	ampStatus OBJECT-TYPE
+			SYNTAX	INTEGER
+					{
+						ok(0),
+						low(1),
+						high(2)
+					}
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"Current monitored status,
+		amplifiers not in the currently selected path are not powered, i.e. in
+		cold standby, will report their last powered status."
+		::= { ampStatusEntry 2 }
+
+	ampActualCurrent OBJECT-TYPE
+			SYNTAX	Integer32 (0..120)
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"Amplifier Bias current in mA."
+		::= { ampStatusEntry 3 }
+
+
+-- *** END of AMP STATUS TABLE DEFINITION ***
+
+
+	-- **************************************************
+	-- *** Start of psu Status Table definitions: ***
+	-- **************************************************
+
+	psuStatusTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF PsuStatusEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Splitter/Combiner Status Table"
+		::= { roObjects 3 }
+
+	psuStatusEntry OBJECT-TYPE
+		SYNTAX PsuStatusEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in the PSU Status Table"
+		INDEX { psuName }
+		 ::= { psuStatusTable 1 }
+	
+	PsuStatusEntry ::=
+		SEQUENCE
+		{
+			psuName				INTEGER,
+			psuStatus			INTEGER,
+			psuActualVoltage   	Integer32
+		}
+
+	psuName	OBJECT-TYPE
+		SYNTAX		INTEGER 
+				{
+					psuA(1),
+					psuB(2),
+					ampVBus(3),
+					5V(4),
+					3v3(5)
+				}
+		MAX-ACCESS	not-accessible
+		STATUS		current
+		DESCRIPTION
+			"chassis index, always 0"
+		::= { psuStatusEntry 1 }
+
+	psuStatus OBJECT-TYPE
+		SYNTAX	INTEGER
+				{
+					ok (0),
+					low (1),
+					high (2)
+				}
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+				"PSU Status"
+		::= { psuStatusEntry 2 }
+	
+	psuActualVoltage OBJECT-TYPE
+		SYNTAX	Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Actual voltage in mV."
+		::= { psuStatusEntry 3 }	
+
+	-- *** End of psu Status Table definitions. ***	
+	
+
+	unitTemperature OBJECT-TYPE
+		SYNTAX	Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"Actual chassis temperature 
+			in tenths of degrees C"
+		::= { roObjects 4 }
+		
+		
+-- Trap definitions
+	splitter1Fault NOTIFICATION-TYPE
+			OBJECTS {
+						splitterStatus
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if Splitter 1 has a fault"             
+			::= { traps 1 }
+			
+	splitter2Fault NOTIFICATION-TYPE
+			OBJECTS {
+						splitterStatus
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if Splitter 2 has a fault"             
+			::= { traps 2 }
+
+	lnb1Fault NOTIFICATION-TYPE
+			OBJECTS {
+						statusAmp
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if LNB 1 has a fault"             
+			::= { traps 3 }
+			
+	lnb2Fault NOTIFICATION-TYPE
+			OBJECTS {
+						statusAmp
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if LNB 2 has a fault"             
+			::= { traps 4 }
+			
+	psuAFault NOTIFICATION-TYPE
+			OBJECTS {
+						psuStatus
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if PSU A has a fault"             
+			::= { traps 5 }
+
+	psuBFault NOTIFICATION-TYPE
+			OBJECTS {
+						statuspsu2
+					}
+			STATUS	current
+			DESCRIPTION
+					"This trap is sent every 5s if PSU B has a fault"             
+			::= { traps 6 }
+			
+-- Objects group lists
+	rwObjectsGroupList	OBJECT-GROUP
+		OBJECTS
+		{
+			splitterMode,
+			currentPath,
+			splitterStatus,
+			redundantMainPath,
+			hotStandbyMode,
+			splitterAlias,
+			lnbSetVoltage,
+			lnbSetTone,
+			lnbVoltageStatus,
+			lnbCurrentStatus,
+			lnbActualVoltage,
+			lnbActualCurrent,
+			lnbHighCurrentLimit,
+			lnbLowCurrentLimit,
+			trapEnabled,
+			trapReceiverIPAddress,
+			trapCommunity,
+			ipIPAddress,
+			ipSubnet,
+			ipDHCP,
+			ipGateway,
+			ipNetBIOSName,
+			ipSettingsSet,
+			softReboot
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of read/write objects used in this MIB"
+	::= { groupObjects 1 }
+
+	roObjectsGroupList	OBJECT-GROUP
+		OBJECTS
+		{
+			dextraType,
+			ampStatus,
+			ampActualCurrent,	
+			psuStatus,
+			psuActualVoltage,
+			unitTemperature	
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of read only objects used in this MIB"
+	::= { groupObjects 2 }
+
+-- Notification group lists
+	trapsGroupList	NOTIFICATION-GROUP
+		NOTIFICATIONS
+		{
+			splitter1Fault,
+			splitter2Fault,
+			lnb1Fault,
+			lnb2Fault,
+			psuAFault,
+			psuBFault
+		}
+	STATUS	current
+	DESCRIPTION
+		"A collection of trap objects used in this MIB"
+	::= { groupNotifications 1 }
+
+	dextraCompliance  MODULE-COMPLIANCE
+		STATUS     current
+		DESCRIPTION 
+			"A collection of groups required for compliance"
+		MODULE
+			MANDATORY-GROUPS
+			{
+				rwObjectsGroupList,
+				roObjectsGroupList,
+				trapsGroupList
+			} 
+		::= { moduleCompliance 1 }
+
+END

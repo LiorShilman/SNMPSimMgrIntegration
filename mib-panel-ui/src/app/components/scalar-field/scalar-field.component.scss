@@ -1,0 +1,320 @@
+.field-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+
+  &:hover {
+    background: rgba(76, 154, 255, 0.04);
+    border-color: #2A3040;
+  }
+
+  &.writable:hover {
+    border-color: #3D4663;
+  }
+
+  &.editing {
+    background: rgba(76, 154, 255, 0.08);
+    border-color: #4C9AFF;
+  }
+}
+
+.field-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 32px;
+  padding-top: 2px;
+}
+
+.type-icon {
+  font-size: 16px;
+  color: #8C95A6;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.access-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+
+  &.access-ro {
+    color: #8C95A6;
+    background: #1B1F2A;
+  }
+  &.access-rw {
+    color: #57D9A3;
+    background: rgba(87, 217, 163, 0.12);
+  }
+  &.access-rc {
+    color: #FFAB00;
+    background: rgba(255, 171, 0, 0.12);
+  }
+}
+
+.field-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.field-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: #E8EAED;
+}
+
+.field-desc {
+  font-size: 11px;
+  color: #8C95A6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  margin-top: 1px;
+}
+
+.field-oid {
+  font-family: 'Consolas', monospace;
+  font-size: 11px;
+  color: #5A6170;
+  margin-top: 2px;
+}
+
+.field-value-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+  justify-content: flex-end;
+}
+
+.field-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &.clickable {
+    cursor: pointer;
+    &:hover .current-value { color: #4C9AFF; }
+  }
+}
+
+.current-value {
+  font-family: 'Consolas', monospace;
+  font-size: 13px;
+  color: #57D9A3;
+  transition: color 0.15s;
+
+  &.no-value {
+    color: #5A6170;
+  }
+}
+
+.value-type-tag {
+  font-size: 10px;
+  color: #5A6170;
+  font-family: 'Consolas', monospace;
+  background: #1B1F2A;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.btn-set {
+  background: transparent;
+  border: 1px solid #3D4663;
+  color: #4C9AFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+
+  &:hover:not(:disabled) {
+    background: rgba(76, 154, 255, 0.12);
+    border-color: #4C9AFF;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.edit-area {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-field {
+  background: #1B1F2A;
+  border: 1px solid #4C9AFF;
+  color: #E8EAED;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Consolas', monospace;
+  min-width: 140px;
+  outline: none;
+
+  &:focus {
+    border-color: #79B8FF;
+    box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
+  }
+
+  option {
+    background: #1B1F2A;
+    color: #E8EAED;
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-send {
+  background: #4C9AFF;
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) { background: #79B8FF; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #3D4663;
+  color: #8C95A6;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    color: #FF5252;
+    border-color: #FF5252;
+  }
+}
+
+.constraint-hint {
+  font-size: 10px;
+  color: #5A6170;
+  margin-top: 4px;
+  font-family: 'Consolas', monospace;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+}
+
+.toggle-slider {
+  width: 36px;
+  height: 20px;
+  background: #3D4663;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #8C95A6;
+    top: 2px;
+    left: 2px;
+    transition: all 0.2s;
+  }
+
+  input:checked + & {
+    background: #4C9AFF;
+    &::after {
+      left: 18px;
+      background: #fff;
+    }
+  }
+}
+
+.toggle-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #E8EAED;
+}
+
+// Status LED indicator
+.status-led {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+
+  .led-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &[data-status="ok"] {
+    color: #57D9A3;
+    background: rgba(87, 217, 163, 0.1);
+    .led-dot { background: #57D9A3; box-shadow: 0 0 6px rgba(87, 217, 163, 0.5); }
+  }
+  &[data-status="warn"] {
+    color: #FFAB00;
+    background: rgba(255, 171, 0, 0.1);
+    .led-dot { background: #FFAB00; box-shadow: 0 0 6px rgba(255, 171, 0, 0.5); }
+  }
+  &[data-status="error"] {
+    color: #FF5252;
+    background: rgba(255, 82, 82, 0.1);
+    .led-dot {
+      background: #FF5252;
+      box-shadow: 0 0 6px rgba(255, 82, 82, 0.5);
+      animation: pulse-error 2s ease-in-out infinite;
+    }
+  }
+  &[data-status="off"] {
+    color: #8C95A6;
+    background: rgba(140, 149, 166, 0.08);
+    .led-dot { background: #5A6170; }
+  }
+}
+
+@keyframes pulse-error {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 82, 82, 0.5); }
+  50% { box-shadow: 0 0 12px rgba(255, 82, 82, 0.8); }
+}

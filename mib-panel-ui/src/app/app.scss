@@ -1,0 +1,474 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Top Bar ──
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  height: 52px;
+  background: #1E2230;
+  border-bottom: 1px solid #2A3040;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 20px;
+  color: #4C9AFF;
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #E8EAED;
+  letter-spacing: -0.5px;
+}
+
+// ── Connection Indicator (top bar) ──
+.conn-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid #2A3040;
+}
+
+.conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #555;
+
+  &.connected { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+  &.connecting { background: #f59e0b; animation: pulse-dot 1.5s infinite; }
+  &.error { background: #ef4444; }
+}
+
+.conn-label {
+  font-size: 12px;
+  color: #5A6170;
+
+  &.connected { color: #22c55e; }
+  &.connecting { color: #f59e0b; }
+  &.error { color: #ef4444; }
+}
+
+.top-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.btn-bulkset {
+  background: transparent;
+  border: 1px solid #3D4663;
+  color: #CDD1D8;
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #232836;
+    border-color: #4C9AFF;
+    color: #4C9AFF;
+  }
+}
+
+// ── Connection Banner ──
+.conn-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+
+  &.error {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.08);
+    border-bottom-color: rgba(248, 113, 113, 0.15);
+  }
+
+  &.connecting {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.08);
+    border-bottom-color: rgba(96, 165, 250, 0.15);
+  }
+}
+
+.conn-banner-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: currentColor;
+  animation: pulse-dot 1.5s infinite;
+}
+
+.conn-banner-attempt {
+  color: #8C95A6;
+  font-size: 11px;
+}
+
+// ── Device Dashboard ──
+.device-dashboard {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60vh;
+
+  .empty-icon {
+    font-size: 56px;
+    color: #3D4663;
+
+    &.spinning {
+      animation: spin 1.5s linear infinite;
+    }
+  }
+
+  .empty-text {
+    font-size: 16px;
+    color: #8C95A6;
+    font-weight: 500;
+  }
+
+  .empty-hint {
+    font-size: 13px;
+    color: #5A6170;
+  }
+}
+
+// ── Device Grid ──
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.device-card {
+  position: relative;
+  background: linear-gradient(135deg, #1B1F2A 0%, #1E2335 100%);
+  border: 1px solid #2A3040;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #4C5A78;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  &.simulating {
+    border-color: rgba(34, 197, 94, 0.25);
+
+    &:hover {
+      border-color: rgba(34, 197, 94, 0.5);
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(34, 197, 94, 0.08);
+    }
+  }
+
+  &.selected {
+    border-color: #4C9AFF;
+    box-shadow: 0 0 0 1px rgba(76, 154, 255, 0.3);
+  }
+}
+
+.card-status-bar {
+  height: 3px;
+  background: #2A3040;
+  transition: all 0.3s;
+
+  &.simulating {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    box-shadow: 0 1px 8px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  position: relative;
+}
+
+.card-icon {
+  color: #4C5A78;
+  margin-bottom: 4px;
+  transition: color 0.2s;
+
+  .simulating & { color: #6C9FFF; }
+  .device-card:hover & { color: #79B8FF; }
+}
+
+.card-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3D4663;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  &.simulating {
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    animation: pulse-dot 2s infinite;
+  }
+}
+
+.card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #E8EAED;
+  letter-spacing: -0.3px;
+
+  .device-card:hover & { color: #fff; }
+}
+
+.card-address {
+  font-size: 13px;
+  color: #5A6888;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.card-sim-badge {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-family: 'Consolas', monospace;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.card-offline-badge {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5A6170;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid #252d42;
+}
+
+// ── Side Panel Content ──
+.panel-header-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.panel-avatar {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(76, 154, 255, 0.15), rgba(123, 97, 255, 0.1));
+  color: #6C9FFF;
+  flex-shrink: 0;
+}
+
+.panel-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-device-name {
+  font-weight: 700;
+  font-size: 17px;
+  color: #FFAB00;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-conn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+
+  &.connected { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+  &.connecting { background: #f59e0b; animation: pulse-dot 1s infinite; }
+  &.disconnected { background: #555; }
+  &.error { background: #ef4444; }
+}
+
+.panel-device-meta {
+  font-size: 12px;
+  color: #8C95A6;
+  font-family: 'Consolas', monospace;
+  margin-top: 2px;
+}
+
+.panel-quick-stats {
+  font-size: 11px;
+  color: #5A6888;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 5px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid #252d42;
+}
+
+// ── Health Summary Strip ──
+.health-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: rgba(27, 31, 42, 0.92);
+  border-bottom: 1px solid #252d42;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.health-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  &.ok { color: #57D9A3; }
+  &.warning { color: #FFAB00; }
+  &.alarm { color: #FF5252; }
+  &.info { color: #8C95A6; }
+}
+
+.health-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+
+  .ok & { background: #57D9A3; box-shadow: 0 0 6px rgba(87, 217, 163, 0.5); }
+  .warning & { background: #FFAB00; box-shadow: 0 0 6px rgba(255, 171, 0, 0.5); }
+  .alarm & { background: #FF5252; box-shadow: 0 0 6px rgba(255, 82, 82, 0.5); }
+  .info & { background: #5A6170; }
+}
+
+// ── Module Tabs ──
+.module-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 20px;
+  background: rgba(27, 31, 42, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #252d42;
+  position: sticky;
+  top: 42px;
+  z-index: 2;
+}
+
+.module-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #252d42;
+  color: #8C95A6;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(76, 154, 255, 0.08);
+    border-color: rgba(76, 154, 255, 0.3);
+    color: #CDD1D8;
+  }
+
+  &.active {
+    background: rgba(76, 154, 255, 0.15);
+    border-color: #4C9AFF;
+    color: #4C9AFF;
+  }
+}
+
+.tab-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 10px;
+
+  .active & {
+    background: rgba(76, 154, 255, 0.2);
+    color: #79B8FF;
+  }
+}
+
+.panel-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ── Animations ──
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

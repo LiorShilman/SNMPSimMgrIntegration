@@ -1,0 +1,54 @@
+<div class="device-card">
+  <div class="card-glow"></div>
+
+  <!-- Identity -->
+  <div class="card-identity">
+    <div class="device-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8m-4-4v4"/>
+        <circle cx="12" cy="10" r="1" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="identity-text">
+      <div class="device-name">{{ identity.name || 'Unknown Device' }}</div>
+      <div class="device-model">{{ identity.model || '' }}</div>
+    </div>
+    <div class="uptime-pill">
+      <span class="uptime-dot"></span>
+      <span class="uptime-val">{{ identity.uptime || '—' }}</span>
+    </div>
+  </div>
+
+  <!-- Info Pills -->
+  <div class="info-pills">
+    @if (identity.firmware) {
+      <div class="pill">
+        <span class="pill-icon">⬡</span>
+        <span class="pill-val">{{ identity.firmware }}</span>
+      </div>
+    }
+    @if (identity.serial) {
+      <div class="pill">
+        <span class="pill-icon">⊟</span>
+        <span class="pill-val">{{ identity.serial }}</span>
+      </div>
+    }
+    @if (identity.managementIp) {
+      <div class="pill pill-highlight">
+        <span class="pill-val">{{ identity.managementIp }}</span>
+      </div>
+    }
+    @if (identity.mac) {
+      <div class="pill">
+        <span class="pill-val">{{ identity.mac }}</span>
+      </div>
+    }
+    @if (identity.location) {
+      <div class="pill">
+        <span class="pill-icon">◎</span>
+        <span class="pill-val">{{ identity.location }}</span>
+      </div>
+    }
+  </div>
+</div>

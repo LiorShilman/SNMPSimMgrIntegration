@@ -1,0 +1,2432 @@
+{
+  "deviceName": "COMBINER",
+  "deviceIp": "60.60.60.22",
+  "devicePort": 161,
+  "community": "public",
+  "snmpVersion": "V2c",
+  "exportedAt": "2026-03-02T14:45:46.7860964Z",
+  "totalFields": 136,
+  "modules": [
+    {
+      "moduleName": "ETLSYSTEMS-ALTO-MIB",
+      "scalarCount": 8,
+      "tableCount": 12,
+      "scalars": [
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.1",
+          "name": "nbrMainModule",
+          "description": "Number of main module (path) in the unit.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.2",
+          "name": "nbrRedundantModule",
+          "description": "Number of redundant module in the system.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.3",
+          "name": "tracking",
+          "description": "Set tracking on or off.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "toggle",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "off",
+              "value": 0
+            },
+            {
+              "label": "on",
+              "value": 1
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.7",
+          "name": "priority",
+          "description": "Set path priority for standby module.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "enum",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "none",
+              "value": 0
+            },
+            {
+              "label": "path1",
+              "value": 1
+            },
+            {
+              "label": "path2",
+              "value": 2
+            }
+          ],
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.7",
+          "name": "initNoModules",
+          "description": "Always read 0.\r\n\t\t\t\tWrite 1 to init the number of modules.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.8",
+          "name": "factoryDefault",
+          "description": "Always read 0.\r\n\t\t\t\tWrite 1 to reset the unit to factory default and reboot.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.9",
+          "name": "reboot",
+          "description": "Always read 0.\r\n\t\t\t\tWrite 1 to reboot the unit.",
+          "access": "read-write",
+          "isWritable": true,
+          "inputType": "number",
+          "baseType": "Integer32",
+          "status": "current"
+        },
+        {
+          "oid": "1.3.6.1.4.1.20938.1.6.6.2.4",
+          "name": "summaryAlarm",
+          "description": "Current summary alarm status.",
+          "access": "read-only",
+          "isWritable": false,
+          "inputType": "status-led",
+          "baseType": "INTEGER",
+          "options": [
+            {
+              "label": "ok",
+              "value": 0
+            },
+            {
+              "label": "alarm",
+              "value": 1
+            }
+          ],
+          "status": "current"
+        }
+      ],
+      "tables": [
+        {
+          "name": "pathSetModuleUseEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1",
+          "description": "Single system entry (conceptual row) in the path set module use table.",
+          "rowCount": 0,
+          "columnCount": 9,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.10",
+              "name": "pathSetMode",
+              "description": "Set mode to use on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "gain",
+                  "value": 0
+                },
+                {
+                  "label": "agc",
+                  "value": 1
+                },
+                {
+                  "label": "bestcombination",
+                  "value": 2
+                },
+                {
+                  "label": "bestnoisefigure",
+                  "value": 3
+                },
+                {
+                  "label": "bestlinearity",
+                  "value": 4
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.2",
+              "name": "pathSetModuleUse",
+              "description": "Set module to use on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "auto",
+                  "value": 0
+                },
+                {
+                  "label": "module1",
+                  "value": 1
+                },
+                {
+                  "label": "module2",
+                  "value": 2
+                },
+                {
+                  "label": "module3",
+                  "value": 3
+                },
+                {
+                  "label": "module4",
+                  "value": 4
+                },
+                {
+                  "label": "module5",
+                  "value": 5
+                },
+                {
+                  "label": "module6",
+                  "value": 6
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.3",
+              "name": "pathSetGain",
+              "description": "Set gain (in hundredths of dBm) on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.4",
+              "name": "pathSetSlope",
+              "description": "Set slope (in hundredths of dBm) on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.5",
+              "name": "pathInputNumber",
+              "description": "Set input number on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.6",
+              "name": "pathOutputNumber",
+              "description": "Set output number on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.7",
+              "name": "pathAttenuator1",
+              "description": "Set attenuator 1 (in hundredths of dBm) on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.8",
+              "name": "pathAttenuator2",
+              "description": "Set attenuator 2 (in hundredths of dBm) on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.4.1.9",
+              "name": "pathAttenuator3",
+              "description": "Set attenuator 3 (in hundredths of dBm) on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "hotColdRedundantModuleEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.5.1",
+          "description": "Single system entry (conceptual row) in the hot cold redundant module table.",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.5.1.2",
+              "name": "hotColdRedundantModule",
+              "description": "Set redundant module to hot or cold.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "cold",
+                  "value": 0
+                },
+                {
+                  "label": "hot",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "checkColdRedundantModuleEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.6.1",
+          "description": "Single system entry (conceptual row) in the check cold redundant module table.",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.6.1.2",
+              "name": "checkColdRedundantModule",
+              "description": "Set check option for redundant module.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "manual",
+                  "value": 0
+                },
+                {
+                  "label": "hourly",
+                  "value": 1
+                },
+                {
+                  "label": "daily",
+                  "value": 2
+                },
+                {
+                  "label": "weekly",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "blockConfigEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.8.1",
+          "description": "Single system entry (conceptual row) in the block config table.",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.8.1.2",
+              "name": "nbrMainModuleBlock",
+              "description": "Number of main module (path) in the block.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.8.1.3",
+              "name": "nbrRedundantModuleBlock",
+              "description": "Number of redundant module in the block.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.1.8.1.4",
+              "name": "trackingBlock",
+              "description": "Set tracking on or off for the block.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "on",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "moduleSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1",
+          "description": "Single module entry (conceptual row) in the module settings table",
+          "rowCount": 0,
+          "columnCount": 11,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.10",
+              "name": "moduleAttenuator2",
+              "description": "Attenuator 2 setting (in hundredths of dB)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.11",
+              "name": "moduleAttenuator3",
+              "description": "Attenuator 3 setting (in hundredths of dB)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.12",
+              "name": "moduleTone",
+              "description": "Set Tone",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "on",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.2",
+              "name": "moduleSetLimits",
+              "description": "Write 1 to set the monitoring limits on\r\n\t\t\t\t selected module.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "limitsNotSet",
+                  "value": 0
+                },
+                {
+                  "label": "limitsSet",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.3",
+              "name": "moduleMode",
+              "description": "Set mode",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "gain",
+                  "value": 0
+                },
+                {
+                  "label": "agc",
+                  "value": 1
+                },
+                {
+                  "label": "bestcombination",
+                  "value": 2
+                },
+                {
+                  "label": "bestnoisefigure",
+                  "value": 3
+                },
+                {
+                  "label": "bestlinearity",
+                  "value": 4
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.4",
+              "name": "modulePower",
+              "description": "Power setting (in hundredths of dBm)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.5",
+              "name": "moduleGain",
+              "description": "Gain setting (in hundredths of dB)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.6",
+              "name": "moduleSlope",
+              "description": "Slope setting (in hundredths of dB)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.7",
+              "name": "moduleLnb",
+              "description": "Set LNB",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "off",
+                  "value": 0
+                },
+                {
+                  "label": "on",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.8",
+              "name": "moduleTimeConstant",
+              "description": "Set time constant (on / off)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "fast",
+                  "value": 0
+                },
+                {
+                  "label": "slow",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.2.1.9",
+              "name": "moduleAttenuator1",
+              "description": "Attenuator 1 setting (in hundredths of dB)",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "chassisSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.3.1",
+          "description": "Single module entry (conceptual row) in the module settings table",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.3.1.2",
+              "name": "chassisSetLimits",
+              "description": "Write 1 to set the limits on\r\n\t\t\t\t chassis.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "limitsNotSet",
+                  "value": 0
+                },
+                {
+                  "label": "limitsSet",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "trapEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.4.1",
+          "description": "Single trap entry (conceptual row) in the Trap receiver table",
+          "rowCount": 0,
+          "columnCount": 3,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.4.1.2",
+              "name": "trapEnabled",
+              "description": "Indicates if this trap entry is enabled or not.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "no",
+                  "value": 0
+                },
+                {
+                  "label": "yes",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.4.1.3",
+              "name": "trapReceiverIPAddress",
+              "description": "Trap receiver IP address",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.4.1.4",
+              "name": "trapCommunity",
+              "description": "Trap community to be used by agent to send trap",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "text",
+              "baseType": "OCTET STRING",
+              "minLength": 0,
+              "maxLength": 7,
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "ipSettingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.1.5.1",
+          "description": "Single entry (conceptual row) in the Input Settings Table",
+          "rowCount": 0,
+          "columnCount": 4,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.5.1.2",
+              "name": "ipIPAddress",
+              "description": "A read/write IP address.  This is the address of the unit.\r\n\t\t\tNote: this object is only writeable if the ipDHCP object is set to\r\n\t\t\tdisabled(0).\r\n\t\t\tNote: setting \u0027ipApplyReset\u0027 to \u00271\u0027 will be needed to apply new IP settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.5.1.3",
+              "name": "ipSubnet",
+              "description": "A read/write subnet mask.  This is the subnet mask of the unit.\r\n\t\t\tNote: this object is only writeable if the ipDHCP object is set to\r\n\t\t\tdisabled(0).\r\n\t\t\tNote: setting \u0027ipApplyReset\u0027 to \u00271\u0027 will be needed to apply new IP settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.5.1.5",
+              "name": "ipGateway",
+              "description": "A read/write gateway IP Address. \r\n\t\t\tNote: this object is only writeable if the ipDHCP object is set to\r\n\t\t\tdisabled(0).\r\n\t\t\tNote: setting \u0027ipApplyReset\u0027 to \u00271\u0027 will be needed to apply new IP settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "ip",
+              "baseType": "IpAddress",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.1.5.1.6",
+              "name": "ipApplyReset",
+              "description": "Write 1 to apply IP settings.\r\n\t\t\t\tWrite 0 to reset IP settings to current IP settings.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "toggle",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "currentSettings",
+                  "value": 0
+                },
+                {
+                  "label": "newSettingsToApply",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "pathModuleUsedEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.2.1.1.1",
+          "description": "Single system entry (conceptual row) in the path module used table.",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.1.1.1.2",
+              "name": "pathModuleUsed",
+              "description": "Module used on path.",
+              "access": "read-write",
+              "isWritable": true,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "auto",
+                  "value": 0
+                },
+                {
+                  "label": "module1",
+                  "value": 1
+                },
+                {
+                  "label": "module2",
+                  "value": 2
+                },
+                {
+                  "label": "module3",
+                  "value": 3
+                },
+                {
+                  "label": "module4",
+                  "value": 4
+                },
+                {
+                  "label": "module5",
+                  "value": 5
+                },
+                {
+                  "label": "module6",
+                  "value": 6
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "lastCheckRedundantModuleEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.2.1.2.1",
+          "description": "Single system entry (conceptual row) in the last check redundant module table.",
+          "rowCount": 0,
+          "columnCount": 1,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.1.2.1.2",
+              "name": "lastCheckRedundantModule",
+              "description": "Seconds since last check of redundant module.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "moduleReadingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1",
+          "description": "Single module entry (conceptual row) in the module reading table",
+          "rowCount": 0,
+          "columnCount": 52,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.10",
+              "name": "moduleAmp2Voltage",
+              "description": "Amp2 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.11",
+              "name": "moduleAmp3Status",
+              "description": "Status of amp3",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.12",
+              "name": "moduleAmp3VoltageCurrent",
+              "description": "Amp3 measured voltage in tenths of Volt\r\n\t\t\tor current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.13",
+              "name": "moduleAmp4Status",
+              "description": "Status of amp4",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.14",
+              "name": "moduleAmp4VoltageCurrent",
+              "description": "Amp4 measured voltage in tenths of Volt\r\n\t\t\tor current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.15",
+              "name": "moduleAmp5Status",
+              "description": "Status of amp5",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.16",
+              "name": "moduleAmp5VoltageCurrent",
+              "description": "Amp5 measured voltage in tenths of Volt\r\n\t\t\tor current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.17",
+              "name": "moduleAmp6Status",
+              "description": "Status of amp6",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.18",
+              "name": "moduleAmp6Voltage",
+              "description": "Amp6 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.19",
+              "name": "moduleLnbVoltageStatus",
+              "description": "Status of LNB current",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.2",
+              "name": "moduleCommunication",
+              "description": "Status of module communication.\r\n\t\t\tOther module data is only valid if moduleCommunication reads as OK.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "enum",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fail",
+                  "value": 1
+                },
+                {
+                  "label": "absent",
+                  "value": 2
+                },
+                {
+                  "label": "bootloader",
+                  "value": 3
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.20",
+              "name": "moduleLnbVoltage",
+              "description": "LNB voltage measured current in mV",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.21",
+              "name": "moduleLnbCurrentStatus",
+              "description": "Status of LNB current",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.22",
+              "name": "moduleLnbCurrent",
+              "description": "LNB measured current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.23",
+              "name": "module65vStatus",
+              "description": "Status of 6.5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.24",
+              "name": "module65vVoltage",
+              "description": "6.5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.25",
+              "name": "module5vStatus",
+              "description": "Status of 5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.26",
+              "name": "module5vVoltage",
+              "description": "5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.27",
+              "name": "moduleTemperatureStatus",
+              "description": "Status of temperature",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.28",
+              "name": "moduleTemperature",
+              "description": "Module temperature in tenths of degrees C,\r\n\t\t\ti.e. a reading of 375 is 37.5 degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.29",
+              "name": "moduleSoftwareNumber",
+              "description": "Module software number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.3",
+              "name": "moduleIpPowerStatus",
+              "description": "Status of IP power",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.30",
+              "name": "moduleSoftwareMajorVersion",
+              "description": "Module software major version",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.31",
+              "name": "moduleSoftwareMinorVersion",
+              "description": "Module software minor version",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.32",
+              "name": "moduleSwitchingPositionStatus",
+              "description": "Status of switching position on switch board",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fail",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.33",
+              "name": "moduleTemperature2Status",
+              "description": "Status of temperature 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.34",
+              "name": "moduleTemperature2",
+              "description": "Module temperature 2 in tenths of degrees C,\r\n\t\t\ti.e. a reading of 375 is 37.5 degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.35",
+              "name": "moduleNeg2vStatus",
+              "description": "Status of -2V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.36",
+              "name": "moduleNeg2vVoltage",
+              "description": "-2V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.37",
+              "name": "moduleNeg5vStatus",
+              "description": "Status of -5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.38",
+              "name": "moduleNeg5vVoltage",
+              "description": "-5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.39",
+              "name": "module12v5Status",
+              "description": "Status of 12.5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.40",
+              "name": "module12v5Voltage",
+              "description": "12.5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.43",
+              "name": "module15vStatus",
+              "description": "Status of 15V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.44",
+              "name": "module15vVoltage",
+              "description": "15V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.45",
+              "name": "module12vStatus",
+              "description": "Status of 12V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.46",
+              "name": "module12vVoltage",
+              "description": "12V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.47",
+              "name": "moduleAmp1CurrentStatus",
+              "description": "Status of amp1 current",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.48",
+              "name": "moduleAmp1Current",
+              "description": "Amp1 measured current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.49",
+              "name": "moduleAmp1FuseStatus",
+              "description": "Status of amp1 fuse",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fault",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.5",
+              "name": "moduleOpPowerStatus",
+              "description": "Status of OP power",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.50",
+              "name": "moduleAmp2CurrentStatus",
+              "description": "Status of amp2 current",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.51",
+              "name": "moduleAmp2Current",
+              "description": "Amp2 measured current in mA",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.52",
+              "name": "moduleAmp2FuseStatus",
+              "description": "Status of amp2 fuse",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fault",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.53",
+              "name": "moduleAmp1TempStatus",
+              "description": "Status of amp1 temperature",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.54",
+              "name": "moduleAmp1Temperature",
+              "description": "Amp1 temperature in tenths of degrees C,\r\n\t\t\ti.e. a reading of 375 is 37.5 degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.55",
+              "name": "moduleAmp2TempStatus",
+              "description": "Status of amp2 temperature",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.56",
+              "name": "moduleAmp2Temperature",
+              "description": "Amp2 temperature in tenths of degrees C,\r\n\t\t\ti.e. a reading of 375 is 37.5 degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.57",
+              "name": "moduleSummary",
+              "description": "Module summary status.\r\n\t\t\tThis status is valid only if moduleCommunication reads OK.",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fail",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.7",
+              "name": "moduleAmp1Status",
+              "description": "Status of amp1",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.8",
+              "name": "moduleAmp1Voltage",
+              "description": "Amp1 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.2.1.9",
+              "name": "moduleAmp2Status",
+              "description": "Status of amp2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        },
+        {
+          "name": "chassisReadingsEntry",
+          "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1",
+          "description": "Single chassis entry (conceptual row) in the chassis reading table",
+          "rowCount": 0,
+          "columnCount": 41,
+          "columns": [
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.10",
+              "name": "chassis65vVoltage",
+              "description": "6.5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.11",
+              "name": "chassis5vStatus",
+              "description": "Status of 5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.12",
+              "name": "chassis5vVoltage",
+              "description": "5V measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.13",
+              "name": "chassisFanPsu1Status",
+              "description": "Status of FAN of PSU 1",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.14",
+              "name": "chassisFanPsu1Tacho",
+              "description": "FAN of PSU 1 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.15",
+              "name": "chassisFanPsu2Status",
+              "description": "Status of FAN of PSU 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.16",
+              "name": "chassisFanPsu2Tacho",
+              "description": "FAN of PSU 2 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.17",
+              "name": "chassisFan1Status",
+              "description": "Status of FAN 1",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.18",
+              "name": "chassisFan1Tacho",
+              "description": "FAN 1 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.19",
+              "name": "chassisFan2Status",
+              "description": "Status of FAN 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.2",
+              "name": "chassisCommunication",
+              "description": "status",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "fail",
+                  "value": 1
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.20",
+              "name": "chassisFan2Tacho",
+              "description": "FAN 2 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.21",
+              "name": "chassisTemperatureStatus",
+              "description": "Status of temperature",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.22",
+              "name": "chassisTemperature",
+              "description": "Chassis temperature in tenths of degrees C,\r\n\t\t\ti.e. a reading of 375 is 37.5 degrees C",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.23",
+              "name": "chassisSoftwareNumber",
+              "description": "Chassis software number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.24",
+              "name": "chassisSoftwareMajorVersion",
+              "description": "Chassis software major version",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.25",
+              "name": "chassisSoftwareMinorVersion",
+              "description": "Chassis software minor version",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.26",
+              "name": "chassisMainCPUSoftwareNumber",
+              "description": "Main CPU software number",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.3",
+              "name": "chassisPsu1Status",
+              "description": "Status of PSU 1",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.30",
+              "name": "chassis65vStatus2",
+              "description": "Status of 6.5V PSU 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.31",
+              "name": "chassis65vVoltage2",
+              "description": "6.5V PSU 2 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.32",
+              "name": "chassis65vStatus3",
+              "description": "Status of 6.5V PSU 3",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.34",
+              "name": "chassis65vStatus4",
+              "description": "Status of 6.5V PSU 4",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.36",
+              "name": "chassis65vStatus5",
+              "description": "Status of 6.5V PSU 5",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.38",
+              "name": "chassis65vBusStatus",
+              "description": "Status of 6.5V BUS",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.4",
+              "name": "chassisPsu1Voltage",
+              "description": "PSU 1 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.40",
+              "name": "chassis3vStatus",
+              "description": "Status of 3V PSU 1",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.42",
+              "name": "chassis3vStatus2",
+              "description": "Status of 3V PSU 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.44",
+              "name": "chassis3vBusStatus",
+              "description": "Status of 3V BUS",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.45",
+              "name": "chassis3vBusVoltage",
+              "description": "3V BUS measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.46",
+              "name": "chassisHumidityStatus",
+              "description": "Status of humidity",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.47",
+              "name": "chassisHumidity",
+              "description": "humidity in %",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.48",
+              "name": "chassisFan3Status",
+              "description": "Status of FAN 3",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.49",
+              "name": "chassisFan3Tacho",
+              "description": "FAN 3 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.5",
+              "name": "chassisPsu2Status",
+              "description": "Status of PSU 2",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.50",
+              "name": "chassisFan4Status",
+              "description": "Status of FAN 4",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.51",
+              "name": "chassisFan4Tacho",
+              "description": "FAN 4 speed",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.6",
+              "name": "chassisPsu2Voltage",
+              "description": "PSU 2 measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.7",
+              "name": "chassisVbusStatus",
+              "description": "Status of VBUS",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.8",
+              "name": "chassisVbusVoltage",
+              "description": "VBUS measured voltage in tenths of Volt",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "number",
+              "baseType": "Integer32",
+              "status": "current"
+            },
+            {
+              "oid": "1.3.6.1.4.1.20938.1.6.6.2.3.1.9",
+              "name": "chassis65vStatus",
+              "description": "Status of 6.5V",
+              "access": "read-only",
+              "isWritable": false,
+              "inputType": "status-led",
+              "baseType": "INTEGER",
+              "options": [
+                {
+                  "label": "ok",
+                  "value": 0
+                },
+                {
+                  "label": "low",
+                  "value": 1
+                },
+                {
+                  "label": "high",
+                  "value": 2
+                }
+              ],
+              "status": "current"
+            }
+          ],
+          "rows": []
+        }
+      ]
+    }
+  ]
+}

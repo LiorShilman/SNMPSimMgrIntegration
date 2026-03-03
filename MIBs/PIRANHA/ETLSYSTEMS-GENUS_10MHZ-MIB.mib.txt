@@ -1,0 +1,1086 @@
+	-- *****************************************************************
+	-- ETLSYSTEMS-GENUS-TENMHZ-MIB.txt:  ETL Systems Ltd Enterprise
+	--                      Management Information Base for ETL systems
+	--
+	-- January 2020  		Aaron Nottingham
+	--
+	-- Copyright (c) 2020 by ETL Systems Ltd
+	-- All rights reserved.
+	-- 
+	-- *****************************************************************
+
+	ETLSYSTEMS-GENUS-TENMHZ-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+	MODULE-IDENTITY,
+	OBJECT-TYPE,
+	Integer32
+		FROM SNMPv2-SMI
+	DisplayString
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE,
+	OBJECT-GROUP
+		FROM SNMPv2-CONF
+	genusTenMHz
+		FROM ETLSYSTEMS-GENUS-MIB;
+	
+	-- Define generic genus branch
+	
+	tenMHzCard MODULE-IDENTITY
+	LAST-UPDATED "201911060000Z"
+	ORGANIZATION "ETL Systems Ltd"
+	CONTACT-INFO
+		"	ETL Systems Ltd
+
+		Postal: Coldwell Radio Station, Madley
+			Hereford, HR2 9NE
+			United Kingdom
+
+		   Tel: +44 1981 259 020
+
+		E-mail: support@etlsystems.com"
+	DESCRIPTION
+		"Description of Genus System"
+	REVISION "201911060000Z"
+	DESCRIPTION "Version 1.0 of this MIB module"
+	REVISION "202102170001Z"
+	DESCRIPTION "AW - Change External reference to E, not X"
+		::= { genusTenMHz 1 }
+		
+		
+		-- **********************************
+	-- *** Settings Table Definitions ***
+	-- **********************************
+	tenMHzCardSettingsTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF TenMHzCardSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard settings table"
+		::= { tenMHzCard 1 }
+	
+	tenMHzCardSettingsEntry OBJECT-TYPE
+		SYNTAX TenMHzCardSettingsEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in tenMHzCard settings table"
+		INDEX { tenMHzCardSettingNumber }
+		::= { tenMHzCardSettingsTable 1 }
+		
+	TenMHzCardSettingsEntry ::=
+		SEQUENCE
+		{
+			tenMHzCardSettingNumber Integer32,
+			tenMHzCardMonitoringSet DisplayString,
+			tenMHzCardCpuRefSet DisplayString,
+			tenMHzCardInternalSourceSet DisplayString,
+			tenMHzCardRefFeedSet DisplayString,
+			tenMHzCardOpPort1EnabledSet DisplayString,
+			tenMHzCardOpPort2EnabledSet DisplayString,
+			tenMHzCardOpPort3EnabledSet DisplayString,
+			tenMHzCardOpPort4EnabledSet DisplayString,
+			tenMHzCardOpPort5EnabledSet DisplayString,
+			tenMHzCardOpPort6EnabledSet DisplayString,
+			tenMHzCardOpPort7EnabledSet DisplayString,
+			tenMHzCardOpPort8EnabledSet DisplayString,
+			tenMHzCardOpPort9EnabledSet DisplayString,
+			tenMHzCardOpPort10EnabledSet DisplayString,
+			tenMHzCardOpPort11EnabledSet DisplayString,
+			tenMHzCardOpPort12EnabledSet DisplayString,
+			tenMHzCardOpPort13EnabledSet DisplayString,
+			tenMHzCardOpPort14EnabledSet DisplayString,
+			tenMHzCardOpPort15EnabledSet DisplayString,
+			tenMHzCardOpPort16EnabledSet DisplayString,
+			tenMHzCardOp1PowerSet Integer32,
+			tenMHzCardOp2PowerSet Integer32,
+			tenMHzCardOp3PowerSet Integer32,
+			tenMHzCardOp4PowerSet Integer32,
+			tenMHzCardOp5PowerSet Integer32,
+			tenMHzCardOp6PowerSet Integer32,
+			tenMHzCardOp7PowerSet Integer32,
+			tenMHzCardOp8PowerSet Integer32,
+			tenMHzCardOp9PowerSet Integer32,
+			tenMHzCardOp10PowerSet Integer32,
+			tenMHzCardOp11PowerSet Integer32,
+			tenMHzCardOp12PowerSet Integer32,
+			tenMHzCardOp13PowerSet Integer32,
+			tenMHzCardOp14PowerSet Integer32,
+			tenMHzCardOp15PowerSet Integer32,
+			tenMHzCardOp16PowerSet Integer32,
+			tenMHzCardRefAutoSwModeSet DisplayString,
+			tenMHzCardExtRefLowLimitSet Integer32,
+			tenMHzCardExtRefHighLimitSet Integer32
+		}
+	
+	tenMHzCardSettingNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Settings Module number"
+		::= { tenMHzCardSettingsEntry 1 }
+		
+	tenMHzCardMonitoringSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"Monitoring setting, (S - Set, R - Reset)"
+		::= { tenMHzCardSettingsEntry 2 }
+		
+	tenMHzCardCpuRefSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Cpu reference set, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 3 }
+		
+	tenMHzCardInternalSourceSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard internal source set, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 4 }
+		
+	tenMHzCardRefFeedSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard reference feed set, (I - Internal, E - External)"
+		::= { tenMHzCardSettingsEntry 5 }
+		
+	tenMHzCardOpPort1EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 6 }
+		
+	tenMHzCardOpPort2EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 7 }
+		
+	tenMHzCardOpPort3EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 8 }
+		
+	tenMHzCardOpPort4EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 9 }
+		
+	tenMHzCardOpPort5EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 10 }
+		
+	tenMHzCardOpPort6EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 11 }
+		
+	tenMHzCardOpPort7EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 12 }
+		
+	tenMHzCardOpPort8EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 13 }
+		
+	tenMHzCardOpPort9EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 14 }
+		
+	tenMHzCardOpPort10EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 15 }
+	
+	tenMHzCardOpPort11EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 16 }
+		
+	tenMHzCardOpPort12EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 17 }
+		
+	tenMHzCardOpPort13EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 18 }
+		
+	tenMHzCardOpPort14EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 19 }
+		
+	tenMHzCardOpPort15EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 20 }
+		
+	tenMHzCardOpPort16EnabledSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard enable/disable output port, (E - Enabled, D - Disabled)"
+		::= { tenMHzCardSettingsEntry 21 }
+		
+	tenMHzCardOp1PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 22 }
+		
+	tenMHzCardOp2PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 23 }
+		
+	tenMHzCardOp3PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 24 }
+	
+	tenMHzCardOp4PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 25 }
+		
+	tenMHzCardOp5PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 26 }
+		
+	tenMHzCardOp6PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 27 }
+		
+	tenMHzCardOp7PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 28 }
+		
+	tenMHzCardOp8PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 29 }
+		
+	tenMHzCardOp9PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 30 }
+		
+	tenMHzCardOp10PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 31 }
+		
+	tenMHzCardOp11PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 32 }
+		
+	tenMHzCardOp12PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 33 }
+		
+	tenMHzCardOp13PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 34 }
+	
+	tenMHzCardOp14PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 35 }
+		
+	tenMHzCardOp15PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 36 }
+		
+	tenMHzCardOp16PowerSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set output port power, in dBm"
+		::= { tenMHzCardSettingsEntry 37 }
+	
+	tenMHzCardRefAutoSwModeSet OBJECT-TYPE
+		SYNTAX DisplayString (SIZE(1))
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard ref auto switch over mode, (E - Auto, D - Manual)"
+		::= { tenMHzCardSettingsEntry 38 }
+		
+	tenMHzCardExtRefLowLimitSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set external ref low limit in hdBm"
+		::= { tenMHzCardSettingsEntry 39 }
+		
+	tenMHzCardExtRefHighLimitSet OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-write
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard set external ref high limit in hdBm"
+		::= { tenMHzCardSettingsEntry 40 }
+	 
+		
+		
+	-- ************************************
+	-- *** Monitoring Table Definitions ***
+	-- ************************************
+	tenMHzCardMonitoringTable OBJECT-TYPE
+		SYNTAX SEQUENCE OF TenMHzCardMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard monitoring table"
+		::= { tenMHzCard 2 }
+	
+	tenMHzCardMonitoringEntry OBJECT-TYPE
+		SYNTAX TenMHzCardMonitoringEntry
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Single entry (conceptual row) in tenMHzCard monitoring table"
+		INDEX { tenMHzCardMonitoringNumber }
+		::= { tenMHzCardMonitoringTable 1 }
+		
+	TenMHzCardMonitoringEntry ::=
+		SEQUENCE
+		{
+			tenMHzCardMonitoringNumber Integer32,
+			tenMHzCardSummaryStatus DisplayString,
+			tenMHzCardTemperatureStatus DisplayString,
+			tenMHzCardVBusStatus DisplayString,
+			tenMHzCard5vVoltageStatus DisplayString,
+			tenMHzCardExternalRfPowerStatus DisplayString,
+			tenMHzCardInternalRfPowerStatus DisplayString,
+			tenMHzCardAmpComCurrentStatus DisplayString,
+			tenMHzCardAmpCpuCurrentStatus DisplayString,
+			tenMHzCardOpAmp1CurrentStatus DisplayString,
+			tenMHzCardOpAmp2CurrentStatus DisplayString,
+			tenMHzCardOpAmp3CurrentStatus DisplayString,
+			tenMHzCardOpAmp4CurrentStatus DisplayString,
+			tenMHzCardOpAmp5CurrentStatus DisplayString,
+			tenMHzCardOpAmp6CurrentStatus DisplayString,
+			tenMHzCardOpAmp7CurrentStatus DisplayString,
+			tenMHzCardOpAmp8CurrentStatus DisplayString,
+			tenMHzCardOpAmp9CurrentStatus DisplayString,
+			tenMHzCardOpAmp10CurrentStatus DisplayString,
+			tenMHzCardOpAmp11CurrentStatus DisplayString,
+			tenMHzCardOpAmp12CurrentStatus DisplayString,
+			tenMHzCardOpAmp13CurrentStatus DisplayString,
+			tenMHzCardOpAmp14CurrentStatus DisplayString,
+			tenMHzCardOpAmp15CurrentStatus DisplayString,
+			tenMHzCardOpAmp16CurrentStatus DisplayString,
+			tenMHzCardTemperature Integer32,
+			tenMHzCardVBusVoltage Integer32,
+			tenMHzCard5vVoltageSense Integer32,
+			tenMHzCardExternalRfPower Integer32,
+			tenMHzCardInternalRfPower Integer32,
+			tenMHzCardAmpComCurrent Integer32,
+			tenMHzCardAmpCpuCurrent Integer32,
+			tenMHzCardRfReference DisplayString,
+			tenMHzCardOpAmp1Current Integer32,
+			tenMHzCardOpAmp2Current Integer32,
+			tenMHzCardOpAmp3Current Integer32,
+			tenMHzCardOpAmp4Current Integer32,
+			tenMHzCardOpAmp5Current Integer32,
+			tenMHzCardOpAmp6Current Integer32,
+			tenMHzCardOpAmp7Current Integer32,
+			tenMHzCardOpAmp8Current Integer32,
+			tenMHzCardOpAmp9Current Integer32,
+			tenMHzCardOpAmp10Current Integer32,
+			tenMHzCardOpAmp11Current Integer32,
+			tenMHzCardOpAmp12Current Integer32,
+			tenMHzCardOpAmp13Current Integer32,
+			tenMHzCardOpAmp14Current Integer32,
+			tenMHzCardOpAmp15Current Integer32,
+			tenMHzCardOpAmp16Current Integer32,
+			tenMHzCardCpuSwitch DisplayString,
+			tenMHzCardRefAutoSwMode DisplayString,
+			tenMHzCardExtRefLowLimit Integer32,
+			tenMHzCardExtRefHighLimit Integer32,
+			tenMHzCardOperationHours Integer32
+		}
+		
+	tenMHzCardMonitoringNumber OBJECT-TYPE
+		SYNTAX Integer32 ( 1..42 )
+		MAX-ACCESS not-accessible
+		STATUS current
+		DESCRIPTION
+			"Monitoring Module number"
+		::= { tenMHzCardMonitoringEntry 1 }
+	
+	tenMHzCardSummaryStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard summary status, (O - OK, F - Fault)"
+		::= { tenMHzCardMonitoringEntry 2 }
+		
+	tenMHzCardTemperatureStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard temperature status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 3 }
+		
+	tenMHzCardVBusStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard vbus status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 4 }
+		
+	tenMHzCard5vVoltageStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard 5v voltage status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 5 }
+		
+	tenMHzCardExternalRfPowerStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard external rf power status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 6 }
+		
+	
+	tenMHzCardInternalRfPowerStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard internal rf power status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 7 }
+		
+		
+	tenMHzCardAmpComCurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Amp status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 8 }
+	
+	
+	tenMHzCardAmpCpuCurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Amp Cpu status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 9 }
+		
+		
+	tenMHzCardOpAmp1CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 10 }
+			
+	tenMHzCardOpAmp2CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 11 }
+		
+	tenMHzCardOpAmp3CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 12 }
+		
+	tenMHzCardOpAmp4CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 13 }
+			
+	tenMHzCardOpAmp5CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 14 }
+		
+	
+	tenMHzCardOpAmp6CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 15 }
+		
+	tenMHzCardOpAmp7CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 16 }
+		
+	tenMHzCardOpAmp8CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 17 }
+		
+	tenMHzCardOpAmp9CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 18 }
+		
+	tenMHzCardOpAmp10CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 19 }
+		
+	tenMHzCardOpAmp11CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 20 }
+		
+	tenMHzCardOpAmp12CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 21 }
+		
+	tenMHzCardOpAmp13CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 22 }
+		
+	tenMHzCardOpAmp14CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 23 }
+		
+	tenMHzCardOpAmp15CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 24 }
+		
+	tenMHzCardOpAmp16CurrentStatus OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Output amp current status, (O - OK, H - High, L - Low)"
+		::= { tenMHzCardMonitoringEntry 25 }
+	
+	tenMHzCardTemperature OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Temperature, in degrees C"
+		::= { tenMHzCardMonitoringEntry 26 }
+		
+	tenMHzCardVBusVoltage OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard Vbus voltage, in V"
+		::= { tenMHzCardMonitoringEntry 27 }
+		
+	tenMHzCard5vVoltageSense OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard 5v dc voltage, in V"
+		::= { tenMHzCardMonitoringEntry 28 }
+		
+	tenMHzCardExternalRfPower OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard external rf power, in dBm"
+		::= { tenMHzCardMonitoringEntry 29 }
+		
+	tenMHzCardInternalRfPower OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard internal rf power, in dBm"
+		::= { tenMHzCardMonitoringEntry 30 }
+		
+	tenMHzCardAmpComCurrent OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard amp com current, in dBm"
+		::= { tenMHzCardMonitoringEntry 31 }
+		
+	tenMHzCardAmpCpuCurrent OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard amp cpu current, in dBm"
+		::= { tenMHzCardMonitoringEntry 32 }
+		
+	tenMHzCardRfReference OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard reference, (I - Internal, E - External)"
+		::= { tenMHzCardMonitoringEntry 33 }
+		
+	tenMHzCardOpAmp1Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 34 }
+		
+	tenMHzCardOpAmp2Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 35 }
+		
+	tenMHzCardOpAmp3Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 36 }
+		
+	tenMHzCardOpAmp4Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 37 }
+		
+	tenMHzCardOpAmp5Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 38 }
+		
+	tenMHzCardOpAmp6Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 39 }
+		
+	tenMHzCardOpAmp7Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 40 }
+		
+	tenMHzCardOpAmp8Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 41 }
+		
+	tenMHzCardOpAmp9Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 42 }
+		
+	tenMHzCardOpAmp10Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 43 }
+		
+	tenMHzCardOpAmp11Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 44 }
+		
+	tenMHzCardOpAmp12Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 45 }
+		
+	tenMHzCardOpAmp13Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 46 }
+		
+	tenMHzCardOpAmp14Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 47 }
+		
+	tenMHzCardOpAmp15Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 48 }
+		
+	tenMHzCardOpAmp16Current OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard output amp current in mA"
+		::= { tenMHzCardMonitoringEntry 49 }
+		
+	tenMHzCardCpuSwitch OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard CPU switch status, (1 - Enabled, 0 - Disabled)"
+		::= { tenMHzCardMonitoringEntry 50 }
+		
+	tenMHzCardRefAutoSwMode OBJECT-TYPE
+		SYNTAX DisplayString (SIZE (1))
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard ref auto switchover mode, (1 - Auto, 0 - Manual)"
+		::= { tenMHzCardMonitoringEntry 51 }
+	
+	tenMHzCardExtRefLowLimit OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard external ref low limit in hdBm"
+		::= { tenMHzCardMonitoringEntry 52 }
+		
+	tenMHzCardExtRefHighLimit OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard external ref high limit in hdBm"
+		::= { tenMHzCardMonitoringEntry 53 }
+		
+	tenMHzCardOperationHours OBJECT-TYPE
+		SYNTAX Integer32
+		MAX-ACCESS read-only
+		STATUS current
+		DESCRIPTION
+			"tenMHzCard operational hours"
+		::= { tenMHzCardMonitoringEntry 54 }	
+	-- ********************************************************
+	-- Group definitions
+	-- ********************************************************
+		
+	tenMHzCardGroupObjects				OBJECT IDENTIFIER ::= { tenMHzCard 3 }  -- group objects, i.e. objects that are accessible
+	tenMHzCardModuleCompliance			OBJECT IDENTIFIER ::= { tenMHzCard 4 }  -- group objects, i.e. objects that are accessible
+	
+	-- **************************************************
+	-- *** Start of Group Table definitions: ***
+	-- **************************************************
+	
+	tenMHzCardSettingsGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			tenMHzCardMonitoringSet,
+			tenMHzCardCpuRefSet,
+			tenMHzCardInternalSourceSet,
+			tenMHzCardRefFeedSet,
+			tenMHzCardOpPort1EnabledSet,
+			tenMHzCardOpPort2EnabledSet,
+			tenMHzCardOpPort3EnabledSet,
+			tenMHzCardOpPort4EnabledSet,
+			tenMHzCardOpPort5EnabledSet,
+			tenMHzCardOpPort6EnabledSet,
+			tenMHzCardOpPort7EnabledSet,
+			tenMHzCardOpPort8EnabledSet,
+			tenMHzCardOpPort9EnabledSet,
+			tenMHzCardOpPort10EnabledSet,
+			tenMHzCardOpPort11EnabledSet,
+			tenMHzCardOpPort12EnabledSet,
+			tenMHzCardOpPort13EnabledSet,
+			tenMHzCardOpPort14EnabledSet,
+			tenMHzCardOpPort15EnabledSet,
+			tenMHzCardOpPort16EnabledSet,
+			tenMHzCardOp1PowerSet,
+			tenMHzCardOp2PowerSet,
+			tenMHzCardOp3PowerSet,
+			tenMHzCardOp4PowerSet,
+			tenMHzCardOp5PowerSet,
+			tenMHzCardOp6PowerSet,
+			tenMHzCardOp7PowerSet,
+			tenMHzCardOp8PowerSet,
+			tenMHzCardOp9PowerSet,
+			tenMHzCardOp10PowerSet,
+			tenMHzCardOp11PowerSet,
+			tenMHzCardOp12PowerSet,
+			tenMHzCardOp13PowerSet,
+			tenMHzCardOp14PowerSet,
+			tenMHzCardOp15PowerSet,
+			tenMHzCardOp16PowerSet,
+			tenMHzCardRefAutoSwModeSet,
+			tenMHzCardExtRefLowLimitSet,
+			tenMHzCardExtRefHighLimitSet
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of module information objects used in this MIB"
+	::= { tenMHzCardGroupObjects 1 }
+	
+	tenMHzCardMonitoringGroupList OBJECT-GROUP
+		OBJECTS
+		{
+			tenMHzCardSummaryStatus,
+			tenMHzCardTemperatureStatus,
+			tenMHzCardVBusStatus,
+			tenMHzCard5vVoltageStatus,
+			tenMHzCardExternalRfPowerStatus,
+			tenMHzCardInternalRfPowerStatus,
+			tenMHzCardAmpComCurrentStatus,
+			tenMHzCardAmpCpuCurrentStatus,
+			tenMHzCardOpAmp1CurrentStatus,
+			tenMHzCardOpAmp2CurrentStatus,
+			tenMHzCardOpAmp3CurrentStatus,
+			tenMHzCardOpAmp4CurrentStatus,
+			tenMHzCardOpAmp5CurrentStatus,
+			tenMHzCardOpAmp6CurrentStatus,
+			tenMHzCardOpAmp7CurrentStatus,
+			tenMHzCardOpAmp8CurrentStatus,
+			tenMHzCardOpAmp9CurrentStatus,
+			tenMHzCardOpAmp10CurrentStatus,
+			tenMHzCardOpAmp11CurrentStatus,
+			tenMHzCardOpAmp12CurrentStatus,
+			tenMHzCardOpAmp13CurrentStatus,
+			tenMHzCardOpAmp14CurrentStatus,
+			tenMHzCardOpAmp15CurrentStatus,
+			tenMHzCardOpAmp16CurrentStatus,
+			tenMHzCardTemperature,
+			tenMHzCardVBusVoltage,
+			tenMHzCard5vVoltageSense,
+			tenMHzCardExternalRfPower,
+			tenMHzCardInternalRfPower,
+			tenMHzCardAmpComCurrent,
+			tenMHzCardAmpCpuCurrent,
+			tenMHzCardRfReference,
+			tenMHzCardOpAmp1Current,
+			tenMHzCardOpAmp2Current,
+			tenMHzCardOpAmp3Current,
+			tenMHzCardOpAmp4Current,
+			tenMHzCardOpAmp5Current,
+			tenMHzCardOpAmp6Current,
+			tenMHzCardOpAmp7Current,
+			tenMHzCardOpAmp8Current,
+			tenMHzCardOpAmp9Current,
+			tenMHzCardOpAmp10Current,
+			tenMHzCardOpAmp11Current,
+			tenMHzCardOpAmp12Current,
+			tenMHzCardOpAmp13Current,
+			tenMHzCardOpAmp14Current,
+			tenMHzCardOpAmp15Current,
+			tenMHzCardOpAmp16Current,
+			tenMHzCardCpuSwitch,
+			tenMHzCardRefAutoSwMode,
+			tenMHzCardExtRefLowLimit,
+			tenMHzCardExtRefHighLimit,
+			tenMHzCardOperationHours
+		}
+	STATUS current
+	DESCRIPTION
+		"A collection of monitoring objects used in this MIB"
+	::= { tenMHzCardGroupObjects 2 }
+	
+	tenMHzCard-compliance MODULE-COMPLIANCE
+	STATUS current
+	DESCRIPTION
+		"A collection of groups required for compliance"
+	MODULE
+		MANDATORY-GROUPS
+		{
+			tenMHzCardSettingsGroupList,
+			tenMHzCardMonitoringGroupList
+		}
+	::= { tenMHzCardModuleCompliance 1 }
+	
+END
