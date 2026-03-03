@@ -105,6 +105,32 @@ export class App {
         this.fetchDevices();
       }
     });
+
+    // ── Watch by Name examples ──
+    // Register automation callbacks that fire when specific fields change.
+    // These work for both SNMP fields (e.g., "sysName") and IDD fields (e.g., "temperature").
+
+    // Example 1: Log when sysName changes
+    this.panelService.watchByName('sysName', (event) => {
+      console.log(`[Automation] sysName changed: '${event.previousValue}' → '${event.newValue}'`);
+    });
+
+    // Example 2: Alert when temperature exceeds threshold → auto-SET alarm
+    this.panelService.watchByName('temperature', (event) => {
+      const temp = parseInt(event.newValue, 10);
+      if (temp > 80) {
+        console.warn(`[Automation] Temperature ${temp}°C exceeds threshold — sending alarm SET`);
+        this.signalR.sendIddSet(event.deviceId, 'alarm-indicator', 'ON')
+          .then(r => console.log('[Automation] Alarm SET result:', r.message))
+          .catch(err => console.error('[Automation] Alarm SET failed:', err));
+      }
+    });
+
+    // Example 3: Watch interface status changes
+    this.panelService.watchByName('ifOperStatus', (event) => {
+      const status = event.newValue === '1' ? 'UP' : 'DOWN';
+      console.log(`[Automation] Interface status: ${status} (device: ${event.deviceName})`);
+    });
   }
 
   async fetchDevices(): Promise<void> {

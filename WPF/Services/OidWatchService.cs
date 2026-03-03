@@ -2,12 +2,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using SNMPSimMgr.Models;
 
 namespace SNMPSimMgr.Services;
 
 /// <summary>
 /// Subscribe to specific OID changes and get notified when values update.
-/// Supports exact OID matches and prefix (subtree) watches.
+/// Supports exact OID matches, prefix (subtree) watches, and name-based watches.
 /// Thread-safe — callbacks are dispatched on the WPF UI thread.
 /// Tracks previous values so clients can compare old vs new.
 /// </summary>
@@ -15,7 +16,53 @@ public class OidWatchService
 {
     private readonly ConcurrentDictionary<string, List<Action<string, string, string>>> _exactWatches = new();
     private readonly ConcurrentDictionary<string, List<Action<string, string, string>>> _prefixWatches = new();
+    private readonly ConcurrentDictionary<string, List<Action<string, string, string>>> _nameWatches = new();
     private readonly ConcurrentDictionary<string, string> _lastValues = new();
+
+    // Bidirectional name ↔ OID mapping (case-insensitive names)
+    private readonly ConcurrentDictionary<string, string> _nameToOid = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, string> _oidToName = new();
+
+    // ── Name ↔ OID Mapping ──
+
+    /// <summary>Register a single name ↔ OID mapping.</summary>
+    public void RegisterMapping(string name, string oid)
+    {
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(oid)) return;
+        _nameToOid[name] = oid;
+        _oidToName[oid] = name;
+        // Also map collapsed scalar: "x.y.z" → "x.y.z.0"
+        if (oid.EndsWith(".0"))
+            _oidToName[oid.Substring(0, oid.Length - 2)] = name;
+    }
+
+    /// <summary>
+    /// Register all field names from a MibPanelSchema.
+    /// Call this after export, schema load, or device registration.
+    /// </summary>
+    public void RegisterSchema(MibPanelSchema schema)
+    {
+        if (schema?.Modules == null) return;
+        foreach (var module in schema.Modules)
+        {
+            foreach (var field in module.Scalars)
+                RegisterMapping(field.Name, field.Oid);
+            foreach (var table in module.Tables)
+                foreach (var col in table.Columns)
+                    RegisterMapping(col.Name, col.Oid);
+        }
+        System.Diagnostics.Debug.WriteLine($"[OidWatch] Registered {_nameToOid.Count} name↔OID mappings from schema '{schema.DeviceName}'");
+    }
+
+    /// <summary>Resolve a field name to OID. Returns null if not found.</summary>
+    public string? ResolveNameToOid(string name) =>
+        _nameToOid.TryGetValue(name, out var oid) ? oid : null;
+
+    /// <summary>Resolve an OID to field name. Returns null if not found.</summary>
+    public string? ResolveOidToName(string oid) =>
+        _oidToName.TryGetValue(oid, out var name) ? name : null;
+
+    // ── Watch Registration ──
 
     /// <summary>
     /// Register a callback for an exact OID match.
@@ -39,22 +86,41 @@ public class OidWatchService
             (_, list) => { list.Add(callback); return list; });
     }
 
+    /// <summary>
+    /// Register a callback by field name (e.g., "sysName", "temperature").
+    /// Works for both SNMP fields (resolved via schema mapping) and IDD fields
+    /// (where the OID IS the name). Case-insensitive.
+    /// Callback receives (oid, newValue, previousValue).
+    /// </summary>
+    public void WatchByName(string fieldName, Action<string, string, string> callback)
+    {
+        _nameWatches.AddOrUpdate(fieldName.ToLowerInvariant(),
+            _ => new List<Action<string, string, string>> { callback },
+            (_, list) => { list.Add(callback); return list; });
+    }
+
     /// <summary>Remove all watches for an exact OID.</summary>
     public void Unwatch(string oid) => _exactWatches.TryRemove(oid, out _);
 
     /// <summary>Remove all prefix watches for an OID prefix.</summary>
     public void UnwatchPrefix(string oidPrefix) => _prefixWatches.TryRemove(oidPrefix, out _);
 
-    /// <summary>Remove all watches.</summary>
+    /// <summary>Remove all name-based watches for a field name.</summary>
+    public void UnwatchByName(string fieldName) => _nameWatches.TryRemove(fieldName.ToLowerInvariant(), out _);
+
+    /// <summary>Remove all watches and mappings.</summary>
     public void Clear()
     {
         _exactWatches.Clear();
         _prefixWatches.Clear();
+        _nameWatches.Clear();
     }
 
+    // ── Notification ──
+
     /// <summary>
-    /// Called when an OID value changes. Tracks previous value, fires matching callbacks,
-    /// and returns the previous value for the caller to use.
+    /// Called when an OID value changes. Tracks previous value, fires matching callbacks
+    /// (exact OID, prefix, and name-based), and returns the previous value.
     /// </summary>
     public string NotifyChange(string oid, string newValue)
     {
@@ -93,7 +159,21 @@ public class OidWatchService
             }
         }
 
+        // Name-based matches — resolve OID → name, also check if OID itself IS a name (IDD)
+        FireNameWatches(oid, oid, newValue, previousValue);
+        if (_oidToName.TryGetValue(oid, out var resolvedName))
+            FireNameWatches(resolvedName, oid, newValue, previousValue);
+
         return previousValue;
+    }
+
+    private void FireNameWatches(string name, string oid, string newValue, string previousValue)
+    {
+        if (_nameWatches.TryGetValue(name.ToLowerInvariant(), out var callbacks))
+        {
+            foreach (var cb in callbacks.ToList())
+                DispatchSafe(cb, oid, newValue, previousValue);
+        }
     }
 
     private static void DispatchSafe(Action<string, string, string> callback, string oid, string newValue, string previousValue)

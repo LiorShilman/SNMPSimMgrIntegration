@@ -1,10 +1,14 @@
-import { Injectable, signal, computed, inject, effect, untracked } from '@angular/core';
+import { Injectable, signal, computed, inject, effect, untracked, DestroyRef } from '@angular/core';
 import { MibPanelSchema, SetFeedback } from '../models/mib-schema';
 import { SignalRService, OidChangedEvent } from './signalr.service';
+
+/** Callback for name-based field watches. Receives the full change event. */
+export type FieldWatchCallback = (event: OidChangedEvent) => void;
 
 @Injectable({ providedIn: 'root' })
 export class MibPanelService {
   private signalR = inject(SignalRService);
+  private destroyRef = inject(DestroyRef);
 
   schema = signal<MibPanelSchema | null>(null);
   feedbacks = signal<SetFeedback[]>([]);
@@ -18,6 +22,12 @@ export class MibPanelService {
 
   // OID change event — exposed for components to react to specific OID changes
   latestOidChanged = signal<OidChangedEvent | null>(null);
+
+  // Name-based watch registry: fieldName (lowercase) → callbacks
+  private nameWatches = new Map<string, FieldWatchCallback[]>();
+  // Bidirectional name ↔ OID map (built from loaded schema)
+  private nameToOid = new Map<string, string>();
+  private oidToName = new Map<string, string>();
 
   constructor() {
     // Auto-update panel values when traffic events arrive with values
@@ -117,13 +127,16 @@ export class MibPanelService {
       });
     });
 
-    // Forward OID change events — fires only when a value actually changes (not on every GET)
+    // Forward OID change events + dispatch name-based watches
     effect(() => {
       const change = this.signalR.latestOidChanged();
       if (!change) return;
 
-      console.log(`[MibPanel] OID changed: ${change.oid} '${change.previousValue}' → '${change.newValue}' (device: ${change.deviceName})`);
+      console.log(`[MibPanel] OID changed: ${change.fieldName || change.oid} '${change.previousValue}' → '${change.newValue}' (device: ${change.deviceName})`);
       this.latestOidChanged.set(change);
+
+      // Dispatch name-based watches
+      untracked(() => this.dispatchNameWatches(change));
     });
 
     // Auto-refresh values when connection is restored after a drop
@@ -147,6 +160,7 @@ export class MibPanelService {
     try {
       const text = await file.text();
       const data = JSON.parse(text) as MibPanelSchema;
+      this.buildNameMap(data);
       this.schema.set(data);
     } finally {
       this.isLoading.set(false);
@@ -155,6 +169,7 @@ export class MibPanelService {
 
   loadFromJson(json: MibPanelSchema): void {
     this.currentDeviceId.set(null);
+    this.buildNameMap(json);
     this.schema.set(json);
   }
 
@@ -167,6 +182,7 @@ export class MibPanelService {
       const schema = await this.signalR.requestSchema(deviceId);
       console.log('[MibPanel] requestSchema returned:', schema);
       if (schema) {
+        this.buildNameMap(schema as MibPanelSchema);
         this.schema.set(schema as MibPanelSchema);
         // Auto-refresh to get live values from the running simulator
         await this.refreshValues();
@@ -313,6 +329,89 @@ export class MibPanelService {
         }))
       }))
     });
+  }
+
+  // ── Name-based Watch API ──
+
+  /**
+   * Register a callback that fires when a specific field changes, by name.
+   * Works for both SNMP fields (e.g., "sysName") and IDD fields (e.g., "temperature").
+   * Case-insensitive. Returns an unsubscribe function.
+   *
+   * Usage:
+   *   const unsub = panelService.watchByName('temperature', (event) => {
+   *     if (parseInt(event.newValue) > 80) console.warn('Overheating!');
+   *   });
+   *   // later: unsub();
+   */
+  watchByName(fieldName: string, callback: FieldWatchCallback): () => void {
+    const key = fieldName.toLowerCase();
+    const list = this.nameWatches.get(key) || [];
+    list.push(callback);
+    this.nameWatches.set(key, list);
+
+    return () => {
+      const current = this.nameWatches.get(key);
+      if (current) {
+        const idx = current.indexOf(callback);
+        if (idx >= 0) current.splice(idx, 1);
+        if (current.length === 0) this.nameWatches.delete(key);
+      }
+    };
+  }
+
+  /** Remove all watches for a field name. */
+  unwatchByName(fieldName: string): void {
+    this.nameWatches.delete(fieldName.toLowerCase());
+  }
+
+  /** Dispatch name-based watches for a change event. */
+  private dispatchNameWatches(event: OidChangedEvent): void {
+    const serverName = event.fieldName?.toLowerCase();
+    if (serverName) {
+      const cbs = this.nameWatches.get(serverName);
+      if (cbs) cbs.forEach(cb => this.safeCallback(cb, event));
+    }
+
+    const localName = this.oidToName.get(event.oid)?.toLowerCase();
+    if (localName && localName !== serverName) {
+      const cbs = this.nameWatches.get(localName);
+      if (cbs) cbs.forEach(cb => this.safeCallback(cb, event));
+    }
+
+    const oidAsName = event.oid.toLowerCase();
+    if (oidAsName !== serverName && oidAsName !== localName) {
+      const cbs = this.nameWatches.get(oidAsName);
+      if (cbs) cbs.forEach(cb => this.safeCallback(cb, event));
+    }
+  }
+
+  private safeCallback(cb: FieldWatchCallback, event: OidChangedEvent): void {
+    try { cb(event); }
+    catch (err) { console.error('[MibPanel] Watch callback error:', err); }
+  }
+
+  /** Build name ↔ OID maps from current schema. Called after schema load. */
+  private buildNameMap(schema: MibPanelSchema): void {
+    this.nameToOid.clear();
+    this.oidToName.clear();
+    for (const mod of schema.modules) {
+      for (const field of mod.scalars) {
+        if (field.name && field.oid) {
+          this.nameToOid.set(field.name.toLowerCase(), field.oid);
+          this.oidToName.set(field.oid, field.name);
+        }
+      }
+      for (const table of mod.tables) {
+        for (const col of table.columns) {
+          if (col.name && col.oid) {
+            this.nameToOid.set(col.name.toLowerCase(), col.oid);
+            this.oidToName.set(col.oid, col.name);
+          }
+        }
+      }
+    }
+    console.log(`[MibPanel] Built name map: ${this.nameToOid.size} fields`);
   }
 
   /** Map inputType to SNMP value type for SET */

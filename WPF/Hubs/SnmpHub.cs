@@ -429,16 +429,20 @@ public class SnmpHub : Hub
 
     /// <summary>
     /// Broadcast a targeted OID change event to Angular clients.
-    /// Includes previous value and source for client-side automation logic.
+    /// Includes previous value, source, and resolved field name for client-side automation.
     /// </summary>
     public static void BroadcastOidChanged(string deviceId, string deviceName, string oid, string newValue, string previousValue, string source)
     {
+        // Resolve field name from OID watch mappings, fallback to OID itself (IDD fields are already names)
+        var fieldName = OidWatch?.ResolveOidToName(oid) ?? oid;
+
         var context = GlobalHost.ConnectionManager.GetHubContext<SnmpHub>();
         context.Clients.All.onOidChanged(new
         {
             deviceId,
             deviceName,
             oid,
+            fieldName,
             newValue,
             previousValue,
             source,
