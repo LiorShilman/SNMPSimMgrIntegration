@@ -63,8 +63,70 @@ public static class IntegrationWiring
         _signalR = new SignalRService();
         _signalR.Start(signalRPort);
 
-        System.Diagnostics.Debug.WriteLine($"[MibPanel] SignalR server running on port {signalRPort}");
+        // ── Register schemas for name-based watches ──
+        // Load all device schemas so WatchByName can resolve field names → OIDs
+        Task.Run(async () =>
+        {
+            try
+            {
+                var profiles = await deviceStore.LoadProfilesAsync();
+                foreach (var device in profiles)
+                {
+                    if (!string.IsNullOrEmpty(device.SchemaPath) && System.IO.File.Exists(device.SchemaPath))
+                    {
+                        var json = System.IO.File.ReadAllText(device.SchemaPath);
+                        var schema = System.Text.Json.JsonSerializer.Deserialize<MibPanelSchema>(json,
+                            new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        if (schema != null)
+                            _oidWatch.RegisterSchema(schema);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MibPanel] Schema registration error: {ex.Message}");
+            }
+        });
+
+        // ── WatchByName examples — real automation logic ──
+        // These fire whenever any device's field changes, matched by name.
+
+        // Example 1: Log sysName changes
+        _oidWatch.WatchByName("sysName", (oid, newValue, previousValue) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[Automation] sysName changed: '{previousValue}' → '{newValue}'");
+        });
+
+        // Example 2: Temperature threshold → auto-SET alarm ON/OFF
+        _oidWatch.WatchByName("temperature", (oid, newValue, previousValue) =>
+        {
+            if (int.TryParse(newValue, out var temp) && temp > 80)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Automation] ALERT: temperature={temp}°C — triggering alarm");
+                NotifyIddSet("device-001", "alarm-indicator", "ON");
+            }
+            else if (int.TryParse(newValue, out var tempNormal) && tempNormal <= 60)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Automation] Temperature normal: {tempNormal}°C — clearing alarm");
+                NotifyIddSet("device-001", "alarm-indicator", "OFF");
+            }
+        });
+
+        // Example 3: Interface status change → log UP/DOWN
+        _oidWatch.WatchByName("ifOperStatus", (oid, newValue, previousValue) =>
+        {
+            var status = newValue == "1" ? "UP" : "DOWN";
+            System.Diagnostics.Debug.WriteLine($"[Automation] Interface {oid}: {previousValue} → {status}");
+        });
+
+        System.Diagnostics.Debug.WriteLine($"[MibPanel] SignalR server running on port {signalRPort} — 3 WatchByName automations registered");
     }
+
+    /// <summary>
+    /// Access the OidWatchService to register additional name-based watches.
+    /// Use after Start() has been called.
+    /// </summary>
+    public static OidWatchService? OidWatch => _oidWatch;
 
     /// <summary>
     /// Stop the SignalR server. Call during app shutdown.
@@ -287,6 +349,58 @@ public class MySimulatorService : ISimulatorService
 //   var deviceStore = new MyDeviceStore();
 //   var simulatorService = new MySimulatorService();
 //   IntegrationWiring.Start(deviceStore, simulatorService, signalRPort: 5050);
+//
+//   // ── WatchByName examples ──
+//   // Register automation callbacks AFTER Start() — fire when specific fields change.
+//   // Works by field name (not OID) — both SNMP and IDD fields supported.
+//   var oidWatch = IntegrationWiring.OidWatch;
+//
+//   // Example 1: Watch SNMP field by name — fires on any device
+//   oidWatch.WatchByName("sysName", (oid, newValue, previousValue) =>
+//   {
+//       Debug.WriteLine($"[Automation] sysName changed: '{previousValue}' → '{newValue}'");
+//       // e.g., update your UI, log to database, trigger alert...
+//   });
+//
+//   // Example 2: Temperature threshold → auto-SET alarm status
+//   oidWatch.WatchByName("temperature", (oid, newValue, previousValue) =>
+//   {
+//       if (int.TryParse(newValue, out var temp) && temp > 80)
+//       {
+//           Debug.WriteLine($"[Automation] ALERT: temperature={temp}°C — triggering alarm");
+//           // Send IDD SET to turn on alarm indicator
+//           IntegrationWiring.NotifyIddSet("device-001", "alarm-indicator", "ON");
+//       }
+//       else if (int.TryParse(newValue, out var tempNormal) && tempNormal <= 60)
+//       {
+//           Debug.WriteLine($"[Automation] Temperature normal: {tempNormal}°C — clearing alarm");
+//           IntegrationWiring.NotifyIddSet("device-001", "alarm-indicator", "OFF");
+//       }
+//   });
+//
+//   // Example 3: Interface status change → log + broadcast status
+//   oidWatch.WatchByName("ifOperStatus", (oid, newValue, previousValue) =>
+//   {
+//       var status = newValue == "1" ? "UP" : "DOWN";
+//       Debug.WriteLine($"[Automation] Interface {oid}: {previousValue} → {status}");
+//       // You could trigger a trap, send notification, etc.
+//   });
+//
+//   // Example 4: Watch by exact OID (classic method still works)
+//   oidWatch.Watch("1.3.6.1.2.1.1.3.0", (oid, newValue, previousValue) =>
+//   {
+//       Debug.WriteLine($"[Automation] sysUpTime: {newValue}");
+//   });
+//
+//   // Example 5: Watch entire subtree by OID prefix
+//   oidWatch.WatchPrefix("1.3.6.1.2.1.2.2.1", (oid, newValue, previousValue) =>
+//   {
+//       Debug.WriteLine($"[Automation] ifTable change: {oid} = {newValue}");
+//   });
+//
+//   // Example 6: Register a schema manually (for name→OID resolution)
+//   // oidWatch.RegisterSchema(myLoadedSchema);
+//   // oidWatch.RegisterMapping("myCustomField", "1.3.6.1.4.1.9999.1.0");
 //
 //   // ... your app runs ...
 //
