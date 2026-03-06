@@ -2,10 +2,14 @@
 WPF/bin/
 WPF/obj/
 
-# Node modules
+# Node modules (too large for git — copy separately for dev)
 mib-panel-ui/node_modules/
-mib-panel-ui/dist/
+# dist/ included for offline deployment
+# mib-panel-ui/dist/
 mib-panel-ui/.angular/
+
+# NuGet packages included for offline build
+# packages/
 
 # IDE
 .vs/

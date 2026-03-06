@@ -1,30 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Cors;
 using Owin;
 
-namespace SNMPSimMgr.Services;
-
-public class SignalRStartup
+namespace SNMPSimMgr.Services
 {
-    public void Configuration(IAppBuilder app)
+    public class SignalRStartup
     {
-        // Enable CORS for Angular dev server and any other origin
-        app.UseCors(CorsOptions.AllowAll);
-
-        // Configure SignalR
-        var hubConfig = new HubConfiguration
+        public void Configuration(IAppBuilder app)
         {
-            EnableDetailedErrors = true,
-            EnableJSONP = false
-        };
+            // Enable CORS for Angular dev server and any other origin
+            app.UseCors(CorsOptions.AllowAll);
 
-        // NOTE: Do NOT set a global CamelCasePropertyNamesContractResolver here.
-        // SignalR 2.0 uses PascalCase for its internal protocol messages (negotiate,
-        // start, etc.) and the JS client expects PascalCase. Setting camelCase globally
-        // breaks the protocol handshake ("server version undefined" error).
-        // Hub method return values will use Newtonsoft.Json default (PascalCase) —
-        // the Angular client handles property mapping.
+            // Configure SignalR
+            var hubConfig = new HubConfiguration() {
+                EnableDetailedErrors = true,
+                EnableJSONP = false
+            };
 
-        app.MapSignalR(hubConfig);
+            // NOTE: Do NOT set a global CamelCasePropertyNamesContractResolver here.
+            // SignalR 2.0 uses PascalCase for its internal protocol messages (negotiate,
+            // start, etc.) and the JS client expects PascalCase. Setting camelCase globally
+            // breaks the protocol handshake ("server version undefined" error).
+            // Hub method return values will use Newtonsoft.Json default (PascalCase) —
+            // the Angular client handles property mapping.
+
+            app.MapSignalR(hubConfig);
+        }
     }
 }

@@ -3,12 +3,18 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
+    <LangVersion>7.3</LangVersion>
     <UseWPF>true</UseWPF>
     <RootNamespace>SNMPSimMgr</RootNamespace>
     <AssemblyName>SNMPSimMgr.Integration</AssemblyName>
+    <!-- Offline: restore from local packages/ folder (next to .sln) -->
+    <RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory)..\packages</RestoreAdditionalProjectSources>
   </PropertyGroup>
+
+  <!-- Reference assemblies — allows building on machines without .NET 4.7.2 Targeting Pack -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SnmpSharpNet" Version="0.9.7" />

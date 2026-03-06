@@ -51,10 +51,10 @@ export class MibPanelService {
         let updated = false;
 
         for (const module of current.modules) {
-          // Match scalars
+          // Match scalars — by OID or by name (IDD fields use names as OIDs)
           for (const field of module.scalars) {
             const fieldOid = field.oid.endsWith('.0') ? field.oid : field.oid + '.0';
-            if (fieldOid === oid || field.oid === oid) {
+            if (fieldOid === oid || field.oid === oid || field.name === oid) {
               field.currentValue = traffic.value;
               updated = true;
             }
@@ -104,6 +104,10 @@ export class MibPanelService {
               updated = true;
             } else if (values[field.oid] !== undefined) {
               field.currentValue = values[field.oid];
+              updated = true;
+            } else if (field.name && values[field.name] !== undefined) {
+              // IDD fields: match by name (e.g., "temperature", "status-led")
+              field.currentValue = values[field.name];
               updated = true;
             }
           }
@@ -304,7 +308,7 @@ export class MibPanelService {
     for (const module of current.modules) {
       for (const field of module.scalars) {
         const fieldOid = field.oid.endsWith('.0') ? field.oid : field.oid + '.0';
-        if (fieldOid === oid || field.oid === oid) {
+        if (fieldOid === oid || field.oid === oid || field.name === oid) {
           field.currentValue = value;
           updated = true;
         }

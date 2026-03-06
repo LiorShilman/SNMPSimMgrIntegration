@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SNMPSimMgr Integration - Sequence Diagrams</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="mib-panel-ui/public/assets/vendor/mermaid.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 2rem; line-height: 1.6; }
@@ -18,266 +18,615 @@
   .legend { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0; direction: ltr; }
   .legend-item { display: flex; align-items: center; gap: 0.4rem; background: #0f3460; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
   .legend-color { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .toc { background: #0f3460; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #45b7d1; }
+  .toc h3 { color: #45b7d1; margin-bottom: 0.8rem; font-size: 1.1rem; }
+  .toc ol { direction: rtl; text-align: right; padding-right: 1.5rem; }
+  .toc li { margin-bottom: 0.4rem; }
+  .toc a { color: #4ecdc4; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; color: #00d4ff; }
+  .flow-tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 0.5rem; }
+  .tag-startup { background: #6c3483; color: #fff; }
+  .tag-client-hw { background: #1e8449; color: #fff; }
+  .tag-hw-client { background: #b9770e; color: #fff; }
 </style>
 </head>
 <body>
 <h1>SNMPSimMgr Integration - Sequence Diagrams</h1>
-<p class="subtitle">WPF + Angular + SNMP Hardware</p>
+<p class="subtitle">WPF + Angular + SNMP/IDD Hardware — Full System Flows</p>
+
 <div class="legend">
-  <div class="legend-item"><span class="legend-color" style="background:#4ecdc4"></span> Logic Object (WPF)</div>
-  <div class="legend-item"><span class="legend-color" style="background:#ff6b6b"></span> Hardware (SNMP)</div>
+  <div class="legend-item"><span class="legend-color" style="background:#4ecdc4"></span> WPF Logic / Device Handler</div>
+  <div class="legend-item"><span class="legend-color" style="background:#ff6b6b"></span> Hardware (SNMP / IDD)</div>
   <div class="legend-item"><span class="legend-color" style="background:#45b7d1"></span> SignalR Hub</div>
   <div class="legend-item"><span class="legend-color" style="background:#96ceb4"></span> Angular Panel</div>
-  <div class="legend-item"><span class="legend-color" style="background:#ffd93d"></span> OID Watch</div>
+  <div class="legend-item"><span class="legend-color" style="background:#ffd93d"></span> OidWatch / Automation</div>
+  <div class="legend-item"><span class="legend-color" style="background:#6c3483"></span> Startup / Config</div>
 </div>
 
-<div class="diagram-section">
-  <h2>1. Polling Flow</h2>
-  <div class="note">Logic Object polls hardware via SNMP GET/WALK every X seconds. OidWatchService checks for changes and broadcasts via SignalR.</div>
+<div class="toc">
+  <h3>תוכן עניינים</h3>
+  <ol>
+    <li><a href="#startup">עליית מערכת — System Startup</a> <span class="flow-tag tag-startup">STARTUP</span></li>
+    <li><a href="#schema-load">טעינת Schema — Device Selection</a> <span class="flow-tag tag-startup">STARTUP</span></li>
+    <li><a href="#snmp-set">SNMP SET — Angular → Hardware</a> <span class="flow-tag tag-client-hw">CLIENT → HW</span></li>
+    <li><a href="#idd-set">IDD SET — Angular → Hardware</a> <span class="flow-tag tag-client-hw">CLIENT → HW</span></li>
+    <li><a href="#snmp-poll">SNMP Poll — Hardware → Angular</a> <span class="flow-tag tag-hw-client">HW → CLIENT</span></li>
+    <li><a href="#idd-update">IDD Update — Hardware → Angular</a> <span class="flow-tag tag-hw-client">HW → CLIENT</span></li>
+    <li><a href="#automation">WatchByName — Automation Chain</a></li>
+    <li><a href="#architecture">System Architecture</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 1. SYSTEM STARTUP                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="startup" class="diagram-section">
+  <h2>1. עליית מערכת — System Startup <span class="flow-tag tag-startup">STARTUP</span></h2>
+  <div class="note">
+    רצף עליית המערכת: יצירת שירותים, חיבור Hub, טעינת כל ה-Devices, רישום סכמות ל-OidWatch, הרשמה ל-WatchByName automations, והפעלת שרת SignalR.
+  </div>
   <div class="mermaid">
 sequenceDiagram
-    participant Logic as Logic Object (WPF)
-    participant HW as Hardware (SNMP Agent)
+    participant App as App.xaml.cs / Main()
+    participant Store as IDeviceStore
+    participant Sim as ISimulatorService
+    participant Wiring as IntegrationWiring
+    participant Hub as SnmpHub
     participant Watch as OidWatchService
-    participant Hub as SnmpHub (SignalR)
-    participant Angular as Angular Panel (Browser)
+    participant SignalR as SignalR Server
+    participant Angular as Angular Panel
+
+    rect rgb(50, 30, 60)
+    Note over App,Wiring: Phase 1 — Create Services
+    App->>Store: new MyDeviceStore()
+    App->>Sim: new MySimulatorService()
+    App->>Wiring: Start(deviceStore, simulatorService, port=5050)
+    end
 
     rect rgb(30, 40, 60)
-    Note over Logic,HW: Timer tick - every X seconds
-    Logic->>HW: SNMP GET/WALK (V2c or V3)
-    HW-->>Logic: SNMP Response (OID to Value pairs)
-    Logic->>Logic: Update internal model
+    Note over Wiring,Hub: Phase 2 — Wire Internal Services
+    Wiring->>Wiring: Create SnmpRecorderService
+    Wiring->>Wiring: Create MibStore
+    Wiring->>Wiring: Create MibPanelExportService
+    Wiring->>Watch: Create OidWatchService
+    Wiring->>Wiring: Create PeriodicWalkService
+    Wiring->>Hub: Set static refs (Recorder, ExportService, Store, Simulator, OidWatch)
     end
 
-    rect rgb(40, 50, 70)
-    Note over Logic,Watch: Check OID watches
-    Logic->>Watch: NotifyOidChanged(deviceId, oid, newValue)
-    Watch->>Watch: Compare with previous value
-    alt Value changed and watch registered
-        Watch->>Hub: BroadcastOidChanged(deviceId, oid, value)
-        Hub->>Angular: onOidChanged(deviceId, oid, value)
-        Angular->>Angular: Update field in panel UI
-    else No change or no watch
-        Watch-->>Logic: (no action)
-    end
-    end
-  </div>
-</div>
-
-<div class="diagram-section">
-  <h2>2. SET Flow</h2>
-  <div class="note">User changes value in Angular panel. SignalR sends to WPF Hub which performs SNMP SET to hardware and returns result.</div>
-  <div class="mermaid">
-sequenceDiagram
-    participant Angular as Angular Panel (Browser)
-    participant Hub as SnmpHub (SignalR)
-    participant Store as DeviceProfileStore
-    participant HW as Hardware (SNMP Agent)
-    participant Watch as OidWatchService
-
-    Angular->>Hub: sendSet(deviceName, oid, value, type)
-    Hub->>Store: LoadProfilesAsync()
-    Store-->>Hub: List of DeviceProfile
-    Hub->>Hub: Find device by name and active simulator
-
-    rect rgb(50, 30, 30)
-    Note over Hub,HW: SNMP SET to hardware
-    Hub->>HW: SNMP SET (oid, value, type) to device IP:161
-    HW-->>Hub: SNMP Response (success/error)
+    rect rgb(30, 50, 70)
+    Note over Wiring,SignalR: Phase 3 — Start SignalR Server
+    Wiring->>SignalR: new SignalRService()
+    Wiring->>SignalR: Start(port 5050)
+    SignalR->>SignalR: OWIN self-host on http://+:5050
+    Note over SignalR: Server ready — waiting for Angular connections
     end
 
-    alt SET succeeded
-        Hub->>Store: LoadWalkDataAsync(device)
-        Hub->>Hub: Update walk record with new value
-        Hub->>Store: SaveWalkDataAsync(device, records)
-        Hub-->>Angular: setResult success true
-        Hub->>Watch: NotifyOidChanged(deviceId, oid, value)
-        Watch->>Hub: BroadcastOidChanged (if watched)
-        Hub->>Angular: onOidChanged(deviceId, oid, value)
-    else SET failed
-        Hub-->>Angular: setResult success false with error
+    rect rgb(40, 40, 30)
+    Note over Wiring,Watch: Phase 4 — Load Devices + Register Schemas
+    Wiring->>Store: LoadProfilesAsync()
+    Store-->>Wiring: List of DeviceProfile (all devices)
+
+    loop For each device with SchemaPath
+        Wiring->>Wiring: File.ReadAllText(device.SchemaPath)
+        Wiring->>Wiring: Deserialize MibPanelSchema
+        Wiring->>Watch: RegisterSchema(schema)
+        Watch->>Watch: Build name to OID mappings
+        Note over Watch: e.g. "Temperature" to "1.3.6.1.4.1.x.1.0"
     end
-  </div>
-</div>
-
-<div class="diagram-section">
-  <h2>3. Bulk SET Flow</h2>
-  <div class="note">Angular sends multiple SET operations at once. Hub performs SNMP SET for each OID sequentially and returns summary.</div>
-  <div class="mermaid">
-sequenceDiagram
-    participant Angular as Angular Panel
-    participant Hub as SnmpHub
-    participant HW as Hardware
-
-    Angular->>Hub: sendBulkSet(deviceName, items list)
-
-    loop For each OID in bulk list
-        Hub->>HW: SNMP SET (oid, value, type)
-        HW-->>Hub: Response
-        Hub->>Hub: Track success/failure
+    Note over Watch: All field names registered for WatchByName resolution
     end
 
-    Hub-->>Angular: bulkSetResult with results array
-    Hub->>Angular: onOidChanged (for each changed OID)
-  </div>
-</div>
-
-<div class="diagram-section">
-  <h2>4. Schema Loading</h2>
-  <div class="note">When user selects a device in the panel, Angular requests schema from Hub. Hub builds schema from MIB files + walk data.</div>
-  <div class="mermaid">
-sequenceDiagram
-    participant Angular as Angular Panel
-    participant Hub as SnmpHub
-    participant Store as DeviceProfileStore
-    participant Parser as MibParserService
-    participant Export as MibPanelExportService
-    participant Cache as Schema Cache
-
-    Angular->>Hub: requestSchema(deviceName)
-    Hub->>Cache: Check cached schema
-
-    alt Schema in cache
-        Cache-->>Hub: Cached MibPanelSchema
-        Hub-->>Angular: schema(MibPanelSchema)
-    else Not cached
-        Hub->>Store: LoadProfilesAsync()
-        Store-->>Hub: DeviceProfile with MibFilePaths
-        Hub->>Store: LoadWalkDataAsync(device)
-        Store-->>Hub: List of SnmpRecord
-        Hub->>Parser: Parse MIB files
-        Parser-->>Hub: List of MibDefinition
-        Hub->>Export: BuildSchema(device, definitions, walkData)
-        Export-->>Hub: MibPanelSchema
-        Hub->>Cache: Store schema
-        Hub-->>Angular: schema(MibPanelSchema)
-    end
-
-    Angular->>Angular: Render panel fields with current values
-  </div>
-</div>
-
-<div class="diagram-section">
-  <h2>5. OID Watch - Server Automation</h2>
-  <div class="note">Register watches on specific OIDs (exact) or subtrees (prefix). When values change, OidWatchService triggers callbacks and SignalR broadcast.</div>
-  <div class="mermaid">
-sequenceDiagram
-    participant Logic as Logic Object
-    participant Watch as OidWatchService
-    participant Hub as SnmpHub
-    participant Angular as Angular Panel
-
-    rect rgb(60, 50, 20)
-    Note over Logic,Watch: Registration Phase
-    Logic->>Watch: RegisterWatch(deviceId, oid, callback)
-    Watch->>Watch: Store watch entry with match type
+    rect rgb(50, 40, 20)
+    Note over Wiring,Watch: Phase 5 — Register WatchByName Automations
+    Wiring->>Watch: WatchByName("sysName", callback)
+    Wiring->>Watch: WatchByName("temperature", callback)
+    Wiring->>Watch: WatchByName("ifOperStatus", callback)
+    Note over Watch: 3 automation callbacks registered
     end
 
     rect rgb(30, 50, 40)
-    Note over Logic,Watch: Runtime - on every poll
-    Logic->>Watch: NotifyOidChanged(deviceId, oid, value)
-    Watch->>Watch: Find matching watches (exact OR prefix)
-
-    alt Has matching watches
-        Watch->>Logic: Execute callback(oid, value) for server automation
-        Watch->>Hub: BroadcastOidChanged(deviceId, oid, value)
-        Hub->>Angular: onOidChanged(deviceId, oid, value)
-        Angular->>Angular: Execute subscribed handlers for client automation
-    end
-    end
-
-    rect rgb(40, 30, 50)
-    Note over Angular,Hub: Client-side subscription
-    Angular->>Hub: Connection established
-    Note over Angular: oidWatchService.subscribe(deviceId, oid, handler)
-    Note over Angular: handler runs on every onOidChanged matching oid
+    Note over Angular,SignalR: Phase 6 — Angular Connects
+    Angular->>SignalR: WebSocket connect to ws://host:5050/signalr
+    SignalR-->>Angular: Connection established
+    Angular->>Hub: GetDevices()
+    Hub->>Store: LoadProfilesAsync()
+    Store-->>Hub: List of DeviceProfile
+    Hub-->>Angular: DeviceInfo[] (id, name, ip, isSimulating)
+    Angular->>Angular: Show device list in sidebar
     end
   </div>
 </div>
 
-<div class="diagram-section">
-  <h2>6. IDD SET Flow</h2>
-  <div class="note">IDD panel allows setting values by field names (fieldId) instead of direct OID. Hub delegates to SimulatorService which triggers the appropriate Logic.</div>
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 2. SCHEMA LOADING                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="schema-load" class="diagram-section">
+  <h2>2. טעינת Schema — Device Selection <span class="flow-tag tag-startup">STARTUP</span></h2>
+  <div class="note">
+    כאשר המשתמש בוחר device ב-Angular, נטענת הסכמה בסדר עדיפות: 1) מקובץ JSON מוכן (SchemaPath), 2) בניית IDD מ-IddFields, 3) פענוח MIB files. כולל cache.
+  </div>
   <div class="mermaid">
 sequenceDiagram
     participant Angular as Angular Panel
+    participant SRS as SignalR Service
     participant Hub as SnmpHub
-    participant Sim as ISimulatorService
-    participant Logic as Logic Object
-    participant HW as Hardware
+    participant Cache as Schema Cache
+    participant Store as DeviceProfileStore
+    participant FS as File System
+    participant IDD as IddPanelBuilderService
+    participant Parser as MibParserService
+    participant Export as MibPanelExportService
 
-    Angular->>Hub: sendIddSet(deviceName, fieldId, value)
-    Hub->>Hub: Find active simulator by device name
-    Hub->>Sim: RaiseIddSet(deviceId, fieldId, value)
-    Sim->>Logic: Handle IDD SET event
-    Logic->>HW: SNMP SET (resolved OID, value)
-    HW-->>Logic: Response
-    Logic->>Logic: Update internal model
-    Note over Hub,Angular: Next poll cycle picks up the change via OidWatch
+    Angular->>SRS: loadFromDevice(deviceId)
+    SRS->>Hub: RequestSchema(deviceId)
+
+    Hub->>Store: LoadProfilesAsync()
+    Store-->>Hub: DeviceProfile
+
+    Hub->>Cache: Check cache (BuildCacheKey)
+
+    alt Cache HIT
+        Cache-->>Hub: Cached MibPanelSchema
+        Hub-->>Angular: schema
+    else Cache MISS — SchemaPath exists
+        Note over Hub,FS: Priority 1 — Pre-built JSON file
+        Hub->>FS: File.ReadAllText(device.SchemaPath)
+        FS-->>Hub: JSON string
+        Hub->>Hub: Deserialize MibPanelSchema
+        Hub->>Cache: Store in cache
+        Hub-->>Angular: schema
+    else Cache MISS — IsIddDevice (has IddFields)
+        Note over Hub,IDD: Priority 2 — Build IDD schema
+        Hub->>IDD: BuildFromIdd(deviceName, ip, iddFields)
+        IDD->>IDD: Group fields by Group name
+        IDD->>IDD: Map IddFieldDef to MibFieldSchema
+        IDD-->>Hub: MibPanelSchema
+        Hub->>Cache: Store in cache
+        Hub-->>Angular: schema
+    else Cache MISS — SNMP device (MIB files)
+        Note over Hub,Parser: Priority 3 — Parse MIB files
+        Hub->>Parser: LoadForDeviceAsync(device)
+        Parser->>Parser: Parse MIB file syntax
+        Parser-->>Hub: MIB definitions loaded
+        Hub->>Export: BuildSchemaAsync(device)
+        Export->>Store: LoadWalkDataAsync(device)
+        Store-->>Export: Walk data (OID values)
+        Export-->>Hub: MibPanelSchema
+        Hub->>Cache: Store in cache
+        Hub-->>Angular: schema
+    end
+
+    Angular->>Angular: Render panel fields
+    Angular->>Angular: buildNameMap(schema)
+    Note over Angular: Name to OID maps ready for WatchByName
+
+    Angular->>SRS: requestRefresh(deviceId)
+    Note over SRS,Hub: Auto-refresh to get live values
   </div>
 </div>
 
-<div class="diagram-section">
-  <h2>7. System Architecture</h2>
-  <div class="note">Overview of all system components and their connections.</div>
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 3. SNMP SET — Angular → Hardware                               -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="snmp-set" class="diagram-section">
+  <h2>3. SNMP SET — Angular → Hardware <span class="flow-tag tag-client-hw">CLIENT → HW</span></h2>
+  <div class="note">
+    המשתמש משנה ערך בפאנל Angular. הערך נשלח דרך SignalR ל-WPF Hub, שמבצע SNMP SET לחומרה דרך הפורט של הסימולטור. תוצאת ה-SET חוזרת ל-Angular ומעדכנת את הפאנל.
+  </div>
+  <div class="mermaid">
+sequenceDiagram
+    participant User as User (Browser)
+    participant Angular as Angular Panel
+    participant Panel as MibPanelService
+    participant SRS as SignalR Service
+    participant Hub as SnmpHub
+    participant Store as DeviceProfileStore
+    participant Rec as SnmpRecorderService
+    participant HW as Hardware (SNMP Agent)
+    participant Watch as OidWatchService
+
+    User->>Angular: Change field value in panel
+    Angular->>Panel: sendSet(oid, name, value, valueType)
+    Panel->>Panel: Create SetFeedback (status=pending)
+    Panel->>Panel: Detect SNMP (OID starts with digit)
+
+    Panel->>SRS: sendSet(deviceId, oid, value, valueType)
+    SRS->>Hub: SendSet(deviceId, oid, value, valueType)
+
+    Hub->>Store: LoadProfilesAsync()
+    Store-->>Hub: DeviceProfile
+    Hub->>Hub: Find ActiveSimulator by deviceId
+
+    rect rgb(50, 30, 30)
+    Note over Hub,HW: SNMP SET to hardware via simulator port
+    Hub->>Rec: SetAsync(target 127.0.0.1:simPort, oid, value, type)
+    Rec->>HW: SNMP SET PDU (oid, value)
+    HW-->>Rec: SNMP Response (success/error)
+    Rec-->>Hub: bool success
+    end
+
+    alt SET succeeded
+        Hub-->>SRS: SetResult(success=true)
+        SRS-->>Panel: result
+        Panel->>Panel: updateFieldValue(oid, value)
+        Panel->>Panel: SetFeedback status=success
+        Panel->>Angular: Update UI field value
+
+        Note over Hub,Watch: Track change for automation
+        Hub->>Watch: NotifyChange(oid, value)
+        Watch->>Watch: Compare with previous value
+        Watch->>Watch: Fire WatchByName callbacks (if registered)
+        Watch->>Hub: Return previousValue
+        Hub->>Hub: BroadcastOidChanged(deviceId, name, oid, value, prev, source)
+        Hub->>Angular: onOidChanged event
+        Angular->>Angular: Dispatch name-based watches
+    else SET failed
+        Hub-->>SRS: SetResult(success=false, message)
+        SRS-->>Panel: result
+        Panel->>Panel: SetFeedback status=error
+    end
+
+    Note over Panel: Auto-remove feedback after 8 seconds
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 4. IDD SET — Angular → Hardware                                -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="idd-set" class="diagram-section">
+  <h2>4. IDD SET — Angular → Hardware <span class="flow-tag tag-client-hw">CLIENT → HW</span></h2>
+  <div class="note">
+    שדות IDD נשלחים לפי שם שדה (לא OID מספרי). ה-Hub מעביר ל-ISimulatorService שמנתב ל-Device Handler המתאים. ה-Handler שולח פקודה לחומרה, ואחרי אישור — קורא ל-NotifyIddSet שמשדר בחזרה ל-Angular.
+  </div>
+  <div class="mermaid">
+sequenceDiagram
+    participant User as User (Browser)
+    participant Angular as Angular Panel
+    participant Panel as MibPanelService
+    participant SRS as SignalR Service
+    participant Hub as SnmpHub
+    participant Sim as ISimulatorService
+    participant Device as SampleIddDevice
+    participant HW as Hardware (TCP/Serial/Modbus)
+    participant Wiring as IntegrationWiring
+    participant Watch as OidWatchService
+
+    User->>Angular: Change IDD field value (e.g. TX Power = 30)
+    Angular->>Panel: sendSet("idd.ctrl.txPower", "TX Power", "30", "Integer32")
+    Panel->>Panel: Detect IDD (fieldId does not start with digit)
+    Panel->>SRS: sendIddSet(deviceId, "idd.ctrl.txPower", "30")
+    SRS->>Hub: SendIddSet(deviceId, "idd.ctrl.txPower", "30")
+
+    Hub->>Sim: RaiseIddSet(deviceId, "idd.ctrl.txPower", "30")
+
+    rect rgb(40, 30, 20)
+    Note over Sim,Device: Route to correct device handler
+    Sim->>Sim: switch(deviceId) — find handler
+    Sim->>Device: HandleSet("idd.ctrl.txPower", "30")
+    end
+
+    rect rgb(50, 30, 30)
+    Note over Device,HW: Send command to real hardware
+    Device->>HW: Send command (TCP/Serial/Modbus/HTTP)
+    Note over Device: e.g. TcpClient.Send("SET txPower=30")
+    HW-->>Device: Hardware confirms change
+    end
+
+    rect rgb(30, 50, 40)
+    Note over Device,Angular: Broadcast confirmed value back to Angular
+    Device->>Wiring: NotifyIddSet(deviceId, "idd.ctrl.txPower", "30")
+
+    Wiring->>Hub: BroadcastTraffic("IDD", "SET", "idd.ctrl.txPower", "30")
+    Hub->>Angular: onTrafficReceived (traffic panel update)
+
+    Wiring->>Watch: NotifyChange("idd.ctrl.txPower", "30")
+    Watch->>Watch: Compare with previous value
+    Watch->>Watch: Fire WatchByName callbacks
+    Watch-->>Wiring: previousValue
+
+    alt Value changed
+        Wiring->>Hub: BroadcastOidChanged(deviceId, "IDD", "idd.ctrl.txPower", "30", prev)
+        Hub->>Angular: onOidChanged event
+    end
+
+    Wiring->>Hub: BroadcastMibUpdate(deviceId, dict with idd.ctrl.txPower=30)
+    Hub->>Angular: onMibUpdated event
+    end
+
+    Angular->>Angular: Match field by name (field.name === "idd.ctrl.txPower")
+    Angular->>Angular: Update panel field value to "30"
+
+    Hub-->>SRS: SetResult(success=true, "IDD SET dispatched")
+    SRS-->>Panel: result
+    Panel->>Panel: SetFeedback status=success
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 5. SNMP Poll — Hardware → Angular                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="snmp-poll" class="diagram-section">
+  <h2>5. SNMP Poll — Hardware → Angular <span class="flow-tag tag-hw-client">HW → CLIENT</span></h2>
+  <div class="note">
+    ה-Logic Object מבצע polling תקופתי (SNMP GET/WALK) לחומרה. התוצאות מועברות דרך IntegrationWiring ל-OidWatch (לזיהוי שינויים) ול-SignalR (לעדכון Angular). שני מסלולים: NotifyTraffic (לכל OID בודד) ו-NotifyWalkResults (ל-batch מלא).
+  </div>
+  <div class="mermaid">
+sequenceDiagram
+    participant Timer as DispatcherTimer
+    participant Logic as Logic Object (WPF)
+    participant HW as Hardware (SNMP Agent)
+    participant Wiring as IntegrationWiring
+    participant Watch as OidWatchService
+    participant Hub as SnmpHub
+    participant Angular as Angular Panel
+
+    rect rgb(40, 40, 30)
+    Note over Timer,HW: Option A — Single OID polling
+    Timer->>Logic: Timer tick (every X seconds)
+    Logic->>HW: SNMP GET (specific OID)
+    HW-->>Logic: Response: OID = newValue
+    Logic->>Wiring: NotifyTraffic(deviceName, "GET", oid, value, sourceIp)
+
+    Wiring->>Hub: BroadcastTraffic(deviceName, "GET", oid, value)
+    Hub->>Angular: onTrafficReceived
+
+    Wiring->>Watch: NotifyChange(oid, value)
+    Watch->>Watch: Compare with previous value
+
+    alt Value changed
+        Watch->>Watch: Fire exact/prefix/name callbacks
+        Watch-->>Wiring: previousValue (different)
+        Wiring->>Hub: BroadcastOidChanged(deviceId, name, oid, value, prev)
+        Hub->>Angular: onOidChanged
+        Angular->>Angular: Update matching field in panel
+    end
+    end
+
+    rect rgb(30, 40, 50)
+    Note over Timer,Angular: Option B — Full WALK polling (batch)
+    Timer->>Logic: Timer tick
+    Logic->>HW: SNMP WALK (entire subtree)
+    HW-->>Logic: Response: Dictionary of OID to Value
+
+    Logic->>Wiring: NotifyWalkResults(deviceId, deviceName, walkResults)
+
+    Note over Wiring,Hub: Step A — Batch broadcast (one SignalR call)
+    Wiring->>Hub: BroadcastMibUpdate(deviceId, walkResults)
+    Hub->>Angular: onMibUpdated (all values at once)
+    Angular->>Angular: Match each OID/name and update fields
+
+    Note over Wiring,Watch: Step B — Per-OID change detection
+    loop For each OID in walkResults
+        Wiring->>Watch: NotifyChange(oid, value)
+        Watch->>Watch: Compare with previous
+        alt Value changed
+            Watch->>Watch: Fire WatchByName/exact/prefix callbacks
+            Wiring->>Hub: BroadcastOidChanged(deviceId, name, oid, value, prev, "walk")
+            Hub->>Angular: onOidChanged
+        end
+    end
+    end
+
+    Note over Angular: Angular matches fields by OID or by field.name
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 6. IDD Update — Hardware → Angular                             -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="idd-update" class="diagram-section">
+  <h2>6. IDD Update — Hardware → Angular <span class="flow-tag tag-hw-client">HW → CLIENT</span></h2>
+  <div class="note">
+    חומרה שולחת עדכון סטטוס ל-WPF (דרך TCP, Serial, Modbus וכו'). ה-Device Handler מקבל את הערך ומעדכן את Angular דרך UpdateField (שדה בודד) או UpdateFields (batch). ה-Angular מזהה את השדה לפי field.name (לא לפי OID מספרי).
+  </div>
+  <div class="mermaid">
+sequenceDiagram
+    participant HW as Hardware (TCP/Serial)
+    participant Logic as WPF Event Handler
+    participant Device as SampleIddDevice
+    participant Wiring as IntegrationWiring
+    participant Watch as OidWatchService
+    participant Hub as SnmpHub
+    participant Angular as Angular Panel
+
+    rect rgb(50, 40, 20)
+    Note over HW,Device: Option A — Single field update
+    HW->>Logic: Status callback (e.g. temperature = 73)
+    Logic->>Device: UpdateField("idd.info.temperature", "73")
+    Device->>Wiring: NotifyIddSet(DeviceId, "idd.info.temperature", "73")
+
+    Wiring->>Hub: BroadcastTraffic("IDD", "SET", "idd.info.temperature", "73")
+    Hub->>Angular: onTrafficReceived
+
+    Wiring->>Watch: NotifyChange("idd.info.temperature", "73")
+    Watch->>Watch: Compare: was "42" now "73" — CHANGED
+    Watch->>Watch: Fire WatchByName("Temperature") callbacks
+    Note over Watch: e.g. threshold check — temp > 80?
+    Watch-->>Wiring: previousValue = "42"
+
+    Wiring->>Hub: BroadcastOidChanged(deviceId, "IDD", "idd.info.temperature", "73", "42")
+    Hub->>Angular: onOidChanged(fieldName="Temperature")
+
+    Wiring->>Hub: BroadcastMibUpdate(deviceId, dict idd.info.temperature=73)
+    Hub->>Angular: onMibUpdated
+
+    Angular->>Angular: Match: field.name === "idd.info.temperature"
+    Angular->>Angular: Update panel: Temperature = 73 C
+    end
+
+    rect rgb(30, 45, 50)
+    Note over HW,Angular: Option B — Batch update (multiple fields)
+    HW->>Logic: Periodic poll returns multiple values
+    Logic->>Device: UpdateFields(dict with 3 fields)
+    Note over Device: temperature=73, uptime=172800, hwStatus=1
+    Device->>Wiring: NotifyIddBatch(DeviceId, fieldValues)
+
+    Note over Wiring,Hub: Step A — One batch broadcast
+    Wiring->>Hub: BroadcastMibUpdate(deviceId, 3 fields)
+    Hub->>Angular: onMibUpdated (all 3 values)
+    Angular->>Angular: Match by values[field.name] for each field
+
+    Note over Wiring,Watch: Step B — Per-field change detection
+    loop For each field in batch
+        Wiring->>Watch: NotifyChange(fieldId, value)
+        alt Value changed
+            Watch->>Watch: Fire WatchByName callbacks
+            Wiring->>Hub: BroadcastOidChanged(deviceId, fieldId, value, prev, "hardware")
+            Hub->>Angular: onOidChanged
+        end
+    end
+
+    Angular->>Angular: All 3 fields updated in panel
+    end
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 7. WatchByName Automation Chain                                -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="automation" class="diagram-section">
+  <h2>7. WatchByName — Automation Chain</h2>
+  <div class="note">
+    דוגמה מלאה: חומרה מדווחת על טמפרטורה גבוהה → WatchByName callback ב-WPF מזהה חריגה → שולח UpdateField לשנות מצב alarm → Angular מעדכן את שני השדות (temperature + alarm status). שרשרת אוטומציה מלאה בשתי הכיוונים.
+  </div>
+  <div class="mermaid">
+sequenceDiagram
+    participant HW as Hardware
+    participant Logic as WPF Handler
+    participant Device as SampleIddDevice
+    participant Wiring as IntegrationWiring
+    participant Watch as OidWatchService
+    participant Hub as SnmpHub
+    participant Angular as Angular Panel
+
+    Note over HW,Angular: Scenario: Temperature exceeds threshold — auto-trigger alarm
+
+    rect rgb(50, 30, 20)
+    Note over HW,Wiring: Step 1 — Hardware reports temperature = 85
+    HW->>Logic: Temperature sensor callback: 85 C
+    Logic->>Device: UpdateField("idd.info.temperature", "85")
+    Device->>Wiring: NotifyIddSet(deviceId, "idd.info.temperature", "85")
+    Wiring->>Hub: BroadcastMibUpdate + BroadcastOidChanged
+    Hub->>Angular: onMibUpdated + onOidChanged
+    Angular->>Angular: Temperature field updates to 85 C
+    end
+
+    rect rgb(60, 50, 20)
+    Note over Wiring,Watch: Step 2 — WatchByName fires automation
+    Wiring->>Watch: NotifyChange("idd.info.temperature", "85")
+    Watch->>Watch: Resolve name: "idd.info.temperature" matches "Temperature"
+    Watch->>Watch: Fire WatchByName("temperature") callback
+    Note over Watch: Callback checks: 85 > 80 — ALERT!
+    end
+
+    rect rgb(30, 50, 30)
+    Note over Watch,Angular: Step 3 — Automation triggers alarm update
+    Watch->>Wiring: NotifyIddSet(deviceId, "idd.info.hwStatus", "0")
+    Note over Wiring: hwStatus 0 = Fault (LED turns red)
+
+    Wiring->>Hub: BroadcastTraffic("IDD", "SET", "idd.info.hwStatus", "0")
+    Wiring->>Watch: NotifyChange("idd.info.hwStatus", "0")
+    Wiring->>Hub: BroadcastOidChanged(deviceId, "idd.info.hwStatus", "0", "1")
+    Wiring->>Hub: BroadcastMibUpdate(deviceId, hwStatus=0)
+    Hub->>Angular: onMibUpdated + onOidChanged
+    Angular->>Angular: Hardware Status LED turns RED (Fault)
+    end
+
+    Note over Angular: Result: User sees temperature=85 AND red Fault LED
+    Note over Angular: Both updated automatically — no user interaction needed
+
+    rect rgb(30, 40, 50)
+    Note over HW,Angular: Later: Temperature drops below 60 — auto-clear alarm
+    HW->>Logic: Temperature = 55 C
+    Logic->>Device: UpdateField("idd.info.temperature", "55")
+    Device->>Wiring: NotifyIddSet(...)
+    Wiring->>Watch: NotifyChange(...)
+    Watch->>Watch: WatchByName fires: 55 <= 60 — clear alarm
+    Watch->>Wiring: NotifyIddSet(deviceId, "idd.info.hwStatus", "1")
+    Wiring->>Hub: Broadcast all events
+    Hub->>Angular: Temperature=55, Status=OK (green LED)
+    end
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 8. System Architecture                                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="architecture" class="diagram-section">
+  <h2>8. System Architecture</h2>
+  <div class="note">
+    ארכיטקטורת המערכת המלאה: שכבת חומרה (SNMP + IDD), שכבת WPF (Logic + Services + SignalR Hub), ושכבת Angular (UI + Services).
+  </div>
   <div class="mermaid">
 flowchart TB
-    subgraph Hardware[Hardware Layer]
+    subgraph Hardware["Hardware Layer"]
         direction LR
-        COMB[COMBINER 60.60.60.22]
-        SPLIT[SPLITTER 60.60.60.21]
-        BUC_HW[BUC 60.60.60.40]
-        ACU_HW[ACU 60.60.60.41]
-        PIR[PIRANHA 60.60.60.20]
-        OSA_HW[OSA 60.60.60.42]
+        subgraph SNMP_HW["SNMP Devices"]
+            COMB["COMBINER<br/>60.60.60.22"]
+            SPLIT["SPLITTER<br/>60.60.60.21"]
+            BUC_HW["BUC<br/>60.60.60.40"]
+            ACU_HW["ACU<br/>60.60.60.41"]
+            PIR["PIRANHA<br/>60.60.60.20"]
+            OSA_HW["OSA<br/>60.60.60.42"]
+        end
+        subgraph IDD_HW["IDD Devices"]
+            IDD1["IDD-Sample<br/>10.0.0.200"]
+            IDD2["Custom IDD<br/>TCP/Serial/Modbus"]
+        end
     end
 
-    subgraph WPF[WPF Application .NET 4.7.2]
+    subgraph WPF["WPF Application (.NET 4.7.2)"]
         direction TB
-        subgraph Logic[Logic Layer]
-            L1[CombinerLogic]
-            L2[SplitterLogic]
-            L3[BucLogic]
-            L4[AcuLogic]
-            L5[PiranhaLogic]
-            L6[OsaLogic]
+        subgraph Logic["Device Logic Layer"]
+            L1["CombinerLogic"]
+            L2["SplitterLogic"]
+            L3["BucLogic"]
+            L4["AcuLogic"]
+            L5["PiranhaLogic"]
+            L6["OsaLogic"]
+            L7["SampleIddDevice<br/>HandleSet() / UpdateField()"]
         end
 
-        subgraph Services[Integration Services]
-            DS[DeviceProfileStore IDeviceStore]
-            SIM[SimulatorService ISimulatorService]
-            MW[IntegrationWiring Event Bridge]
-            OW[OidWatchService Server Automation]
+        subgraph Services["Integration Services"]
+            DS["DeviceProfileStore<br/>IDeviceStore"]
+            SIM["SimulatorService<br/>ISimulatorService"]
+            MW["IntegrationWiring<br/>NotifyIddSet() / NotifyIddBatch()<br/>NotifyTraffic() / NotifyWalkResults()"]
+            OW["OidWatchService<br/>WatchByName / Watch / WatchPrefix"]
         end
 
-        subgraph SigR[SignalR Hub port 5050]
-            HUB[SnmpHub]
-            MPS[MibParserService]
-            MPE[MibPanelExportService]
-            IDD[IddPanelBuilderService]
+        subgraph SigR["SignalR Hub (port 5050)"]
+            HUB["SnmpHub<br/>SendSet / SendIddSet<br/>RequestSchema / RequestRefresh"]
+            MPS["MibParserService"]
+            MPE["MibPanelExportService"]
+            IDD["IddPanelBuilderService<br/>BuildFromIdd / ExportSchemaToFile"]
         end
     end
 
-    subgraph Ang[Angular Panel port 4300]
+    subgraph Ang["Angular Panel (port 4300)"]
         direction TB
-        UI[MIB Panel UI]
-        SRS[SignalR Service]
-        OWS[OID Watch Service Client Automation]
+        UI["MIB Panel UI<br/>Scalars / Tables / IDD Fields"]
+        SRS["SignalRService<br/>Connection Management"]
+        MPS2["MibPanelService<br/>sendSet / watchByName<br/>field.name matching"]
     end
 
-    Hardware <-->|SNMP V2c/V3 GET SET WALK| Logic
-    Logic -->|NotifyOidChanged| OW
-    OW -->|BroadcastOidChanged| HUB
-    Logic <-->|Events| MW
-    MW <-->|Wire| HUB
-    DS <-->|Load/Save| HUB
-    SIM -->|ActiveSimulators| HUB
-    HUB <-->|SignalR WebSocket| SRS
-    SRS <-->|Events| UI
-    SRS -->|onOidChanged| OWS
-    OWS -->|Subscriptions| UI
+    SNMP_HW <-->|"SNMP V2c/V3<br/>GET / SET / WALK"| Logic
+    IDD_HW <-->|"TCP / Serial<br/>Modbus / HTTP"| L7
+
+    Logic -->|"NotifyTraffic<br/>NotifyWalkResults"| MW
+    L7 -->|"UpdateField<br/>UpdateFields"| MW
+    MW -->|"NotifyChange"| OW
+    OW -->|"WatchByName callbacks<br/>(automation)"| MW
+    MW -->|"BroadcastTraffic<br/>BroadcastOidChanged<br/>BroadcastMibUpdate"| HUB
+    DS <-->|"Load/Save<br/>Profiles"| HUB
+    SIM -->|"RaiseIddSet<br/>ActiveSimulators"| HUB
+
+    HUB <-->|"SignalR WebSocket<br/>bidirectional"| SRS
+    SRS <-->|"Signals<br/>Effects"| MPS2
+    MPS2 -->|"Schema +<br/>Values"| UI
 
     style Hardware fill:#2d1f1f,stroke:#ff6b6b,color:#ff6b6b
+    style SNMP_HW fill:#2d1f1f,stroke:#ff6b6b,color:#ff9999
+    style IDD_HW fill:#2d1f1f,stroke:#ffd93d,color:#ffd93d
     style WPF fill:#1a2a3a,stroke:#4ecdc4,color:#4ecdc4
     style Ang fill:#1a3a2a,stroke:#96ceb4,color:#96ceb4
     style SigR fill:#1a2a4a,stroke:#45b7d1,color:#45b7d1
